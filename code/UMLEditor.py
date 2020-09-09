@@ -1,21 +1,34 @@
-# This file
+# A console-based UML editor interface
+# Description:     
+#   This file handles the input of the user and modifies the state
+#   of the UML Model 
+#   This file is the entry point into the UML Editor 
+# Course:   CSCI 420 - Software Engineering
+# Authors:  Adisa, Amy, Carli, David, Joan
+# Date:     September 8 2020
+
+##########################################################################
+# Imports
+
+from UMLModel import UMLModel
+import UMLClass
+import UMLRelationship
 
 ##########################################################################
 
-# from UMLModel import UMLModel
-
-##########################################################################
-
+# **Write Documentation Here**
 def prompt_exit():
     print ("To be implemented")
 
 ##########################################################################
 
+# **Write Documentation Here**
 def print_help_message():
     print ("To be implemented")
 
 ##########################################################################
 
+# **Write Documentation Here**
 def execute(model:UMLModel, command:str, arguments:list = []):
     print ("To be implemented")
 
@@ -54,5 +67,6 @@ def REPL():
 
 ##########################################################################
 
+# Program runs the REPL by default 
 if __name__ == "__main__":
     REPL()
