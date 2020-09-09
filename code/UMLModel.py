@@ -27,22 +27,25 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def create_class(self):
-        print ("To be implemented")
-
+    # Creates class object
+    def create_class(self, name:str):
+        if name in self.classes:
+            print("{} is already exists".format(name))
+        else:
+            self.classes[name] = UMLClass.UMLClass(name)
+            
     ######################################################################
     
-    # **Write Documentation Here**
-    def rename_class(self):
+    # Assigns a new name to existing class object
+    def rename_class(self):       
         print ("To be implemented")
-
+            
     ######################################################################
     
-    # **Write Documentation Here**
+    # Deletes an existing class
     def delete_class(self):
         print ("To be implemented")
-
+        
     ######################################################################
     
     # **Write Documentation Here**
