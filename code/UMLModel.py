@@ -94,9 +94,18 @@ class UMLModel:
     ######################################################################
 
     # **Write Documentation Here**
+    # Output all of the relationships between classes
     def list_relationships(self):
-        print ("To be implemented")
-
+        # for each class
+        for class_name in self.classes:
+            # for each relationship
+            for j in range(len(self.classes[class_name].relationships)):
+                # determine which class is the other 
+                relationship = self.classes[class_name].relationships[j]
+                if relationship.class1.name == class_name:
+                    print (class_name,"->",relationship.class2.name)
+                else: 
+                    print (class_name,"->",relationship.class1.name)
 
 ##########################################################################
 
