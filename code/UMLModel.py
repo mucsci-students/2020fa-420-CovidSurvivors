@@ -39,10 +39,13 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def delete_class(self):
-        print ("To be implemented")
-
+    # Deletes a given class
+    def delete_class(self, name:str):
+        if name in self.classes:
+            del self.classes[name]
+        else:
+            print("{} does not exist".format(name))
+            
     ######################################################################
     
     # **Write Documentation Here**
