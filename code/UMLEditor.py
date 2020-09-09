@@ -15,6 +15,29 @@ import UMLClass
 import UMLRelationship
 
 ##########################################################################
+# Constants 
+
+COMMANDS = {
+    "help" : [
+        {
+            "usage" : "help", 
+            "desc" : "lists all possible commands"
+        },
+        {
+            "usage" : "help <command_name>", 
+            "desc" : "lists the usage for <command_name>"
+        }
+    ],
+    "create_class" : [
+        {
+            "usage" : "create_class <class_name>",
+            "desc" : "creates a class with <class_name> as the name"
+        }
+    ]
+}
+
+
+##########################################################################
 
 # **Write Documentation Here**
 def prompt_exit():
@@ -22,9 +45,28 @@ def prompt_exit():
 
 ##########################################################################
 
-# **Write Documentation Here**
-def print_help_message():
-    print ("To be implemented")
+# Prints the list of valid commands
+# or it prints out the usage for a given command
+# NOTE if the inputted command is not a valid command
+#   then it prints out all of the possible commands  
+def print_help_message(command = ""):
+
+    # if the command is valid 
+    if command in COMMANDS:
+        # find usage info for command
+        usages = COMMANDS[command]
+        # for each usage
+        for usage in usages: 
+            # print the usage
+            print (usage["usage"])
+            print ("\t", usage["desc"])
+    # Print all commands
+    else:
+        print ("Type help <command_name> to see the usage of a command")
+        # for each command
+        for command in COMMANDS:
+            # print out the command
+            print ("\t", command)
 
 ##########################################################################
 
