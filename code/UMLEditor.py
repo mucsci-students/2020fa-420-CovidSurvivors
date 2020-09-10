@@ -74,19 +74,23 @@ def REPL():
         # Tokenize user's input 
         words = user_input.split()
 
-        # Case 0: user presses enter
+
+        # If user presses enter
         if len(words) == 0:
             continue
+                    
+        if words[0] in COMMANDS:
+            # Case 0: Command has no arguments 
+            if len(words) == 1:
+                command = words[0]
+                execute(model, command)
 
-        # Case 1: Command has no arguments 
-        if len(words) == 1:
-            command = words[0]
-            execute(model, command)
-
-        # Case 2: Command has arguments 
+            # Case 1: Command has arguments 
+            else:
+                command, arguments = (words[0],words[1:])
+                execute(model, command, arguments)
         else:
-            command, arguments = (words[0],words[1:])
-            execute(model, command, arguments)
+            print("Invalid command, type 'help' for information on commands")
 
 ##########################################################################
 
