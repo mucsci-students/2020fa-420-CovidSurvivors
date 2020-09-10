@@ -1,0 +1,56 @@
+{
+    "class1": {
+        "name": "class1",
+        "attributes": [],
+        "relationships": [
+            {
+                "name": "temp",
+                "class1": "class2",
+                "class2": "class1"
+            },
+            {
+                "name": "temp",
+                "class1": "class1",
+                "class2": "class3"
+            }
+        ]
+    },
+    "class2": {
+        "name": "class2",
+        "attributes": [],
+        "relationships": [
+            {
+                "name": "temp",
+                "class1": "class2",
+                "class2": "class1"
+            }
+        ]
+    },
+    "class3": {
+        "name": "class3",
+        "attributes": [],
+        "relationships": [
+            {
+                "name": "temp",
+                "class1": "class3",
+                "class2": "class4"
+            },
+            {
+                "name": "temp",
+                "class1": "class1",
+                "class2": "class3"
+            }
+        ]
+    },
+    "class4": {
+        "name": "class4",
+        "attributes": [],
+        "relationships": [
+            {
+                "name": "temp",
+                "class1": "class3",
+                "class2": "class4"
+            }
+        ]
+    }
+}
