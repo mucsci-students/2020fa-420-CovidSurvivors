@@ -13,6 +13,10 @@
 from UMLModel import UMLModel
 import UMLClass
 import UMLRelationship
+from CommandData import COMMANDS
+
+##########################################################################
+# Constants 
 
 ##########################################################################
 
@@ -22,9 +26,28 @@ def prompt_exit():
 
 ##########################################################################
 
-# **Write Documentation Here**
-def print_help_message():
-    print ("To be implemented")
+# Prints the list of valid commands
+# or it prints out the usage for a given command
+# NOTE if the inputted command is not a valid command
+#   then it prints out all of the possible commands  
+def print_help_message(command = ""):
+
+    # if the command is valid 
+    if command in COMMANDS:
+        # find usage info for command
+        usages = COMMANDS[command]
+        # for each usage
+        for usage in usages: 
+            # print the usage
+            print (usage["usage"])
+            print ("\t", usage["desc"])
+    # Print all commands
+    else:
+        print ("Type help <command_name> to see the usage of a command")
+        # for each command
+        for command in COMMANDS:
+            # print out the command
+            print ("\t", command)
 
 ##########################################################################
 
