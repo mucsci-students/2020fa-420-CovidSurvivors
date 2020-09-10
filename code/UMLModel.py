@@ -88,8 +88,12 @@ class UMLModel:
     ######################################################################
 
     # **Write Documentation Here**
-    def list_class(self):
-        print ("To be implemented")
+    # Output all attributes and methods for a given class
+    def list_class(self, class_name):
+        # loop the classes by the name 
+        for i in range(len(self.classes[class_name].attributes)):
+            attribute = self.classes[class_name].attributes[i]
+            print(attribute)
 
     ######################################################################
 
