@@ -33,9 +33,19 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def rename_class(self):
-        print ("To be implemented")
+    # Renames an existing class object
+    def rename_class(self, oldClassName:str, newClassName:str):
+        # Checks if the old class name exists       
+        if oldClassName not in self.classes:
+            print("{} does not exist.".format(oldClassName))
+        # Checks if the new class name is already in use 
+        elif newClassName in self.classes:
+            print("{} already exists.".format(newClassName))
+        else:
+            # Renames existing class object
+            (self.classes[oldClassName]).name = newClassName
+            # Assigns the renamed class object to a key with the new class name
+            self.classes[newClassName] = self.classes.pop(oldClassName)
 
     ######################################################################
     
