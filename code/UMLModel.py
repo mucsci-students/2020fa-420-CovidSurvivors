@@ -27,9 +27,14 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def create_class(self):
-        print ("To be implemented")
+    # Creates class object
+    def create_class(self, name:str):
+        # Checks to see if class already exists
+        if name in self.classes:
+            print("{} already exists.".format(name))
+        else:
+            # Creates class object and assigns it to a key
+            self.classes[name] = UMLClass.UMLClass(name)
 
     ######################################################################
     
@@ -39,9 +44,14 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def delete_class(self):
-        print ("To be implemented")
+    # Deletes an existing class
+    def delete_class(self, name:str):
+        # Checks to see if specified class exists
+        if name in self.classes:
+            # Deletes key-value pair for specified class
+            del self.classes[name]
+        else:
+            print("{} does not exist.".format(name))
 
     ######################################################################
     
