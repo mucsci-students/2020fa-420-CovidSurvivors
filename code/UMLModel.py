@@ -90,10 +90,15 @@ class UMLModel:
     # **Write Documentation Here**
     # Output all attributes and methods for a given class
     def list_class(self, class_name):
-        # loop the classes by the name 
-        for i in range(len(self.classes[class_name].attributes)):
-            attribute = self.classes[class_name].attributes[i]
-            print(attribute)
+        # Ensure class exists
+        if class_name in self.classes:
+            # loop the classes by the name 
+            for i in range(len(self.classes[class_name].attributes)):
+                attribute = self.classes[class_name].attributes[i]
+                print(attribute)
+        # not valid class
+        else:
+            print (f"{class_name} is not a class")
 
     ######################################################################
 
