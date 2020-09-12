@@ -18,6 +18,10 @@ from CommandData import COMMANDS
 ##########################################################################
 # Constants 
 
+# Colors for printing variation
+PROMPT_COLOR = "\033[1;36m"
+NORMAL_COLOR = "\033[0;37m"
+
 ##########################################################################
 
 # **Write Documentation Here**
@@ -66,14 +70,13 @@ def REPL():
     while (True):
 
         # Give user a prompt 
-        print(">", end="")
+        print(PROMPT_COLOR, "UMLEditor> ", NORMAL_COLOR, sep="", end="")
 
         # Read user's input
         user_input = input()
 
         # Tokenize user's input 
         words = user_input.split()
-
 
         # If user presses enter
         if len(words) == 0:
