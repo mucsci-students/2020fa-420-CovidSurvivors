@@ -27,21 +27,41 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def create_class(self):
-        print ("To be implemented")
+    # Creates class object
+    def create_class(self, name:str):
+        # Checks to see if class already exists
+        if name in self.classes:
+            print("{} already exists.".format(name))
+        else:
+            # Creates class object and assigns it to a key
+            self.classes[name] = UMLClass.UMLClass(name)
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def rename_class(self):
-        print ("To be implemented")
+    # Renames an existing class object
+    def rename_class(self, oldClassName:str, newClassName:str):
+        # Checks if the old class name exists       
+        if oldClassName not in self.classes:
+            print("{} does not exist.".format(oldClassName))
+        # Checks if the new class name is already in use 
+        elif newClassName in self.classes:
+            print("{} already exists.".format(newClassName))
+        else:
+            # Renames existing class object
+            (self.classes[oldClassName]).name = newClassName
+            # Assigns the renamed class object to a key with the new class name
+            self.classes[newClassName] = self.classes.pop(oldClassName)
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def delete_class(self):
-        print ("To be implemented")
+    # Deletes an existing class
+    def delete_class(self, name:str):
+        # Checks to see if specified class exists
+        if name in self.classes:
+            # Deletes key-value pair for specified class
+            del self.classes[name]
+        else:
+            print("{} does not exist.".format(name))
 
     ######################################################################
     
