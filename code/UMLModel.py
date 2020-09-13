@@ -87,9 +87,8 @@ class UMLModel:
 
     ######################################################################
 
-    # **Write Documentation Here**
-    # Output all attributes and methods for a given class
-    def list_class(self, class_name):
+    # Output all attributes for a given class
+    def list_class(self, class_name:str):
         # Ensure class exists
         if class_name in self.classes:
             # loop the classes by the name 
@@ -102,7 +101,6 @@ class UMLModel:
 
     ######################################################################
 
-    # **Write Documentation Here**
     # Output all of the relationships between classes
     def list_relationships(self):
         # for each class
