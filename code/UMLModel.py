@@ -110,9 +110,9 @@ class UMLModel:
                 # determine which class is the other 
                 relationship = self.classes[class_name].relationships[j]
                 if relationship.class1.name == class_name:
-                    print (class_name,"->",relationship.class2.name)
+                    print (class_name,"---", relationship.name, "-->",relationship.class2.name)
                 else: 
-                    print (class_name,"->",relationship.class1.name)
+                    print (class_name,"---", relationship.name, "-->",relationship.class1.name)
 
 ##########################################################################
 
