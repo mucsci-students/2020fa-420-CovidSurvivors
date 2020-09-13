@@ -107,16 +107,32 @@ class UMLModel:
 
     ######################################################################
 
-    # **Write Documentation Here**
-    def list_class(self):
-        print ("To be implemented")
+    # Output all attributes for a given class
+    def list_class(self, class_name:str):
+        # Ensure class exists
+        if class_name in self.classes:
+            # loop the classes by the name 
+            for i in range(len(self.classes[class_name].attributes)):
+                attribute = self.classes[class_name].attributes[i]
+                print(attribute)
+        # not valid class
+        else:
+            print (f"{class_name} is not a class")
 
     ######################################################################
 
-    # **Write Documentation Here**
+    # Output all of the relationships between classes
     def list_relationships(self):
-        print ("To be implemented")
-
+        # for each class
+        for class_name in self.classes:
+            # for each relationship
+            for j in range(len(self.classes[class_name].relationships)):
+                # determine which class is the other 
+                relationship = self.classes[class_name].relationships[j]
+                if relationship.class1.name == class_name:
+                    print (class_name,"---", relationship.name, "-->",relationship.class2.name)
+                else: 
+                    print (class_name,"---", relationship.name, "-->",relationship.class1.name)
 
 ##########################################################################
 
