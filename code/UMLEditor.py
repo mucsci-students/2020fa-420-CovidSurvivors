@@ -76,9 +76,7 @@ def print_help_message(command = ""):
 
 # **Write Documentation Here**
 def execute(model:UMLModel, command:str, arguments:list = []):
-    if command == 'exit':
-        prompt_exit(model)
-    # print ("To be implemented")
+    print ("To be implemented")
 
 ##########################################################################
 
