@@ -4,7 +4,7 @@
 #   It also handles saving/loading the Model to/from a JSON file 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 8 2020
+# Date:     September 13 2020
 
 ##########################################################################
 # Imports
@@ -107,8 +107,15 @@ class UMLModel:
 
     ######################################################################
 
-    # Output all attributes for a given class
-    def list_class(self, class_name:str):
+    # Outputs all classes in the model 
+    def list_classes(self):
+        for class_name in self.classes:
+            print (class_name)
+
+    ######################################################################
+
+    # Outputs all attributes for a given class
+    def list_attributes(self, class_name:str):
         # Ensure class exists
         if class_name in self.classes:
             # loop the classes by the name 
@@ -121,18 +128,35 @@ class UMLModel:
 
     ######################################################################
 
-    # Output all of the relationships between classes
-    def list_relationships(self):
-        # for each class
-        for class_name in self.classes:
-            # for each relationship
-            for j in range(len(self.classes[class_name].relationships)):
-                # determine which class is the other 
-                relationship = self.classes[class_name].relationships[j]
-                if relationship.class1.name == class_name:
-                    print (class_name,"---", relationship.name, "-->",relationship.class2.name)
-                else: 
-                    print (class_name,"---", relationship.name, "-->",relationship.class1.name)
+    # Outputs all of the relationships for a given class 
+    # if class is not specified, all relationships are listed
+    def list_relationships(self, class_name:str = ""):
+        # list relationships for a specific class
+        if class_name != "":
+            # ensure class exists
+            if class_name in self.classes:
+                print (f"Relationships for {class_name}")
+                # list all relationships for the class
+                for relationship in self.classes[class_name].relationships:
+                    if relationship.class1.name == class_name:
+                        print (class_name,"---", relationship.name, "-->",relationship.class2.name)
+                    else: 
+                        print (class_name,"---", relationship.name, "-->",relationship.class1.name)
+
+            # class_name is invalid
+            else: 
+                print (f"{class_name} does not exist")
+        # list all relationships
+        else:
+            # for each class
+            for class_name in self.classes:
+                # for each relationship
+                for relationship in self.classes[class_name].relationships:
+                    # determine which class is the other 
+                    if relationship.class1.name == class_name:
+                        print (class_name,"---", relationship.name, "-->",relationship.class2.name)
+                    else: 
+                        print (class_name,"---", relationship.name, "-->",relationship.class1.name)
 
 ##########################################################################
 
