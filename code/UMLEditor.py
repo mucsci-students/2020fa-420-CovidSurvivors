@@ -24,10 +24,20 @@ NORMAL_COLOR = "\033[0;37m"
 
 ##########################################################################
 
-# **Write Documentation Here**
-def prompt_exit():
-    print ("To be implemented")
+# Exits out of UMLEditor
+def prompt_exit(model:UMLModel):
+    print ("Do you want to save current working project?")
+    userInput = input().upper()
 
+    # if user wants to save project, call the save_model function to save working project
+    if userInput == 'YES':
+        model.save_model()
+
+    if userInput == 'NO':
+        print("Goodbye!")
+
+    exit()
+    
 ##########################################################################
 
 # Prints the list of valid commands
