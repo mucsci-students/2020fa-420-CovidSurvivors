@@ -37,37 +37,37 @@ class UMLModel:
 
         # ** Testing data **
 
-        # class1 = UMLClass.UMLClass("class1")
-        # self.classes[class1.name] = class1
-        # class1.add_attribute("A")
-        # class1.add_attribute("B")
-        # class1.add_attribute("C")
-        # class2 = UMLClass.UMLClass("class2")
-        # self.classes[class2.name] = class2
-        # class2.add_attribute("D")
-        # class2.add_attribute("E")
-        # class2.add_attribute("F")
-        # class3 = UMLClass.UMLClass("class3")
-        # self.classes[class3.name] = class3
-        # class3.add_attribute("G")
-        # class4 = UMLClass.UMLClass("class4")
-        # self.classes[class4.name] = class4
-        # class4.add_attribute("N")
-        # class4.add_attribute("I")
-        # class4.add_attribute("C")
-        # class4.add_attribute("E")
+        class1 = UMLClass.UMLClass("class1")
+        self.classes[class1.name] = class1
+        class1.add_attribute("A")
+        class1.add_attribute("B")
+        class1.add_attribute("C")
+        class2 = UMLClass.UMLClass("class2")
+        self.classes[class2.name] = class2
+        class2.add_attribute("D")
+        class2.add_attribute("E")
+        class2.add_attribute("F")
+        class3 = UMLClass.UMLClass("class3")
+        self.classes[class3.name] = class3
+        class3.add_attribute("G")
+        class4 = UMLClass.UMLClass("class4")
+        self.classes[class4.name] = class4
+        class4.add_attribute("N")
+        class4.add_attribute("I")
+        class4.add_attribute("C")
+        class4.add_attribute("E")
 
-        # rel1 = UMLRelationship.UMLRelationship("r1", class2, class1)
-        # class1.add_relationship(rel1)
-        # class2.add_relationship(rel1)
+        rel1 = UMLRelationship.UMLRelationship("r1", class2, class1)
+        class1.add_relationship(rel1)
+        class2.add_relationship(rel1)
 
-        # rel2 = UMLRelationship.UMLRelationship("r2", class3, class4)
-        # class3.add_relationship(rel2)
-        # class4.add_relationship(rel2)
+        rel2 = UMLRelationship.UMLRelationship("r2", class3, class4)
+        class3.add_relationship(rel2)
+        class4.add_relationship(rel2)
 
-        # rel3 = UMLRelationship.UMLRelationship("r3", class1, class3)
-        # class1.add_relationship(rel3)
-        # class3.add_relationship(rel3)
+        rel3 = UMLRelationship.UMLRelationship("r3", class1, class3)
+        class1.add_relationship(rel3)
+        class3.add_relationship(rel3)
 
         # ** end testing data **
 
@@ -123,9 +123,32 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def delete_attribute(self):
-        print ("To be implemented")
+    # Deletes an attribute for a given class
+    def delete_attribute(self, class_name:str, attribute_name:str):
+        # Check to see if given class exists
+        # If it does...
+        if class_name in self.classes:
+            # ...for every attribute in the given class
+            for i in range(len(self.classes[class_name].attributes)):
+                # Find the attribute the user wants to delete
+                if self.classes[class_name].attributes[i] == attribute_name:
+                    # Delete the attribute
+                    self.classes[class_name].attributes.remove(attribute_name)
+
+                    # Give user verification that attribute was deleted
+                    print("{} has been deleted from {}".format(attribute_name, class_name))
+
+                    # Attribute has been found so exit loop
+                    return 
+
+                # If the given attribute was not found, and we reached the end of our
+                # list of attributes, tell the user that the attribute does not exit
+                if i == len(self.classes[class_name].attributes) - 1:
+                    print("{} is not an existing attribute in {}".format(attribute_name, class_name))
+        else:
+            # Tell the user the given class does not exist
+            print("{} does not exit.".format(class_name))
+        
 
     ######################################################################
     
@@ -304,4 +327,3 @@ class UMLModel:
                         print (class_name,"---", relationship.name, "-->",relationship.class1.name)
 
 ##########################################################################
-
