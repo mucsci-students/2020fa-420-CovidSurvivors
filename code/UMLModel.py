@@ -37,37 +37,37 @@ class UMLModel:
 
         # ** Testing data **
 
-        class1 = UMLClass.UMLClass("class1")
-        self.classes[class1.name] = class1
-        class1.add_attribute("A")
-        class1.add_attribute("B")
-        class1.add_attribute("C")
-        class2 = UMLClass.UMLClass("class2")
-        self.classes[class2.name] = class2
-        class2.add_attribute("D")
-        class2.add_attribute("E")
-        class2.add_attribute("F")
-        class3 = UMLClass.UMLClass("class3")
-        self.classes[class3.name] = class3
-        class3.add_attribute("G")
-        class4 = UMLClass.UMLClass("class4")
-        self.classes[class4.name] = class4
-        class4.add_attribute("N")
-        class4.add_attribute("I")
-        class4.add_attribute("C")
-        class4.add_attribute("E")
+        # class1 = UMLClass.UMLClass("class1")
+        # self.classes[class1.name] = class1
+        # class1.add_attribute("A")
+        # class1.add_attribute("B")
+        # class1.add_attribute("C")
+        # class2 = UMLClass.UMLClass("class2")
+        # self.classes[class2.name] = class2
+        # class2.add_attribute("D")
+        # class2.add_attribute("E")
+        # class2.add_attribute("F")
+        # class3 = UMLClass.UMLClass("class3")
+        # self.classes[class3.name] = class3
+        # class3.add_attribute("G")
+        # class4 = UMLClass.UMLClass("class4")
+        # self.classes[class4.name] = class4
+        # class4.add_attribute("N")
+        # class4.add_attribute("I")
+        # class4.add_attribute("C")
+        # class4.add_attribute("E")
 
-        rel1 = UMLRelationship.UMLRelationship("r1", class2, class1)
-        class1.add_relationship(rel1)
-        class2.add_relationship(rel1)
+        # rel1 = UMLRelationship.UMLRelationship("r1", class2, class1)
+        # class1.add_relationship(rel1)
+        # class2.add_relationship(rel1)
 
-        rel2 = UMLRelationship.UMLRelationship("r2", class3, class4)
-        class3.add_relationship(rel2)
-        class4.add_relationship(rel2)
+        # rel2 = UMLRelationship.UMLRelationship("r2", class3, class4)
+        # class3.add_relationship(rel2)
+        # class4.add_relationship(rel2)
 
-        rel3 = UMLRelationship.UMLRelationship("r3", class1, class3)
-        class1.add_relationship(rel3)
-        class3.add_relationship(rel3)
+        # rel3 = UMLRelationship.UMLRelationship("r3", class1, class3)
+        # class1.add_relationship(rel3)
+        # class3.add_relationship(rel3)
 
         # ** end testing data **
 
