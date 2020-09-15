@@ -76,8 +76,12 @@ def print_help_message(command = ""):
 
 # **Write Documentation Here**
 def execute(model:UMLModel, command:str, arguments:list = []):
-    print ("To be implemented")
-
+    if(command == "help"):
+        # if there are no arguments next to the command
+        if not arguments:
+            print_help_message()
+        else:
+            print_help_message(arguments[0])
 ##########################################################################
 
 # Runs and processes each command given by a user
