@@ -4,7 +4,7 @@
 #   the commands and their usages and descriptions 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 9 2020
+# Date:     September 13 2020
 
 
 # Data structure for storing all of the valid commands
@@ -86,9 +86,15 @@ COMMANDS = {
             "desc" : "loads the UMLModel from <filename> and uses it as the working UMLModel"
         }
     ],
-    "list_class" : [
+    "list_classes" : [
         {
-            "usage" : "list_class <class_name>",
+            "usage" : "list_classes",
+            "desc" : "prints out the name of all classes in the model"
+        }
+    ],
+    "list_attributes" : [
+        {
+            "usage" : "list_attributes <class_name>",
             "desc" : "prints all of the attributes for a given class"
         }
     ],
@@ -96,6 +102,10 @@ COMMANDS = {
         {
             "usage" : "list_relationships",
             "desc" : "prints out the classes that each class relate to"
+        },
+        {
+            "usage" : "list_relationships <class_name>",
+            "desc" : "prints out the classes that a relate to class_name"
         }
     ]
 

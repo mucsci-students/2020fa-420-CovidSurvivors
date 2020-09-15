@@ -29,6 +29,8 @@ class UMLRelationship:
         self.class1 = class1
         # The second class participating in the relationship
         self.class2 = class2
+        # Used in saving/loading to key track of unique relationships
+        self.tag = -1
 
     ######################################################################
 
