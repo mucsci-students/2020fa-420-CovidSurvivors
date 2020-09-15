@@ -4,7 +4,7 @@
 #   It also handles saving/loading the Model to/from a JSON file 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 13 2020
+# Date:     September 14 2020
 
 ##########################################################################
 # Imports
@@ -111,9 +111,14 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def create_attribute(self):
-        print ("To be implemented")
+    # **WIP**
+    def create_attribute(self, className:str, attName:str):
+        if className in self.classes:
+            #create attribute
+            print("test for create attribute")
+        else:
+            print("{} does not exist.".format(className))
+
 
     ######################################################################
     

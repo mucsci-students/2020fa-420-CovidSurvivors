@@ -114,6 +114,8 @@ def REPL():
             # Case 1: Command has arguments 
             else:
                 command, arguments = (words[0],words[1:])
+                # test for create_attribute (does not work at the moment):
+                # UMLModel.create_attribute = (self.attributes, arguments[0], arguments[1])
                 execute(model, command, arguments)
         else:
             print("Invalid command, type 'help' for information on commands")
