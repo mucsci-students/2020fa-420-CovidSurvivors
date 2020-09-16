@@ -106,6 +106,7 @@ class UMLModel:
         if name in self.classes:
             # Deletes key-value pair for specified class
             del self.classes[name]
+            print("{} has been deleted.".format(name))
         else:
             print("{} does not exist.".format(name))
 
