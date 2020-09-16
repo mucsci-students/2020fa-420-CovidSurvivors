@@ -82,6 +82,40 @@ def execute(model:UMLModel, command:str, arguments:list = []):
             print_help_message()
         else:
             print_help_message(arguments[0])
+    elif(command == "exit"):
+        prompt_exit(model)
+    # For all the commands, the corresponding functions are pulled from UMLModel.py
+    elif(command == "create_class"):
+        UMLModel.create_class(model, arguments[0])
+    elif(command == "rename_class"):
+        UMLModel.rename_class(model, arguments[0], arguments[1])
+    elif(command == "delete_class"):
+        UMLModel.delete_class(model, arguments[0])
+    #elif(command == "create_attribute")
+    #elif(command == "rename_attribute")
+    elif(command == "delete_attribute"):
+        UMLModel.delete_attribute(model, arguments[0], arguments[1])
+    #elif(command == "create_relationship")
+    #elif(command == "delete_relationship")
+    elif(command == "save_model"):
+        UMLModel.save_model(model, arguments[0])
+    elif(command == "load_model"):
+        UMLModel.load_model(model, arguments[0])
+    elif(command == "list_classes"):
+        UMLModel.list_classes(model)
+    elif(command == "list_attributes"):
+        UMLModel.list_attributes(model, arguments[0])
+    elif(command == "list_relationships"):
+        # if there are no arguments next to the command
+        if not arguments:
+            UMLModel.list_relationships(model, "")
+        else:
+            UMLModel.list_relationships(model, arguments[0])
+
+
+
+         
+
 ##########################################################################
 
 # Runs and processes each command given by a user
