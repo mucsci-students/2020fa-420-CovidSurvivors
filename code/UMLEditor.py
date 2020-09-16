@@ -26,13 +26,12 @@ NORMAL_COLOR = "\033[0;37m"
 
 # Exits out of UMLEditor
 def prompt_exit(model:UMLModel):
-    print("Do you want to save current working project? (yes/no/cancel)")
-    response = input().lower()
-
+    response = ""
     # Prompt user until we get a valid answer
     while response != "yes" and response != "no" and response != "cancel":
-        print('Invalid command. Please enter "yes", "no", or "cancel."')
-
+        print("Do you want to save current working project? (yes/no/cancel)")
+        response = input().lower()
+        
     # if user wants to save project, call the save_model function to save working project 
     if response == "yes":
         print("Please enter the filename.")
