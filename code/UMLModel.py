@@ -106,6 +106,7 @@ class UMLModel:
         if name in self.classes:
             # Deletes key-value pair for specified class
             del self.classes[name]
+            print("{} has been deleted.".format(name))
         else:
             print("{} does not exist.".format(name))
 
@@ -128,9 +129,32 @@ class UMLModel:
 
     ######################################################################
     
-    # **Write Documentation Here**
-    def delete_attribute(self):
-        print ("To be implemented")
+    # Deletes an attribute for a given class
+    def delete_attribute(self, class_name:str, attribute_name:str):
+        # Check to see if given class exists
+        # If it does...
+        if class_name in self.classes:
+            # ...for every attribute in the given class
+            for i in range(len(self.classes[class_name].attributes)):
+                # Find the attribute the user wants to delete
+                if self.classes[class_name].attributes[i] == attribute_name:
+                    # Delete the attribute
+                    self.classes[class_name].attributes.remove(attribute_name)
+
+                    # Give user verification that attribute was deleted
+                    print("{} has been deleted from {}".format(attribute_name, class_name))
+
+                    # Attribute has been found so exit loop
+                    return 
+
+                # If the given attribute was not found, and we reached the end of our
+                # list of attributes, tell the user that the attribute does not exit
+                if i == len(self.classes[class_name].attributes) - 1:
+                    print("{} is not an existing attribute in {}".format(attribute_name, class_name))
+        else:
+            # Tell the user the given class does not exist
+            print("{} does not exit.".format(class_name))
+        
 
     ######################################################################
     
@@ -141,8 +165,40 @@ class UMLModel:
     ######################################################################
     
     # **Write Documentation Here**
-    def delete_relationship(self):
-        print ("To be implemented")
+    def delete_relationship(self, class_name1:str, class_name2:str):
+        # if class_name1 exist go to elif
+        if class_name1 not in self.classes:
+            print (f"{class_name1} does not exist")
+        # if class_name1 exist go to else
+        elif class_name2 not in self.classes:
+            print (f"{class_name2} does not exist")
+        else:
+            # meaning that both classes exists and check the relationship
+            # for the first class
+            for rel in range(len(self.classes[class_name1].relationships)):
+                # The relationship we are looking at
+                relationship = self.classes[class_name1].relationships[rel]
+                # find the relationship that is associate with class1
+                if relationship.class1.name == class_name2 or relationship.class2.name == class_name2:
+                    # delete the existing relationship between the first class and the second class
+                    self.classes[class_name1].relationships.remove(relationship)
+                    # For all of the existing relationships in the second class
+                    for j in range(len(self.classes[class_name2].relationships)):
+                        # relationship we are looking at in the second class
+                        relationship2 = self.classes[class_name2].relationships[j]
+                        # Find the relationship that is associated with the first class
+                        # The first class may be stored as class1 or class2 for the relationship
+                        # if it is, find it and delete it
+                        if relationship2.class1.name == class_name1 or relationship2.class2.name == class_name1:
+                            # Delete the existing relationship between the second class and the first class
+                            self.classes[class_name2].relationships.remove(relationship2)
+                            break
+                    # The relationship has been deleted from both classes 
+                    # Give the user varification that the relationship has been deleted
+                    print(f"The relationship between {class_name1} and {class_name2} has been deleted")               
+                    break
+                if rel == len(self.classes[class_name1].relationships) - 1:
+                    print(f"There is no exisiting relationship between {class_name1} and {class_name2}")
 
     ######################################################################
     
@@ -309,4 +365,3 @@ class UMLModel:
                         print (class_name,"---", relationship.name, "-->",relationship.class1.name)
 
 ##########################################################################
-
