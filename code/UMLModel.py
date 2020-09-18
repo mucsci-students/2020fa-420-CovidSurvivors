@@ -112,14 +112,19 @@ class UMLModel:
 
     ######################################################################
     
-    # **WIP**
-    def create_attribute(self, className:str, attName:str):
-        if className in self.classes:
-            #create attribute
-            print("test for create attribute")
+    # creates an attribute for an existing class
+    def create_attribute(self, class_name:str, attribute_name:str):
+        # checks if the the class exists
+        if class_name in self.classes:
+            # checks if the class does not have an attribute with the same name inputed
+            if attribute_name not in self.classes[class_name].attributes:
+                # creates attribute in class
+                self.classes[class_name].attributes += attribute_name
+                print("attribute {} has been created in {}".format(attribute_name, class_name))
+            else:
+                print("{} already exists in {}".format(attribute_name, class_name))   
         else:
-            print("{} does not exist.".format(className))
-
+            print("{} does not exist.".format(class_name))
 
     ######################################################################
     
