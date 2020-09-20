@@ -116,7 +116,7 @@ class UMLModel:
     def create_attribute(self, class_name:str, attribute_name:str):
         # checks if the the class exists
         if class_name in self.classes:
-            # checks if the class does not have an attribute with the same name inputed
+            # checks if the class does not have an attribute with the same name inputted
             if attribute_name not in self.classes[class_name].attributes:
                 # creates attribute in class
                 self.classes[class_name].attributes += [attribute_name]
@@ -126,13 +126,39 @@ class UMLModel:
         else:
             print("{} does not exist.".format(class_name))
 
+    
+    ######################################################################
+
+    # Helper function to find an existing attribute
+    # Returns index of attribute if it is found, -1 otherwise
+    def find_attribute(self, class_name:str, attribute_name:str):
+        for i in range(len(self.classes[class_name].attributes)):
+            # Finds the attribute 
+            if self.classes[class_name].attributes[i] == attribute_name:
+                return i
+        return -1    
+
     ######################################################################
     
-    # **Write Documentation Here**
+    # renames an attribute for a given class
     def rename_attribute(self, class_name:str, old_attr_name:str, new_attr_name:str):
-        if class_name
-        return
+        # checks if the class exists
+        if class_name not in self.classes:
+            print("{} does not exist.".format(class_name))
+
+        # checks if the attribute exists in the class
+        elif old_attr_name not in self.classes[class_name].attributes:
+            print("{} does not exist in {}.".format(old_attr_name, class_name))
         
+        # checks if the inputted new attribute name already exists in the class
+        elif new_attr_name in self.classes[class_name].attributes:    
+            print("{} already exists in {}".format(new_attr_name, class_name))
+                
+        else:   
+            # renames the attribute to new_attr_name
+            index = self.find_attribute(class_name, old_attr_name)
+            self.classes[class_name].attributes[index] = new_attr_name
+            print("attribute {} has been renamed to {}".format(old_attr_name, new_attr_name))
 
     ######################################################################
     
@@ -160,8 +186,10 @@ class UMLModel:
                     print("{} is not an existing attribute in {}".format(attribute_name, class_name))
         else:
             # Tell the user the given class does not exist
-            print("{} does not exit.".format(class_name))
-        
+            print("{} does not exist.".format(class_name))
+
+       
+
 
     ######################################################################
     
