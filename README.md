@@ -22,7 +22,7 @@ $ sudo apt-get install python3
 In a terminal, navigate to the UMLEditor code folder. Type the below command to start up the Command-Line based version of the UMLEditor.
 
 ```
-python3 UMLEditor.py
+$ python3 UMLEditor.py
 ```
 
 From there you should have entered the UMLEditor and you should see a prompt like below:
@@ -34,23 +34,24 @@ A Simple Example
 ----------------
 
 You can type 'help' to see a list of commands. 
+Here is a simple example:
 
 ```
-UMLEditor> create_class myclass1
-UMLEditor> create_class myclass2
-UMLEditor> create_attribute myclass1 myattrib1
-UMLEditor> create_attribute myclass1 myattrib2
-UMLEditor> create_attribute myclass2 myattrib3
+UMLEditor> create_class myClass1
+UMLEditor> create_class myClass2
+UMLEditor> create_attribute myClass1 myAttrib1
+UMLEditor> create_attribute myClass1 myAttrib2
+UMLEditor> create_attribute myClass2 myAttrib3
 ```
 ```
 UMLEditor> list_classes
-myclass1
-myclass2
-UMLEditor> list_attributes myclass1
-myattrib1
-myattrib2
-UMLEditor> list_attributes myclass2
-myattrib3
+myClass1
+myClass2
+UMLEditor> list_attributes myClass1
+myAttrib1
+myAttrib2
+UMLEditor> list_attributes myClass2
+myAttrib3
 ```
 
 Saving and Loading Models
@@ -63,7 +64,7 @@ UMLEditor> save_model MyModel.json
 
 This will save all the data for the model to the specified JSON file and store it in the models directory. 
 
-A model can later be loaded back into the program and edited. 
+A model can later be loaded back into the program and edited. But you must remember to save it to apply the changes. 
 
 ```
 UMLEditor> load_model MyModel.json
