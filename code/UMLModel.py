@@ -167,23 +167,24 @@ class UMLModel:
         # Check to see if given class exists
         # If it does...
         if class_name in self.classes:
-            # ...for every attribute in the given class
-            for i in range(len(self.classes[class_name].attributes)):
-                # Find the attribute the user wants to delete
-                if self.classes[class_name].attributes[i] == attribute_name:
-                    # Delete the attribute
-                    self.classes[class_name].attributes.remove(attribute_name)
+            #finds position of attribute to delete
+            index = self.find_attribute(class_name, attribute_name)
+                    
+            # if the attribute was not found
+            if index != -1:
+                # Delete the attribute
+                self.classes[class_name].attributes.remove(attribute_name)
 
-                    # Give user verification that attribute was deleted
-                    print("{} has been deleted from {}".format(attribute_name, class_name))
+                # Give user verification that attribute was deleted
+                print("{} has been deleted from {}".format(attribute_name, class_name))
 
-                    # Attribute has been found so exit loop
-                    return 
+                # Attribute has been found so exit loop
+                return 
 
                 # If the given attribute was not found, and we reached the end of our
                 # list of attributes, tell the user that the attribute does not exit
-                if i == len(self.classes[class_name].attributes) - 1:
-                    print("{} is not an existing attribute in {}".format(attribute_name, class_name))
+            else: 
+                print("{} is not an existing attribute in {}".format(attribute_name, class_name))
         else:
             # Tell the user the given class does not exist
             print("{} does not exist.".format(class_name))
