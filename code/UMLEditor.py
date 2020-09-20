@@ -91,7 +91,8 @@ def execute(model:UMLModel, command:str, arguments:list = []):
     elif(command == "delete_class"):
         UMLModel.delete_class(model, arguments[0])
     #elif(command == "create_attribute")
-    #elif(command == "rename_attribute")
+    elif(command == "rename_attribute"):
+        UMLModel.rename_attribute(model, arguments[0], arguments[1], arguments[2])
     elif(command == "delete_attribute"):
         UMLModel.delete_attribute(model, arguments[0], arguments[1])
     #elif(command == "create_relationship")

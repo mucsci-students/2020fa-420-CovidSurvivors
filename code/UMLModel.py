@@ -119,8 +119,10 @@ class UMLModel:
     ######################################################################
     
     # **Write Documentation Here**
-    def rename_attribute(self):
-        print ("To be implemented")
+    def rename_attribute(self, class_name:str, old_attr_name:str, new_attr_name:str):
+        if class_name
+        return
+        
 
     ######################################################################
     
