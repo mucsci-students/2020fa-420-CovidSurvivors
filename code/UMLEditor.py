@@ -90,7 +90,8 @@ def execute(model:UMLModel, command:str, arguments:list = []):
         UMLModel.rename_class(model, arguments[0], arguments[1])
     elif(command == "delete_class"):
         UMLModel.delete_class(model, arguments[0])
-    #elif(command == "create_attribute")
+    elif(command == "create_attribute"):
+        UMLModel.create_attribute(model, arguments[0], arguments[1])
     #elif(command == "rename_attribute")
     elif(command == "delete_attribute"):
         UMLModel.delete_attribute(model, arguments[0], arguments[1])
@@ -147,6 +148,8 @@ def REPL():
             # Case 1: Command has arguments 
             else:
                 command, arguments = (words[0],words[1:])
+                # test for create_attribute (does not work at the moment):
+                # UMLModel.create_attribute = (self.attributes, arguments[0], arguments[1])
                 execute(model, command, arguments)
         else:
             print("Invalid command, type 'help' for information on commands")
