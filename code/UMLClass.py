@@ -62,6 +62,6 @@ class UMLClass:
     # @postcondition - relationship will be removed from the list of 
     #   relationships
     def remove_relationship(self, relationship):
-        self.relationship.remove(relationship)      
+        self.relationships.remove(relationship)      
 
 ##########################################################################
