@@ -114,10 +114,6 @@ def execute(model:UMLModel, command:str, arguments:list = []):
     except IndexError:
         print("Invalid arguments for {}, type 'help {}' for information on {}".format(command, command, command))              
 
-
-
-         
-
 ##########################################################################
 
 # Runs and processes each command given by a user
@@ -150,6 +146,8 @@ def REPL():
             # Case 1: Command has arguments 
             else:
                 command, arguments = (words[0],words[1:])
+                # test for create_attribute (does not work at the moment):
+                # UMLModel.create_attribute = (self.attributes, arguments[0], arguments[1])
                 execute(model, command, arguments)
         else:
             print("Invalid command, type 'help' for information on commands")
