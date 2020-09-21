@@ -64,7 +64,7 @@ COMMANDS = {
     ],
     "create_relationship" : [
         {
-            "usage" : "create_relationship <class1> <class2>",
+            "usage" : "create_relationship <relationship_name> <class1> <class2>",
             "desc" : "creates a relationship between <class1> and <class2>"
         }
     ],
