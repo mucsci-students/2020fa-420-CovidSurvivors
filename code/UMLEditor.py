@@ -86,35 +86,35 @@ def execute(model:UMLModel, command:str, arguments:list = []):
             prompt_exit(model)
         # For all the commands, the corresponding functions are pulled from UMLModel.py
         elif(command == "create_class"):
-            UMLModel.create_class(model, arguments[0])
+            model.create_class(arguments[0])
         elif(command == "rename_class"):
-            UMLModel.rename_class(model, arguments[0], arguments[1])
+            model.rename_class(arguments[0], arguments[1])
         elif(command == "delete_class"):
-            UMLModel.delete_class(model, arguments[0])
+            model.delete_class(arguments[0])
         elif(command == "create_attribute"):
-            UMLModel.create_attribute(model, arguments[0], arguments[1])
+            model.create_attribute(arguments[0], arguments[1])
         elif(command == "rename_attribute"):
-            UMLModel.rename_attribute(model, arguments[0], arguments[1], arguments[2])
+            model.rename_attribute(arguments[0], arguments[1], arguments[2])
         elif(command == "delete_attribute"):
-            UMLModel.delete_attribute(model, arguments[0], arguments[1])
+            model.delete_attribute(arguments[0], arguments[1])
         elif(command == "create_relationship"):
-            UMLModel.create_relationship(model, arguments[0], arguments[1], arguments[2])
+            model.create_relationship(arguments[0], arguments[1], arguments[2])
         elif(command == "delete_relationship"):
-            UMLModel.delete_relationship(model, arguments[0], arguments[1])
+            model.delete_relationship(arguments[0], arguments[1])
         elif(command == "save_model"):
-            UMLModel.save_model(model, arguments[0])
+            model.save_model(arguments[0])
         elif(command == "load_model"):
-            UMLModel.load_model(model, arguments[0])
+            model.load_model(arguments[0])
         elif(command == "list_classes"):
-            UMLModel.list_classes(model)
+            model.list_classes()
         elif(command == "list_attributes"):
-            UMLModel.list_attributes(model, arguments[0])
+            model.list_attributes(arguments[0])
         elif(command == "list_relationships"):
             # if there are no arguments next to the command
             if not arguments:
-                UMLModel.list_relationships(model, "")
+                model.list_relationships()
             else:
-                UMLModel.list_relationships(model, arguments[0])
+                model.list_relationships(arguments[0])
     except IndexError:
         print("Invalid arguments for {}, type 'help {}' for information on {}".format(command, command, command))              
 
