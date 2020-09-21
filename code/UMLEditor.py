@@ -97,8 +97,10 @@ def execute(model:UMLModel, command:str, arguments:list = []):
             UMLModel.rename_attribute(model, arguments[0], arguments[1], arguments[2])
         elif(command == "delete_attribute"):
             UMLModel.delete_attribute(model, arguments[0], arguments[1])
-        #elif(command == "create_relationship")
-        #elif(command == "delete_relationship")
+        elif(command == "create_relationship"):
+            UMLModel.create_relationship(model, arguments[0], arguments[1], arguments[2])
+        elif(command == "delete_relationship"):
+            UMLModel.delete_relationship(model, arguments[0], arguments[1])
         elif(command == "save_model"):
             UMLModel.save_model(model, arguments[0])
         elif(command == "load_model"):
