@@ -3,20 +3,23 @@
 #   This file holds all data that can be associated with a UML Class
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 8 2020
+# Date:     September 20 2020
 
 ##########################################################################
 # Imports 
 
 ##########################################################################
 
-# Representation of a UML Class 
 class UMLClass:
+    """A representation of a UML Class"""
 
-    # Constructs a UML Class object with a given name and initially 
-    #    has no attributes or relationships 
-    # @param name - the name for the UML Class
     def __init__(self, name:str):
+        """Constructs a UML Class object with a given name and
+        has no attributes or relationships 
+        
+        Params:
+        - name (string) - the name for the class
+        """
         # Represents this classes name
         self.name = name
         # A list of all attributes that belong to this class
@@ -26,42 +29,66 @@ class UMLClass:
 
 ##########################################################################
 
-    # Adds an attribute to this class
-    # @param attribute - an attribute name to add to the class
-    # @precondition - attribute should not already exist
-    # @postcondition - attribute will be added to the list
-    #   of attributes 
     def add_attribute(self, attribute:str):
+        """Adds an attribute to this class
+
+        Params:
+        - attribute (string) - the name for an attribute to add
+
+        Preconditions:
+        - attribute should not already exist
+
+        Postconditions:
+        - attribute will be added to the list of attributes
+        """
         self.attributes += [attribute]
 
 ##########################################################################  
     
-    # Removes an attribute to this class
-    # @param attribute - an attribute name to remove from the class
-    # @precondition - attribute should exist
-    # @postcondition - attribute will be removed from the list of 
-    #   attributes 
     def remove_attribute(self, attribute:str):
+        """Deletes an attribute from this class
+
+        Params:
+        - attribute (string) - the name for an attribute to delete
+
+        Preconditions:
+        - attribute should exist
+
+        Postconditions:
+        - attribute will be deleted from the list of attributes
+        """
         self.attributes.remove(attribute) 
 
 ##########################################################################   
 
-    # Adds a relationship object to this class
-    # @param relationship - a relationship to add to the class
-    # @precondition - relationship should not already exist
-    # @postcondition - relationship will be added to the list of 
-    #   relationships 
     def add_relationship(self, relationship):
-         self.relationships += [relationship]
+        """Adds a relationship object to this class
+
+        Params:
+        - relationship (UMLRelationship) - a relationship to add
+
+        Precondition:
+        - relationship should not already exist
+
+        Postcondition:
+        - relationship will be added to the list of relationships
+        """
+        self.relationships += [relationship]
 
 ##########################################################################
 
-    # Removes a relationship object from this class
-    # @param relationship - a relationship to remove from the class
-    # @precondition - relationship should exist
-    # @postcondition - relationship will be removed from the list of 
-    #   relationships
     def remove_relationship(self, relationship):
+        """Removes a relationship object from this class
+
+        Params:
+        - relationship (UMLRelationship) - a relationship to remove
+
+        Precondition:
+        - relationship should exist
+
+        Postcondition:
+        - relationship will be removed from the list of relationships
+        """
         self.relationships.remove(relationship)      
 
 ##########################################################################

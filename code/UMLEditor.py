@@ -5,7 +5,7 @@
 #   This file is the entry point into the UML Editor 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 8 2020
+# Date:     September 20 2020
 
 ##########################################################################
 # Imports
@@ -24,8 +24,27 @@ NORMAL_COLOR = "\033[0;37m"
 
 ##########################################################################
 
-# Exits out of UMLEditor
 def prompt_exit(model:UMLModel):
+    """Initiates the exit prompt
+
+    Prompts user if they want to save before quitting
+    
+    If user types 'yes':
+    - User is prompted for a filename to save to 
+    - Model is saved 
+    - Program exits
+    
+    If user types 'no':
+    - program exits without saving 
+
+    If user types 'cancel':
+    - model is not saved
+    - returns from this function
+
+    Params:
+    - model (UMLModel) - the model to optionally save 
+    """
+
     response = ""
     # Prompt user until we get a valid answer
     while response != "yes" and response != "no" and response != "cancel":
@@ -38,21 +57,29 @@ def prompt_exit(model:UMLModel):
         filename = input()
         model.save_model(filename)
 
-    if response == "cancel":
+    elif response == "cancel":
         return
 
-    if response == "no":
+    elif response == "no":
         print("Goodbye!")
 
     exit()
     
 ##########################################################################
-
-# Prints the list of valid commands
-# or it prints out the usage for a given command
-# NOTE if the inputted command is not a valid command
-#   then it prints out all of the possible commands  
+ 
 def print_help_message(command = ""):
+    """Prints help message
+
+    If an invalid command or no command is specified:
+    - This prints out a list of all valid commands 
+
+    Otherwise:
+    - This prints out the usage and descriptions for the given command
+
+    Params:
+    - command (string) - the command to print information about
+
+    """
 
     # if the command is valid 
     if command in COMMANDS:
@@ -73,8 +100,15 @@ def print_help_message(command = ""):
 
 ##########################################################################
 
-# **Write Documentation Here**
 def execute(model:UMLModel, command:str, arguments:list = []):
+    """Executes a given command with any arguments
+
+    Params:
+    - model (UMLModel) - the model to modify with commands
+    - command (string) - a valid command to change the state of the model
+    - arguments (list) - an optional list of arguments to supplement to 
+        the command
+    """
     try:
         if(command == "help"):
             # if there are no arguments next to the command
@@ -120,9 +154,12 @@ def execute(model:UMLModel, command:str, arguments:list = []):
 
 ##########################################################################
 
-# Runs and processes each command given by a user
 def REPL():
+    """Read Eval Print Loop for the UMLEditor program
 
+    A constantly running loop for the user to input commands to modify 
+    the state of a UMLModel object. 
+    """
     # Keep a representation of the UML model 
     model : UMLModel = UMLModel()
 

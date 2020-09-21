@@ -4,7 +4,7 @@
 #   the commands and their usages and descriptions 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 13 2020
+# Date:     September 20 2020
 
 
 # Data structure for storing all of the valid commands
