@@ -4,7 +4,7 @@
 #   It also handles saving/loading the Model to/from a JSON file 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 14 2020
+# Date:     September 20 2020
 
 ##########################################################################
 # Imports
@@ -18,63 +18,34 @@ from os import path
 ##########################################################################
 # Constants 
 
-# the directory where models are saved
+# The directory where models are saved
 MODEL_DIRECTORY = "models/"
 
 ##########################################################################
 
-
-# Representation of a UML Model
 class UMLModel:
+
+    """
+    UMLModel
+
+    A represenation of a UML Model which features classes that can have 
+    attributes and relationships to other classes. 
+
+    """
 
     ######################################################################
     
-    # Constructs an empty UML Model
     def __init__(self):
-        
+        """Constructs an empty UMLModel"""
         # Dictionary mapping class names to their class object
         self.classes = {}
 
-        # ** Testing data **
-
-        # class1 = UMLClass.UMLClass("class1")
-        # self.classes[class1.name] = class1
-        # class1.add_attribute("A")
-        # class1.add_attribute("B")
-        # class1.add_attribute("C")
-        # class2 = UMLClass.UMLClass("class2")
-        # self.classes[class2.name] = class2
-        # class2.add_attribute("D")
-        # class2.add_attribute("E")
-        # class2.add_attribute("F")
-        # class3 = UMLClass.UMLClass("class3")
-        # self.classes[class3.name] = class3
-        # class3.add_attribute("G")
-        # class4 = UMLClass.UMLClass("class4")
-        # self.classes[class4.name] = class4
-        # class4.add_attribute("N")
-        # class4.add_attribute("I")
-        # class4.add_attribute("C")
-        # class4.add_attribute("E")
-
-        # rel1 = UMLRelationship.UMLRelationship("r1", class2, class1)
-        # class1.add_relationship(rel1)
-        # class2.add_relationship(rel1)
-
-        # rel2 = UMLRelationship.UMLRelationship("r2", class3, class4)
-        # class3.add_relationship(rel2)
-        # class4.add_relationship(rel2)
-
-        # rel3 = UMLRelationship.UMLRelationship("r3", class1, class3)
-        # class1.add_relationship(rel3)
-        # class3.add_relationship(rel3)
-
-        # ** end testing data **
-
     ######################################################################
     
-    # Creates class object
     def create_class(self, name:str):
+        """Creates UML Class object and adds it to the model
+            - name (string) - the name for the new class
+        """
         # Checks to see if class already exists
         if name in self.classes:
             print("{} already exists.".format(name))
@@ -84,8 +55,11 @@ class UMLModel:
 
     ######################################################################
     
-    # Renames an existing class object
     def rename_class(self, oldClassName:str, newClassName:str):
+        """Renames an existing UML Class 
+            oldClassName (string) - name of class to rename
+            newClassName (string) - new name for the class
+        """
         # Checks if the old class name exists       
         if oldClassName not in self.classes:
             print("{} does not exist.".format(oldClassName))
@@ -100,8 +74,10 @@ class UMLModel:
 
     ######################################################################
     
-    # Deletes an existing class
     def delete_class(self, name:str):
+        """Deletes UML Class object from the model
+            - name (string) - the name of the class to delete
+        """
         # Checks to see if specified class exists
         if name in self.classes:
             # Deletes key-value pair for specified class
@@ -112,8 +88,13 @@ class UMLModel:
 
     ######################################################################
     
-    # creates an attribute for an existing class
     def create_attribute(self, class_name:str, attribute_name:str):
+        """Creates an attribute for a given class
+            - class_name (string) - the name of the class to add the 
+                attribute to 
+            - attribute_name (string) - the name for an attribute to 
+                create and add to the class
+        """
         # checks if the the class exists
         if class_name in self.classes:
             # checks if the class does not have an attribute with the same name inputted
@@ -129,9 +110,14 @@ class UMLModel:
     
     ######################################################################
 
-    # Helper function to find an existing attribute
-    # Returns index of attribute if it is found, -1 otherwise
     def find_attribute(self, class_name:str, attribute_name:str):
+        """Gives the index of a given attribute in a given class
+
+            If attribute does not exist, then -1 is returned 
+
+            - class_name (string) - the name of the class
+            - attribute_name (string) - the name of the attribute 
+        """
         for i in range(len(self.classes[class_name].attributes)):
             # Finds the attribute 
             if self.classes[class_name].attributes[i] == attribute_name:
@@ -140,8 +126,12 @@ class UMLModel:
 
     ######################################################################
     
-    # renames an attribute for a given class
     def rename_attribute(self, class_name:str, old_attr_name:str, new_attr_name:str):
+        """Renames an attribute for a given class
+            - class_name (string) - the name of the class
+            - old_attr_name (string) - the name of the attribute to rename
+            - new_attr_name (string) - the new name of the attribute
+        """
         # checks if the class exists
         if class_name not in self.classes:
             print("{} does not exist.".format(class_name))
@@ -162,8 +152,12 @@ class UMLModel:
 
     ######################################################################
     
-    # Deletes an attribute for a given class
     def delete_attribute(self, class_name:str, attribute_name:str):
+        """Deletes a given attribute for a given class
+            - class_name (string) - the name of the class
+            - attribute_name (string) - the name for an attribute to 
+                delete
+        """
         # Check to see if given class exists
         # If it does...
         if class_name in self.classes:
@@ -189,19 +183,22 @@ class UMLModel:
             # Tell the user the given class does not exist
             print("{} does not exist.".format(class_name))
 
-       
-
-
     ######################################################################
     
-    # **Write Documentation Here**
-    def create_relationship(self):
+    def create_relationship(self, class_name1:str, class_name2:str):
+        """Creates a relationship between two given classes
+            - class_name1 (string) - the name of the first class
+            - class_name2 (string) - the name of the second class
+        """
         print ("To be implemented")
 
     ######################################################################
     
-    # **Write Documentation Here**
     def delete_relationship(self, class_name1:str, class_name2:str):
+        """Deletes a relationship between two given classes
+            - class_name1 (string) - the name of the first class
+            - class_name2 (string) - the name of the second class
+        """
         # if class_name1 exist go to elif
         if class_name1 not in self.classes:
             print (f"{class_name1} does not exist")
@@ -238,11 +235,10 @@ class UMLModel:
 
     ######################################################################
     
-    # Saves the model's data to a given json filename
-    # to be recovered for a future session 
-    # @param filename - the name of a file to save the data 
     def save_model(self, filename):
-
+        """Saves the model's data to a given JSON file
+            - filename (string) - the name of a JSON file to save to
+        """
         # Ensure file does not exist
         if path.exists(MODEL_DIRECTORY+filename):
             
@@ -304,11 +300,13 @@ class UMLModel:
 
     ######################################################################
     
-    # Loads the UML model from a given JSON file
-    # NOTE - filename must be a file created by save_model
-    # otherwise errors will be thrown
     def load_model(self, filename):
+        """Loads the UML model from a given JSON file
+            - filename (string) - the name of a JSON file to load from
 
+            NOTE: File should be a JSON file generated by save_model() to
+                ensure parsing is correct 
+        """
         # Clear out previous model
         self.classes = {}
 
@@ -349,15 +347,21 @@ class UMLModel:
 
     ######################################################################
 
-    # Outputs all classes in the model 
     def list_classes(self):
+        """
+            Prints to the screen all of the classes in the current model
+        """
         for class_name in self.classes:
             print (class_name)
 
     ######################################################################
 
-    # Outputs all attributes for a given class
     def list_attributes(self, class_name:str):
+        """
+            Prints all of the attributes for a given class
+            - class_name (string) - the name of the class to print 
+                attributes
+        """
         # Ensure class exists
         if class_name in self.classes:
             # loop the classes by the name 
@@ -370,9 +374,15 @@ class UMLModel:
 
     ######################################################################
 
-    # Outputs all of the relationships for a given class 
-    # if class is not specified, all relationships are listed
     def list_relationships(self, class_name:str = ""):
+        """
+            Prints all relationships for a given class
+            
+            If no class is specified, then all relationships are printed.
+
+            - class_name (string) - the name of the class to print 
+                relationships
+        """
         # list relationships for a specific class
         if class_name != "":
             # ensure class exists
