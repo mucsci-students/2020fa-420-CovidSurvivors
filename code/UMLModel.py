@@ -185,12 +185,42 @@ class UMLModel:
 
     ######################################################################
     
-    def create_relationship(self, class_name1:str, class_name2:str):
+    def create_relationship(self, relationship_name:str, class_name1:str, class_name2:str):
         """Creates a relationship between two given classes
+            - relationship_name (string) - the name of the relationship
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
         """
-        print ("To be implemented")
+        # Ensure first class exists
+        if class_name1 not in self.classes:
+            print (f"{class_name1} does not exist")
+            return
+        # Ensure second class exists
+        if class_name2 not in self.classes:
+            print (f"{class_name2} does not exist")
+            return 
+
+        # Ensure relationship does not already exist
+        # we only have to check one of the classes
+        for relationship in self.classes[class_name1].relationships:
+            # found match
+            if ((relationship.class1.name == class_name1 and relationship.class2.name == class_name2) or
+                (relationship.class1.name == class_name2 and relationship.class2.name == class_name1)
+                ):
+                print(f"Relationship between {class_name1} and {class_name2} already exists.")
+                return
+        
+        # does not find existing relationship
+        # Ready to create and add relationship
+        class1 = self.classes[class_name1]
+        class2 = self.classes[class_name2]
+        relationship = UMLRelationship.UMLRelationship(relationship_name, class1, class2)
+        # add relationship to class objects
+        class1.relationships += [relationship]
+        class2.relationships += [relationship]
+
+        # Prompt success
+        print(f"Relationship between {class_name1} and {class_name2} was created")
 
     ######################################################################
     
