@@ -19,7 +19,7 @@
         "class3": {
             "name": "class3",
             "attributes": [
-                "G"
+                "W"
             ]
         },
         "class4": {
@@ -37,11 +37,6 @@
             "name": "r1",
             "class1": "class2",
             "class2": "class1"
-        },
-        {
-            "name": "r3",
-            "class1": "class1",
-            "class2": "class3"
         },
         {
             "name": "r2",
