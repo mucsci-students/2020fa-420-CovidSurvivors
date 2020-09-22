@@ -392,12 +392,16 @@ class UMLModel:
             - class_name (string) - the name of the class to print 
                 attributes
         """
-        # Ensure class exists
+        # ensure class exists
         if class_name in self.classes:
-            # loop the classes by the name 
-            for i in range(len(self.classes[class_name].attributes)):
-                attribute = self.classes[class_name].attributes[i]
-                print(attribute)
+            # ensure class has attributes
+            if not self.classes[class_name].attributes:
+                print("Class '" + class_name + "' has no attributes") 
+            else:
+                # loop the classes by the name
+                attribute = self.classes[class_name].attributes
+                for i in range(len(attribute)):
+                    print(attribute[i])
         # not valid class
         else:
             print (f"{class_name} is not a class")
@@ -419,11 +423,14 @@ class UMLModel:
             if class_name in self.classes:
                 print (f"Relationships for {class_name}")
                 # list all relationships for the class
-                for relationship in self.classes[class_name].relationships:
-                    if relationship.class1.name == class_name:
-                        print (class_name,"---", relationship.name, "-->",relationship.class2.name)
-                    else: 
-                        print (class_name,"---", relationship.name, "-->",relationship.class1.name)
+                if not self.classes[class_name].relationships:
+                    print("Class '" + class_name + "' has no relationships")
+                else:
+                    for relationship in self.classes[class_name].relationships:
+                        if relationship.class1.name == class_name:
+                            print (class_name,"---", relationship.name, "-->",relationship.class2.name)
+                        else: 
+                            print (class_name,"---", relationship.name, "-->",relationship.class1.name)
 
             # class_name is invalid
             else: 
