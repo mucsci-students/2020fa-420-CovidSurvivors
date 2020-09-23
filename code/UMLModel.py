@@ -100,7 +100,7 @@ class UMLModel:
             # checks if the class does not have an attribute with the same name inputted
             if attribute_name not in self.classes[class_name].attributes:
                 # creates attribute in class
-                self.classes[class_name].attributes += [attribute_name]
+                self.classes[class_name].add_attribute(attribute_name)
                 print("attribute {} has been created in {}".format(attribute_name, class_name))
             else:
                 print("{} already exists in {}".format(attribute_name, class_name))   
@@ -135,20 +135,22 @@ class UMLModel:
         # checks if the class exists
         if class_name not in self.classes:
             print("{} does not exist.".format(class_name))
+            return
 
         # checks if the attribute exists in the class
-        elif old_attr_name not in self.classes[class_name].attributes:
+        if not self.classes[class_name].has_attribute(old_attr_name):
             print("{} does not exist in {}.".format(old_attr_name, class_name))
+            return
         
         # checks if the inputted new attribute name already exists in the class
-        elif new_attr_name in self.classes[class_name].attributes:    
+        if self.classes[class_name].has_attribute(new_attr_name):  
             print("{} already exists in {}".format(new_attr_name, class_name))
+            return
                 
-        else:   
-            # renames the attribute to new_attr_name
-            index = self.find_attribute(class_name, old_attr_name)
-            self.classes[class_name].attributes[index] = new_attr_name
-            print("attribute {} has been renamed to {}".format(old_attr_name, new_attr_name))
+        # renames the attribute to new_attr_name
+        index = self.find_attribute(class_name, old_attr_name)
+        self.classes[class_name].attributes[index] = new_attr_name
+        print("attribute {} has been renamed to {}".format(old_attr_name, new_attr_name))
 
     ######################################################################
     
@@ -158,30 +160,21 @@ class UMLModel:
             - attribute_name (string) - the name for an attribute to 
                 delete
         """
-        # Check to see if given class exists
-        # If it does...
-        if class_name in self.classes:
-            #finds position of attribute to delete
-            index = self.find_attribute(class_name, attribute_name)
-                    
-            # if the attribute was not found
-            if index != -1:
-                # Delete the attribute
-                self.classes[class_name].attributes.remove(attribute_name)
+        # Ensure class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return 
 
-                # Give user verification that attribute was deleted
-                print("{} has been deleted from {}".format(attribute_name, class_name))
+        # Ensure attribute exists 
+        if not self.classes[class_name].has_attribute(attribute_name):
+            print(f"{attribute_name} is not an attribute of {class_name}")
 
-                # Attribute has been found so exit loop
-                return 
+        
+        # Delete the attribute
+        self.classes[class_name].remove_attribute(attribute_name)
 
-                # If the given attribute was not found, and we reached the end of our
-                # list of attributes, tell the user that the attribute does not exit
-            else: 
-                print("{} is not an existing attribute in {}".format(attribute_name, class_name))
-        else:
-            # Tell the user the given class does not exist
-            print("{} does not exist.".format(class_name))
+        # Give user verification that attribute was deleted
+        print("{} has been deleted from {}".format(attribute_name, class_name))
 
     ######################################################################
     
@@ -202,13 +195,9 @@ class UMLModel:
 
         # Ensure relationship does not already exist
         # we only have to check one of the classes
-        for relationship in self.classes[class_name1].relationships:
-            # found match
-            if ((relationship.class1.name == class_name1 and relationship.class2.name == class_name2) or
-                (relationship.class1.name == class_name2 and relationship.class2.name == class_name1)
-                ):
-                print(f"Relationship between {class_name1} and {class_name2} already exists.")
-                return
+        if self.classes[class_name1].has_relationship(class_name2):
+            print(f"Relationship between {class_name1} and {class_name2} already exists.")
+            return
         
         # does not find existing relationship
         # Ready to create and add relationship
@@ -216,8 +205,8 @@ class UMLModel:
         class2 = self.classes[class_name2]
         relationship = UMLRelationship.UMLRelationship(relationship_name, class1, class2)
         # add relationship to class objects
-        class1.relationships += [relationship]
-        class2.relationships += [relationship]
+        class1.add_relationship(class_name2, relationship)
+        class2.add_relationship(class_name1, relationship)
 
         # Prompt success
         print(f"Relationship between {class_name1} and {class_name2} was created")
@@ -229,39 +218,26 @@ class UMLModel:
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
         """
-        # if class_name1 exist go to elif
+        # Class1 does not exist
         if class_name1 not in self.classes:
             print (f"{class_name1} does not exist")
-        # if class_name1 exist go to else
-        elif class_name2 not in self.classes:
+            return 
+        # Class2 does not exist
+        if class_name2 not in self.classes:
             print (f"{class_name2} does not exist")
-        else:
-            # meaning that both classes exists and check the relationship
-            # for the first class
-            for rel in range(len(self.classes[class_name1].relationships)):
-                # The relationship we are looking at
-                relationship = self.classes[class_name1].relationships[rel]
-                # find the relationship that is associate with class1
-                if relationship.class1.name == class_name2 or relationship.class2.name == class_name2:
-                    # delete the existing relationship between the first class and the second class
-                    self.classes[class_name1].relationships.remove(relationship)
-                    # For all of the existing relationships in the second class
-                    for j in range(len(self.classes[class_name2].relationships)):
-                        # relationship we are looking at in the second class
-                        relationship2 = self.classes[class_name2].relationships[j]
-                        # Find the relationship that is associated with the first class
-                        # The first class may be stored as class1 or class2 for the relationship
-                        # if it is, find it and delete it
-                        if relationship2.class1.name == class_name1 or relationship2.class2.name == class_name1:
-                            # Delete the existing relationship between the second class and the first class
-                            self.classes[class_name2].relationships.remove(relationship2)
-                            break
-                    # The relationship has been deleted from both classes 
-                    # Give the user varification that the relationship has been deleted
-                    print(f"The relationship between {class_name1} and {class_name2} has been deleted")               
-                    break
-                if rel == len(self.classes[class_name1].relationships) - 1:
-                    print(f"There is no exisiting relationship between {class_name1} and {class_name2}")
+            return
+        
+        # Ensure relationship exists
+        # We only need to check one class
+        if not self.classes[class_name1].has_relationship(class_name2):
+            print (f"Relationship between {class_name1} and {class_name2} does not exist.")
+            return 
+
+        # Remove relationship from both classes 
+        self.classes[class_name1].remove_relationship(class_name2)
+        self.classes[class_name2].remove_relationship(class_name1)
+
+        print (f"Relationship between {class_name1} and {class_name2} has been deleted")
 
     ######################################################################
     
@@ -305,7 +281,7 @@ class UMLModel:
         # tagging is used to make sure relationships are duplicated
         tag = 0
         for name in self.classes:
-            for relationship in self.classes[name].relationships:
+            for key,relationship in self.classes[name].relationships.items():
                 # if relationship wasnt already tagged/visited
                 if relationship.tag == -1:
                     relationship.tag = tag
@@ -337,16 +313,17 @@ class UMLModel:
             NOTE: File should be a JSON file generated by save_model() to
                 ensure parsing is correct 
         """
-        # Clear out previous model
-        self.classes = {}
-
-        # Holds the data loaded from json
-        raw_model = {}
 
         # Ensure file exists
         if not path.exists(MODEL_DIRECTORY+filename):
             print (f"{filename} does not exist")
             return
+
+        # Clear out previous model
+        self.classes = {}
+
+        # Holds the data loaded from json
+        raw_model = {}
 
         # read json from file
         file = open(MODEL_DIRECTORY+filename, "r")
@@ -368,8 +345,8 @@ class UMLModel:
             # create relationship
             relationship = UMLRelationship.UMLRelationship(rel["name"],c1,c2)
             # add relationship to classes
-            c1.add_relationship(relationship)
-            c2.add_relationship(relationship)
+            c1.add_relationship(c2.name, relationship)
+            c2.add_relationship(c1.name, relationship)
 
         # Tell user load was successful
         print (f"Loaded model from {filename}")
@@ -426,11 +403,8 @@ class UMLModel:
                 if not self.classes[class_name].relationships:
                     print("Class '" + class_name + "' has no relationships")
                 else:
-                    for relationship in self.classes[class_name].relationships:
-                        if relationship.class1.name == class_name:
-                            print (class_name,"---", relationship.name, "-->",relationship.class2.name)
-                        else: 
-                            print (class_name,"---", relationship.name, "-->",relationship.class1.name)
+                    for other, relationship in self.classes[class_name].relationships.items():
+                        print (class_name,"---", relationship.name, "-->",relationship.get_other_class(class_name).name)
 
             # class_name is invalid
             else: 
@@ -440,11 +414,7 @@ class UMLModel:
             # for each class
             for class_name in self.classes:
                 # for each relationship
-                for relationship in self.classes[class_name].relationships:
-                    # determine which class is the other 
-                    if relationship.class1.name == class_name:
-                        print (class_name,"---", relationship.name, "-->",relationship.class2.name)
-                    else: 
-                        print (class_name,"---", relationship.name, "-->",relationship.class1.name)
+                    for other, relationship in self.classes[class_name].relationships.items():
+                        print (class_name,"---", relationship.name, "-->",relationship.get_other_class(class_name).name)
 
 ##########################################################################

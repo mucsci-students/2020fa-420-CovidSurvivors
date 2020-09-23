@@ -34,4 +34,20 @@ class UMLRelationship:
 
     ######################################################################
 
+    def get_other_class(self, class_name):
+        """Returns the opposite class of the given
+
+        Params:
+        - class_name (string) - the name of the class
+
+        Precondition:
+        - class_name must be a name of either class
+
+        """
+        if class_name == self.class1.name:
+            return self.class2
+        return self.class1 
+
+    ######################################################################
+
 ##########################################################################
