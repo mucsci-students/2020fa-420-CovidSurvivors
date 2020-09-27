@@ -169,7 +169,14 @@ def REPL():
         print(PROMPT_COLOR, "UMLEditor> ", NORMAL_COLOR, sep="", end="")
 
         # Read user's input
-        user_input = input()
+        try:
+            user_input = input()
+
+        # User entered EOF character
+        # Ctrl + D
+        except EOFError:
+            print ("\nEOF entered. Exiting")
+            exit()
 
         # Tokenize user's input 
         words = user_input.split()
