@@ -105,14 +105,14 @@ class UMLModelTest(unittest.TestCase):
 
         # Ensure attrib is renamed
         model.rename_attribute("class1", "a1", "a2")
-        self.assertTrue("a1" not in model.classes["class1"].attributes)
-        self.assertTrue("a2" in model.classes["class1"].attributes)
+        self.assertEqual(model.classes["class1"].attributes, ["a2"])
 
     ######################################################################
 
     def test_delete_attribute(self):
         model = UMLModel()
         model.create_class("class1")
+        model.create_attribute("class1","a1")
 
         # Ensure attrib is deleted
         model.delete_attribute("class1", "a1")
@@ -127,10 +127,8 @@ class UMLModelTest(unittest.TestCase):
 
         # Ensure relationship is created
         model.create_relationship("r1", "c1", "c2")
-        self.assertEqual(model.classes["c1"].relationships[0].class1.name, "c1")
-        self.assertEqual(model.classes["c1"].relationships[0].class2.name, "c2")
-        self.assertEqual(model.classes["c2"].relationships[0].class1.name, "c1")
-        self.assertEqual(model.classes["c2"].relationships[0].class2.name, "c2")
+        self.assertTrue(model.classes["c1"].has_relationship("c2"))
+        self.assertTrue(model.classes["c2"].has_relationship("c1"))
 
         # Ensure already existing rel 
         captured = io.StringIO()
