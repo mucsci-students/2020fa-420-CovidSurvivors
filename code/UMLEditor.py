@@ -175,13 +175,12 @@ def REPL():
         # User entered EOF character
         # Ctrl + D
         except EOFError:
-            print ("\nEOF entered - Exiting")
-            prompt_exit(model)
+            print ()
+            exit()
 
         # User entered Interrupt
         except KeyboardInterrupt:
-            print ("\nKeyboardInterrupt - Exiting")
-            prompt_exit(model)
+            print ("\nKeyboardInterrupt")
 
         # Tokenize user's input 
         words = user_input.split()
