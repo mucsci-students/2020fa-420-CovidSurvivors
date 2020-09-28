@@ -13,14 +13,16 @@
 from UMLModel import UMLModel
 import UMLClass
 import UMLRelationship
-from CommandData import COMMANDS
+import CommandData
 
 ##########################################################################
 # Constants 
 
 # Colors for printing variation
-PROMPT_COLOR = "\033[1;36m"
-NORMAL_COLOR = "\033[0;37m"
+PROMPT_COLOR  = "\033[1;36m"
+ERROR_COLOR   = "\033[91m"
+SUCCESS_COLOR = "\033[92m"
+NORMAL_COLOR  = "\033[0;37m"
 
 ##########################################################################
 
@@ -67,7 +69,7 @@ def prompt_exit(model:UMLModel):
     
 ##########################################################################
  
-def print_help_message(command = ""):
+def print_help_message(model:UMLModel, command = ""):
     """Prints help message
 
     If an invalid command or no command is specified:
@@ -80,23 +82,26 @@ def print_help_message(command = ""):
     - command (string) - the command to print information about
 
     """
-
     # if the command is valid 
-    if command in COMMANDS:
+    if command in CommandData.COMMANDS:
         # find usage info for command
-        usages = COMMANDS[command]
+        usages = CommandData.COMMANDS[command]
         # for each usage
         for usage in usages: 
             # print the usage
             print (usage["usage"])
             print ("\t", usage["desc"])
     # Print all commands
-    else:
+    elif command == "":
         print ("Type help <command_name> to see the usage of a command")
         # for each command
-        for command in COMMANDS:
+        for command in CommandData.COMMANDS:
             # print out the command
             print ("\t", command)
+    # Invalid command
+    else:
+        print (f"{ERROR_COLOR}ArgumentError:{NORMAL_COLOR}",
+                f"'{command}' is not a valid command")
 
 ##########################################################################
 
@@ -109,48 +114,21 @@ def execute(model:UMLModel, command:str, arguments:list = []):
     - arguments (list) - an optional list of arguments to supplement to 
         the command
     """
-    try:
-        if(command == "help"):
-            # if there are no arguments next to the command
-            if not arguments:
-                print_help_message()
-            else:
-                print_help_message(arguments[0])
-        elif(command == "exit"):
-            prompt_exit(model)
-        # For all the commands, the corresponding functions are pulled from UMLModel.py
-        elif(command == "create_class"):
-            model.create_class(arguments[0])
-        elif(command == "rename_class"):
-            model.rename_class(arguments[0], arguments[1])
-        elif(command == "delete_class"):
-            model.delete_class(arguments[0])
-        elif(command == "create_attribute"):
-            model.create_attribute(arguments[0], arguments[1])
-        elif(command == "rename_attribute"):
-            model.rename_attribute(arguments[0], arguments[1], arguments[2])
-        elif(command == "delete_attribute"):
-            model.delete_attribute(arguments[0], arguments[1])
-        elif(command == "create_relationship"):
-            model.create_relationship(arguments[0], arguments[1], arguments[2])
-        elif(command == "delete_relationship"):
-            model.delete_relationship(arguments[0], arguments[1])
-        elif(command == "save_model"):
-            model.save_model(arguments[0])
-        elif(command == "load_model"):
-            model.load_model(arguments[0])
-        elif(command == "list_classes"):
-            model.list_classes()
-        elif(command == "list_attributes"):
-            model.list_attributes(arguments[0])
-        elif(command == "list_relationships"):
-            # if there are no arguments next to the command
-            if not arguments:
-                model.list_relationships()
-            else:
-                model.list_relationships(arguments[0])
-    except IndexError:
-        print("Invalid arguments for {}, type 'help {}' for information on {}".format(command, command, command))              
+    # Ensure command is valid
+    if command in CommandData.COMMANDS:
+        # figure out which usage
+        for usage in CommandData.COMMANDS[command]:
+            # if the usage matches the num of args
+            if usage["num_arguments"] == len(arguments):
+                # call command with proper usage and arguments
+                # *arguments uses the list as the parameters 
+                usage["function"](model, *arguments)
+                return True
+        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
+            f"Incorrect usage of {command}\ntype 'help {command}' to see valid usages of {command}")
+    else: 
+        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
+            f"'{command}' is not a valid command\ntype 'help' for a list of valid commands")
 
 ##########################################################################
 
@@ -178,20 +156,8 @@ def REPL():
         if len(words) == 0:
             continue
                     
-        if words[0] in COMMANDS:
-            # Case 0: Command has no arguments 
-            if len(words) == 1:
-                command = words[0]
-                execute(model, command)
-
-            # Case 1: Command has arguments 
-            else:
-                command, arguments = (words[0],words[1:])
-                # test for create_attribute (does not work at the moment):
-                # UMLModel.create_attribute = (self.attributes, arguments[0], arguments[1])
-                execute(model, command, arguments)
-        else:
-            print("Invalid command, type 'help' for information on commands")
+        # This handles the case where there are no arguments
+        execute(model, words[0], words[1:])
 
 ##########################################################################
 
