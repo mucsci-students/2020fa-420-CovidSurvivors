@@ -200,13 +200,9 @@ class UMLModel:
             return
         
         # does not find existing relationship
-        # Ready to create and add relationship
-        class1 = self.classes[class_name1]
-        class2 = self.classes[class_name2]
-        relationship = UMLRelationship.UMLRelationship(relationship_name, class1, class2)
-        # add relationship to class objects
-        class1.add_relationship(class_name2, relationship)
-        class2.add_relationship(class_name1, relationship)
+        # Ready to add relationship
+        self.classes[class_name1].add_relationship(relationship_name, class_name2)
+        self.classes[class_name2].add_relationship(relationship_name, class_name1)
 
         # Prompt success
         print(f"Relationship between {class_name1} and {class_name2} was created")
@@ -263,36 +259,12 @@ class UMLModel:
 
 
         # object to hold JSON compatible version of the data
-        raw_model = {
-            "classes" : {},
-            "relationships" : []
-        }
+        raw_model = {}
 
         # grab class data 
         for name in self.classes:
-
             # raw data for the class
-            raw_model["classes"][name] = {
-                "name" : name,
-                "attributes" : self.classes[name].attributes
-            }
-
-        # save relationship data
-        # tagging is used to make sure relationships are duplicated
-        tag = 0
-        for name in self.classes:
-            for key,relationship in self.classes[name].relationships.items():
-                # if relationship wasnt already tagged/visited
-                if relationship.tag == -1:
-                    relationship.tag = tag
-                    tag += 1
-
-                    # create and add relationship to raw_model
-                    raw_model["relationships"] += [{
-                        "name"   : relationship.name,
-                        "class1" : relationship.class1.name,
-                        "class2" : relationship.class2.name
-                    }]
+            raw_model[name] = self.classes[name].get_raw_data()
 
         # Convert data into a JSON object
         json_data = json.dumps(raw_model, indent=4)
@@ -319,9 +291,6 @@ class UMLModel:
             print (f"{filename} does not exist")
             return
 
-        # Clear out previous model
-        self.classes = {}
-
         # Holds the data loaded from json
         raw_model = {}
 
@@ -330,23 +299,8 @@ class UMLModel:
         raw_model = json.loads(file.read())
         file.close()
 
-        # load classes (with attributes) into model
-        for class_name in raw_model["classes"]:
-            self.classes[class_name] = UMLClass.UMLClass(class_name)
-
-            # add attributes to the class
-            self.classes[class_name].attributes = raw_model["classes"][class_name]["attributes"]
-
-        # load relationships 
-        for rel in raw_model["relationships"]:
-            # grab classes that are in the relationship
-            c1 = self.classes[rel["class1"]]
-            c2 = self.classes[rel["class2"]]
-            # create relationship
-            relationship = UMLRelationship.UMLRelationship(rel["name"],c1,c2)
-            # add relationship to classes
-            c1.add_relationship(c2.name, relationship)
-            c2.add_relationship(c1.name, relationship)
+        # Clear out previous model
+        self.classes = {class_name : UMLClass.UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
 
         # Tell user load was successful
         print (f"Loaded model from {filename}")
@@ -403,8 +357,8 @@ class UMLModel:
                 if not self.classes[class_name].relationships:
                     print("Class '" + class_name + "' has no relationships")
                 else:
-                    for other, relationship in self.classes[class_name].relationships.items():
-                        print (class_name,"---", relationship.name, "-->",relationship.get_other_class(class_name).name)
+                    for relationship in self.classes[class_name].relationships:
+                        print (class_name,"---", relationship.name, "-->",relationship.other)
 
             # class_name is invalid
             else: 
@@ -414,7 +368,7 @@ class UMLModel:
             # for each class
             for class_name in self.classes:
                 # for each relationship
-                    for other, relationship in self.classes[class_name].relationships.items():
-                        print (class_name,"---", relationship.name, "-->",relationship.get_other_class(class_name).name)
+                    for relationship in self.classes[class_name].relationships:
+                        print (class_name,"---", relationship.name, "-->",relationship.other)
 
 ##########################################################################

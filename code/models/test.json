@@ -1,47 +1,63 @@
 {
-    "classes": {
-        "class1": {
-            "name": "class1",
-            "attributes": [
-                "A",
-                "B",
-                "C"
-            ]
-        },
-        "class2": {
-            "name": "class2",
-            "attributes": [
-                "D",
-                "E",
-                "F"
-            ]
-        },
-        "class3": {
-            "name": "class3",
-            "attributes": [
-                "W"
-            ]
-        },
-        "class4": {
-            "name": "class4",
-            "attributes": [
-                "N",
-                "I",
-                "C",
-                "E"
-            ]
-        }
+    "c1": {
+        "name": "c1",
+        "attributes": [
+            "a1"
+        ],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "f1",
+                "type": "t1"
+            },
+            {
+                "visibility": "private",
+                "name": "f2",
+                "type": "t2"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "m1",
+                "type": "t3"
+            },
+            {
+                "visibility": "public",
+                "name": "m2",
+                "type": "t4"
+            }
+        ],
+        "relationships": [
+            {
+                "name": "inheritance",
+                "other": "c2"
+            }
+        ]
     },
-    "relationships": [
-        {
-            "name": "r1",
-            "class1": "class2",
-            "class2": "class1"
-        },
-        {
-            "name": "r2",
-            "class1": "class3",
-            "class2": "class4"
-        }
-    ]
+    "c2": {
+        "name": "c2",
+        "attributes": [
+            "a2"
+        ],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "m1",
+                "type": "t3"
+            },
+            {
+                "visibility": "public",
+                "name": "m2",
+                "type": "t4"
+            }
+        ],
+        "relationships": [
+            {
+                "name": "inheritance",
+                "other": "c1"
+            }
+        ]
+    }
 }
