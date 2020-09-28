@@ -9,22 +9,24 @@
 ##########################################################################
 # Imports 
 
+from RelationshipType import RelationshipType
+
 ##########################################################################
 
 # Represents the relationship between 2 UML Classes 
 class UMLRelationship:
 
-    def __init__(self, name:str, class1, class2):
-        """Constructs a UML Relationship object with the given name 
+    def __init__(self, _type:RelationshipType, class1, class2):
+        """Constructs a UML Relationship object with the given type 
         and given UMLClasses
 
         Params:
-        - name (string) - the name for the relationship
+        - _type (RelationshipType) - the type of the relationship
         - class1 (UMLClass) - the first class in the relationship
         - class2 (UMLClass) - the second class in the relationship
         """
-        # Represents the Relationships name
-        self.name = name
+        # Represents the Relationship's type
+        self.type = _type
         # The first class participating in the relationship
         self.class1 = class1
         # The second class participating in the relationship
@@ -34,7 +36,7 @@ class UMLRelationship:
 
     ######################################################################
 
-    def get_other_class(self, class_name):
+    def get_other_class(self, class_name:str):
         """Returns the opposite class of the given
 
         Params:

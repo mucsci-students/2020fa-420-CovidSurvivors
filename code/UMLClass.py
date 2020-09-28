@@ -10,7 +10,7 @@
 
 from UMLField import UMLField
 from UMLMethod import UMLMethod
-from Visibility import Visibility
+import Visibility
 
 ##########################################################################
 
