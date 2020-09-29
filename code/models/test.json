@@ -30,7 +30,7 @@
         ],
         "relationships": [
             {
-                "name": "inheritance",
+                "type": "inheritance",
                 "other": "c2"
             }
         ]
@@ -55,7 +55,7 @@
         ],
         "relationships": [
             {
-                "name": "inheritance",
+                "type": "inheritance",
                 "other": "c1"
             }
         ]

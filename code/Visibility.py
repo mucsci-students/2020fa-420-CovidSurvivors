@@ -14,7 +14,7 @@ class Visibility(Enum):
     PUBLIC = 1
     PRIVATE = 2
     INVALID = 3
-        
+    
 ##########################################################################
 
 def from_string(vis:str):
@@ -24,7 +24,7 @@ def from_string(vis:str):
 
     if 'private' -> Visibility.PRIVATE
 
-    otherwise -1 is returned
+    otherwise Visibility.INVALID is returned
     """
     if vis == "public":
         return Visibility.PUBLIC
@@ -34,10 +34,12 @@ def from_string(vis:str):
 
 ##########################################################################
 
-def to_string(vis):
+def to_string(vis:Visibility):
     """Converts a visibility type enum to a string representation"""
     if vis == Visibility.PUBLIC:
         return "public"
     elif vis == Visibility.PRIVATE:
         return "private"
     return "invalid"
+
+##########################################################################

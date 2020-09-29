@@ -11,6 +11,7 @@
 
 import UMLClass
 import UMLRelationship
+import RelationshipType
 import json
 import os.path
 from os import path
@@ -178,34 +179,40 @@ class UMLModel:
 
     ######################################################################
     
-    def create_relationship(self, relationship_name:str, class_name1:str, class_name2:str):
+    def create_relationship(self, relationship_type:str, class_name1:str, class_name2:str):
         """Creates a relationship between two given classes
-            - relationship_name (string) - the name of the relationship
+            - relationship_type (string) - the type of the relationship.
+            Should be one of {inheritance, generalization, composition, aggregation}
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
         """
+        # Ensure relationship type is valid 
+        rtype = RelationshipType.from_string(relationship_type)
+        if rtype == RelationshipType.RelationshipType.INVALID:
+            print (f"'{relationship_type}' is not a valid relationship type.")
+            return 
         # Ensure first class exists
         if class_name1 not in self.classes:
-            print (f"{class_name1} does not exist")
+            print (f"'{class_name1}' does not exist")
             return
         # Ensure second class exists
         if class_name2 not in self.classes:
-            print (f"{class_name2} does not exist")
+            print (f"'{class_name2}' does not exist")
             return 
 
         # Ensure relationship does not already exist
         # we only have to check one of the classes
         if self.classes[class_name1].has_relationship(class_name2):
-            print(f"Relationship between {class_name1} and {class_name2} already exists.")
+            print(f"Relationship between '{class_name1}' and '{class_name2}' already exists.")
             return
         
         # does not find existing relationship
         # Ready to add relationship
-        self.classes[class_name1].add_relationship(relationship_name, class_name2)
-        self.classes[class_name2].add_relationship(relationship_name, class_name1)
+        self.classes[class_name1].add_relationship(rtype, class_name2)
+        self.classes[class_name2].add_relationship(rtype, class_name1)
 
         # Prompt success
-        print(f"Relationship between {class_name1} and {class_name2} was created")
+        print(f"Relationship between '{class_name1}' and '{class_name2}' was created")
 
     ######################################################################
     
@@ -358,7 +365,7 @@ class UMLModel:
                     print("Class '" + class_name + "' has no relationships")
                 else:
                     for relationship in self.classes[class_name].relationships:
-                        print (class_name,"---", relationship.name, "-->",relationship.other)
+                        print (class_name,"---", relationship.type, "-->",relationship.other)
 
             # class_name is invalid
             else: 
@@ -369,6 +376,6 @@ class UMLModel:
             for class_name in self.classes:
                 # for each relationship
                     for relationship in self.classes[class_name].relationships:
-                        print (class_name,"---", relationship.name, "-->",relationship.other)
+                        print (class_name,"---", relationship.type, "-->",relationship.other)
 
 ##########################################################################
