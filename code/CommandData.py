@@ -85,7 +85,7 @@ COMMANDS = {
     "create_relationship" : [
         {
             "usage" : "create_relationship <relationship_type> <class1> <class2>",
-            "desc" : "creates a relationship between <class1> and <class2>",
+            "desc" : "creates a relationship between <class1> and <class2>\n<relationship_type> should be one of \n{inheritance, generalization, aggregation, composition}",
             "function" : UMLModel.UMLModel.create_relationship,
             "num_arguments" : 3
         }
