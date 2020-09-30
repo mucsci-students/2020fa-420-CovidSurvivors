@@ -13,33 +13,19 @@ from enum import Enum
 class Visibility(Enum):
     PUBLIC = 1
     PRIVATE = 2
-    INVALID = 3
-    
-##########################################################################
+        
+    @staticmethod
+    def from_string(vis:str):
+        """Converts a string to a Visibility type
 
-def from_string(vis:str):
-    """Converts a string to a Visibility type
+        if 'public' -> Visibility.PUBLIC
 
-    if 'public' -> Visibility.PUBLIC
+        if 'private' -> Visibility.PRIVATE
 
-    if 'private' -> Visibility.PRIVATE
-
-    otherwise Visibility.INVALID is returned
-    """
-    if vis == "public":
-        return Visibility.PUBLIC
-    elif vis == "private":
-        return Visibility.PRIVATE
-    return Visibility.INVALID
-
-##########################################################################
-
-def to_string(vis:Visibility):
-    """Converts a visibility type enum to a string representation"""
-    if vis == Visibility.PUBLIC:
-        return "public"
-    elif vis == Visibility.PRIVATE:
-        return "private"
-    return "invalid"
-
-##########################################################################
+        otherwise -1 is returned
+        """
+        if vis == "public":
+            return Visibility.PUBLIC
+        elif vis == "private":
+            return Visibility.PRIVATE
+        return -1

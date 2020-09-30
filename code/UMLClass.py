@@ -10,8 +10,7 @@
 
 from UMLField import UMLField
 from UMLMethod import UMLMethod
-import Visibility
-import UMLRelationship
+from Visibility import Visibility
 
 ##########################################################################
 
@@ -32,51 +31,10 @@ class UMLClass:
         self.fields = []
         # A list of all methods
         self.methods = []
-        # A list of all relationships for this class
-        self.relationships = []
-
-##########################################################################
-
-    def add_attribute(self, attribute:str):
-        """Adds an attribute to this class
-
-        Params:
-        - attribute (string) - the name for an attribute to add
-
-        Preconditions:
-        - attribute should not already exist
-
-        Postconditions:
-        - attribute will be added to the list of attributes
-        """
-        self.attributes += [attribute]
-
-##########################################################################  
-    
-    def remove_attribute(self, attribute:str):
-        """Deletes an attribute from this class
-
-        Params:
-        - attribute (string) - the name for an attribute to delete
-
-        Preconditions:
-        - attribute should exist
-
-        Postconditions:
-        - attribute will be deleted from the list of attributes
-        """
-        self.attributes.remove(attribute) 
-
-##########################################################################  
-    
-    def has_attribute(self, attribute:str):
-        """Returns true if attribute exists, false otherwise
-
-        Params:
-        - attribute (string) - the name for an attribute
-
-        """
-        return attribute in self.attributes
+        # A dictionary of all relationships that this class 
+        # participates in 
+        # map of (other_class_name, relationship)
+        self.relationships = {}
 
 ##########################################################################
 
@@ -242,7 +200,7 @@ class UMLClass:
 
 ##########################################################################   
 
-    def add_relationship(self, rtype, other_class_name):
+    def add_relationship(self, other_class_name, relationship):
         """Adds a relationship object to this class
 
         NOTE:
@@ -250,8 +208,8 @@ class UMLClass:
         only adds the relationship to this class.
 
         Params:
-        - rtype (RelationshipType) - the type for the relationship
         - other_class_name (string) - the name of the class to relate to
+        - relationship (UMLRelationship) - a relationship to add
 
         Precondition:
         - relationship should not already exist
@@ -259,7 +217,7 @@ class UMLClass:
         Postcondition:
         - relationship will be added to the dictionary of relationships
         """
-        self.relationships += [UMLRelationship.UMLRelationship(rtype, other_class_name)]
+        self.relationships[other_class_name] = relationship
 
 ##########################################################################
 
@@ -279,7 +237,8 @@ class UMLClass:
         Postcondition:
         - relationship will be removed from the dictionary of relationships
         """
-        del self.relationships[self.relationship_index(other_class_name)]
+        del self.relationships[other_class_name]  
+
 
 ##########################################################################   
 
@@ -290,59 +249,6 @@ class UMLClass:
         Params:
         - other_class_name (string) - the name of the other class 
         """
-        return self.relationship_index(other_class_name) != -1
-
-##########################################################################
-
-    def relationship_index(self,class_name:str):
-        """Returns the index for a given relationship in the list
-        
-        - class_name (string) - the name of the class that this relates to
-
-        returns -1 if not present 
-        """
-        for i in range(len(self.relationships)):
-            if self.relationships[i].other == class_name:
-                return i
-        return -1
-
-##########################################################################
-
-    def get_raw_data(self):
-        """Returns a JSON convertible form of the data"""
-        data = {}
-
-        # add classname
-        data["name"] = self.name
-        
-        # add attributes
-        data["attributes"] = [attribute for attribute in self.attributes]
-
-        # add fields
-        data["fields"] = [fields.get_raw_data() for fields in self.fields]
-
-        # add methods
-        data["methods"] = [methods.get_raw_data() for methods in self.methods]
-
-        # add relationships
-        data["relationships"] = [rel.get_raw_data() for rel in self.relationships]
-
-        return data
-
-##########################################################################
-
-    @staticmethod
-    def from_raw_data(data):
-        """Constructs a UMLClass object from a set of data
-        
-        Precondition:
-        - The data should have been generated by a call to get_raw_data()
-        """
-        c = UMLClass(data["name"])
-        c.attributes = data["attributes"]
-        c.fields = [UMLField.from_raw_data(field) for field in data["fields"]]
-        c.methods = [UMLMethod.from_raw_data(method) for method in data["methods"]]
-        c.relationships = [UMLRelationship.UMLRelationship.from_raw_data(relationship) for relationship in data["relationships"]]
-        return c
+        return other_class_name in self.relationships
 
 ##########################################################################

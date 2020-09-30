@@ -13,6 +13,7 @@
 from UMLModel import UMLModel
 import UMLClass
 import UMLRelationship
+import Visibility
 import CommandData
 
 ##########################################################################
@@ -147,18 +148,7 @@ def REPL():
         print(PROMPT_COLOR, "UMLEditor> ", NORMAL_COLOR, sep="", end="")
 
         # Read user's input
-        try:
-            user_input = input()
-
-        # User entered EOF character
-        # Ctrl + D
-        except EOFError:
-            print ()
-            exit()
-
-        # User entered Interrupt
-        except KeyboardInterrupt:
-            print ("\nKeyboardInterrupt")
+        user_input = input()
 
         # Tokenize user's input 
         words = user_input.split()

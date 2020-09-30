@@ -58,34 +58,34 @@ COMMANDS = {
             "num_arguments" : 1
         }
     ],
-    "create_attribute" : [
+    "create_field" : [
         {
-            "usage" : "create_attribute <class_name> <attrib_name>",
-            "desc" : "creates an attribute named <class_name> and adds it to the given class",
-            "function" : UMLModel.UMLModel.create_attribute,
-            "num_arguments" : 2
+            "usage" : "create_field <class_name> <visibility> <field_name> <field_type>",
+            "desc" : "creates a field named <field_name> of type <field_type> and adds it to the given class \n <visibility> determines if the field is public/private,",
+            "function" : UMLModel.UMLModel.create_field,
+            "num_arguments" : 4
         }
     ],
-    "rename_attribute" : [
+    "rename_field" : [
         {
-            "usage" : "rename_attribute <class_name> <old_name> <new_name>",
+            "usage" : "rename_field <class_name> <old_name> <new_name>",
             "desc" : "renames the attribute <old_name> with the <new_name> for the class, <class_name>",
-            "function" : UMLModel.UMLModel.rename_attribute,
+            "function" : UMLModel.UMLModel.rename_field,
             "num_arguments" : 3
         }
     ],
-    "delete_attribute" : [
+    "delete_field" : [
         {
             "usage" : "delete_attribute <class_name> <attrib_name>",
             "desc" : "deletes the attribute from the class",
-            "function" : UMLModel.UMLModel.create_class,
+            "function" : UMLModel.UMLModel.delete_field,
             "num_arguments" : 2
         }
     ],
     "create_relationship" : [
         {
             "usage" : "create_relationship <relationship_type> <class1> <class2>",
-            "desc" : "creates a relationship between <class1> and <class2>\n<relationship_type> should be one of \n{inheritance, generalization, aggregation, composition}",
+            "desc" : "creates a relationship between <class1> and <class2>",
             "function" : UMLModel.UMLModel.create_relationship,
             "num_arguments" : 3
         }
@@ -122,11 +122,11 @@ COMMANDS = {
             "num_arguments" : 0
         }
     ],
-    "list_attributes" : [
+    "list_fields" : [
         {
-            "usage" : "list_attributes <class_name>",
-            "desc" : "prints all of the attributes for a given class",
-            "function" : UMLModel.UMLModel.list_attributes,
+            "usage" : "list_fields <class_name>",
+            "desc" : "prints all of the fields for a given class",
+            "function" : UMLModel.UMLModel.list_fields,
             "num_arguments" : 1
         }
     ],
