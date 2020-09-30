@@ -11,6 +11,7 @@
 
 import UMLClass
 import UMLRelationship
+import Visibility
 import RelationshipType
 import json
 import os.path
@@ -312,6 +313,38 @@ class UMLModel:
         # Tell user load was successful
         print (f"Loaded model from {filename}")
 
+
+    ######################################################################
+
+    def list_class(self, class_name):
+        """
+            Prints all information about a given class
+        """
+        # Ensure class exists
+        if class_name not in self.classes:
+            print (f"'{class_name}' is not a valid class")
+        
+        print (f"Class: {class_name}")
+
+        print ("=== Fields ======================")
+
+        # Print fields 
+        for field in self.classes[class_name].fields:
+            print (f"{Visibility.to_string(field.visibility)} {field.name}: {field.type}")
+
+        print ("=== Methods =====================")
+
+        # Print methods 
+        for method in self.classes[class_name].methods:
+            print (f"{Visibility.to_string(method.visibility)} {method.name}(): {method.type}")
+
+        print ("=== Relationships ===============")
+
+        # Print relationships 
+        for relationship in self.classes[class_name].relationships:
+            print (RelationshipType.to_string(relationship.type), relationship.other)
+
+        print ("=================================")
 
     ######################################################################
 

@@ -122,6 +122,14 @@ COMMANDS = {
             "num_arguments" : 0
         }
     ],
+    "list_class" : [
+        {
+            "usage" : "list_class <class_name>",
+            "desc" : "prints out all components of the <class_name>",
+            "function" : UMLModel.UMLModel.list_class,
+            "num_arguments" : 1
+        }
+    ],
     "list_attributes" : [
         {
             "usage" : "list_attributes <class_name>",
