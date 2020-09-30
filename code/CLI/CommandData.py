@@ -58,27 +58,27 @@ COMMANDS = {
             "num_arguments" : 1
         }
     ],
-    "create_attribute" : [
+    "create_field" : [
         {
-            "usage" : "create_attribute <class_name> <attrib_name>",
-            "desc" : "creates an attribute named <class_name> and adds it to the given class",
-            "function" : UMLModel.create_attribute,
-            "num_arguments" : 2
+            "usage" : "create_field <class_name> <visibility> <field_type> <field_name>",
+            "desc" : "creates a field named <field_name> of type <field_type> and adds it to the given class \n <visibility> determines if the field is public/private,",
+            "function" : UMLModel.create_field,
+            "num_arguments" : 4
         }
     ],
-    "rename_attribute" : [
+    "rename_field" : [
         {
-            "usage" : "rename_attribute <class_name> <old_name> <new_name>",
+            "usage" : "rename_field <class_name> <old_name> <new_name>",
             "desc" : "renames the attribute <old_name> with the <new_name> for the class, <class_name>",
-            "function" : UMLModel.rename_attribute,
+            "function" : UMLModel.rename_field,
             "num_arguments" : 3
         }
     ],
-    "delete_attribute" : [
+    "delete_field" : [
         {
-            "usage" : "delete_attribute <class_name> <attrib_name>",
-            "desc" : "deletes the attribute from the class",
-            "function" : UMLModel.create_class,
+            "usage" : "delete_field <class_name> <attrib_name>",
+            "desc" : "deletes the field from the class",
+            "function" : UMLModel.delete_field,
             "num_arguments" : 2
         }
     ],
@@ -130,11 +130,11 @@ COMMANDS = {
             "num_arguments" : 1
         }
     ],
-    "list_attributes" : [
+    "list_fields" : [
         {
-            "usage" : "list_attributes <class_name>",
-            "desc" : "prints all of the attributes for a given class",
-            "function" : UMLModel.list_attributes,
+            "usage" : "list_fields <class_name>",
+            "desc" : "prints all of the fields for a given class",
+            "function" : UMLModel.list_fields,
             "num_arguments" : 1
         }
     ],
