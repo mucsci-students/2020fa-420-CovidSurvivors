@@ -93,7 +93,6 @@ class UMLModel:
             print("{} does not exist.".format(name))
 
     ######################################################################
-    
     def create_field(self, class_name:str, visibility:str, field_type:str, field_name:str):
         """Creates an attribute for a given class
             - class_name (string) - the name of the class
@@ -115,12 +114,13 @@ class UMLModel:
         else:
             print("{} does not exist".format(class_name))
 
-    
     ######################################################################
-
+    
     def find_field(self, class_name:str, field_name:str):
         """Gives the index of a given field in a given class
+
             If field does not exist, then -1 is returned 
+
             - class_name (string) - the name of the class
             - field_name (string) - the name of the field 
         """
@@ -131,7 +131,6 @@ class UMLModel:
         return -1     
 
     ######################################################################
-    
     def rename_field(self, class_name:str, old_field_name:str, new_field_name:str):
         """Renames a field for a given class
             - class_name (string) - the name of the class
@@ -159,7 +158,6 @@ class UMLModel:
         print("field {} has been renamed to {}".format(old_field_name, new_field_name))
 
     ######################################################################
-    
     def delete_field(self, class_name:str, field_name:str):
         """Deletes a given field for a given class
             - class_name (string) - the name of the class

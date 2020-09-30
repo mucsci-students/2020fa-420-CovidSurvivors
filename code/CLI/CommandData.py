@@ -62,7 +62,11 @@ COMMANDS = {
         {
             "usage" : "create_field <class_name> <visibility> <field_type> <field_name>",
             "desc" : "creates a field named <field_name> of type <field_type> and adds it to the given class \n <visibility> determines if the field is public/private,",
+<<<<<<< HEAD:code/CLI/CommandData.py
             "function" : UMLModel.create_field,
+=======
+            "function" : UMLModel.UMLModel.create_field,
+>>>>>>> 4f46444ab152968ae76419f714c6c563d113f5d7:code/CommandData.py
             "num_arguments" : 4
         }
     ],
@@ -70,15 +74,25 @@ COMMANDS = {
         {
             "usage" : "rename_field <class_name> <old_name> <new_name>",
             "desc" : "renames the attribute <old_name> with the <new_name> for the class, <class_name>",
+<<<<<<< HEAD:code/CLI/CommandData.py
             "function" : UMLModel.rename_field,
+=======
+            "function" : UMLModel.UMLModel.rename_field,
+>>>>>>> 4f46444ab152968ae76419f714c6c563d113f5d7:code/CommandData.py
             "num_arguments" : 3
         }
     ],
     "delete_field" : [
         {
+<<<<<<< HEAD:code/CLI/CommandData.py
             "usage" : "delete_field <class_name> <attrib_name>",
             "desc" : "deletes the field from the class",
             "function" : UMLModel.delete_field,
+=======
+            "usage" : "delete_attribute <class_name> <attrib_name>",
+            "desc" : "deletes the attribute from the class",
+            "function" : UMLModel.UMLModel.delete_field,
+>>>>>>> 4f46444ab152968ae76419f714c6c563d113f5d7:code/CommandData.py
             "num_arguments" : 2
         }
     ],
@@ -134,7 +148,11 @@ COMMANDS = {
         {
             "usage" : "list_fields <class_name>",
             "desc" : "prints all of the fields for a given class",
+<<<<<<< HEAD:code/CLI/CommandData.py
             "function" : UMLModel.list_fields,
+=======
+            "function" : UMLModel.UMLModel.list_fields,
+>>>>>>> 4f46444ab152968ae76419f714c6c563d113f5d7:code/CommandData.py
             "num_arguments" : 1
         }
     ],
