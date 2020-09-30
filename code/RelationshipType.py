@@ -36,3 +36,23 @@ def from_string(t:str):
     if t == "aggregation":
         return RelationshipType.AGGREGATION
     return RelationshipType.INVALID 
+
+##########################################################################
+
+def to_string(rtype:RelationshipType):
+    """Converts a relationship type to a string
+    if RelationshipType.INHERITANCE -> 'inheritance'
+    if RelationshipType.GENERALIZATION -> 'generalization'
+    if RelationshipType.COMPOSITION -> 'composition'
+    if RelationshipType.AGGREGATION -> 'aggregation'
+    otherwise "" is returned
+    """
+    if rtype == RelationshipType.INHERITANCE:
+        return "inheritance"
+    if rtype == RelationshipType.GENERALIZATION:
+        return "generalization"
+    if rtype == RelationshipType.COMPOSITION:
+        return "composition"
+    if rtype == RelationshipType.AGGREGATION:
+        return "aggregation"
+    return ""
