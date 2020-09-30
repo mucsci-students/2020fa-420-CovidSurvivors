@@ -89,94 +89,95 @@ class UMLModel:
             print("{} does not exist.".format(name))
 
     ######################################################################
-    
-    def create_attribute(self, class_name:str, attribute_name:str):
+
+    def create_field(self, class_name:str, visibility:str, field_type:str, field_name:str):
         """Creates an attribute for a given class
-            - class_name (string) - the name of the class to add the 
-                attribute to 
-            - attribute_name (string) - the name for an attribute to 
-                create and add to the class
+            - class_name (string) - the name of the class
+            - visibility (string) - the visibility of a field, should be 
+            'public' or 'private'
+            - field_name (string) - the name of the field
+            - field_type (string) - the type of the field
         """
         # checks if the the class exists
         if class_name in self.classes:
-            # checks if the class does not have an attribute with the same name inputted
-            if attribute_name not in self.classes[class_name].attributes:
-                # creates attribute in class
-                self.classes[class_name].add_attribute(attribute_name)
-                print("attribute {} has been created in {}".format(attribute_name, class_name))
+            # checks if the class does not have an field with the same name inputted
+            if field_name not in self.classes[class_name].fields:
+                # creates field in class
+                self.classes[class_name].add_field(visibility, field_name, field_type)
+                print("field {} of type {} has been created in {}, it is a {} field"
+                .format(field_name, field_type, class_name, visibility))
             else:
-                print("{} already exists in {}".format(attribute_name, class_name))   
+                print("field {} already exists in {}".format(field_name, class_name))   
         else:
-            print("{} does not exist.".format(class_name))
+            print("{} does not exist".format(class_name))
 
-    
     ######################################################################
+    
+    def find_field(self, class_name:str, field_name:str):
+        """Gives the index of a given field in a given class
 
-    def find_attribute(self, class_name:str, attribute_name:str):
-        """Gives the index of a given attribute in a given class
-
-            If attribute does not exist, then -1 is returned 
+            If field does not exist, then -1 is returned 
 
             - class_name (string) - the name of the class
-            - attribute_name (string) - the name of the attribute 
+            - field_name (string) - the name of the field 
         """
-        for i in range(len(self.classes[class_name].attributes)):
+        for i in range(len(self.classes[class_name].fields)):
             # Finds the attribute 
-            if self.classes[class_name].attributes[i] == attribute_name:
+            if self.classes[class_name].fields[i] == field_name:
                 return i
         return -1    
 
     ######################################################################
-    
-    def rename_attribute(self, class_name:str, old_attr_name:str, new_attr_name:str):
-        """Renames an attribute for a given class
+
+    def rename_field(self, class_name:str, old_field_name:str, new_field_name:str):
+        """Renames a field for a given class
             - class_name (string) - the name of the class
-            - old_attr_name (string) - the name of the attribute to rename
-            - new_attr_name (string) - the new name of the attribute
+            - old_field_name (string) - the name of the field to rename
+            - new_field_name (string) - the new name of the field
         """
         # checks if the class exists
         if class_name not in self.classes:
             print("{} does not exist.".format(class_name))
             return
 
-        # checks if the attribute exists in the class
-        if not self.classes[class_name].has_attribute(old_attr_name):
-            print("{} does not exist in {}.".format(old_attr_name, class_name))
+        # checks if the field exists in the class
+        if not self.classes[class_name].has_field(old_field_name):
+            print("field {} does not exist in {}".format(old_field_name, class_name))
             return
         
-        # checks if the inputted new attribute name already exists in the class
-        if self.classes[class_name].has_attribute(new_attr_name):  
-            print("{} already exists in {}".format(new_attr_name, class_name))
+        # checks if the inputted new field name already exists in the class
+        if self.classes[class_name].has_field(new_field_name):  
+            print("field {} already exists in {}".format(new_field_name, class_name))
             return
                 
-        # renames the attribute to new_attr_name
-        index = self.find_attribute(class_name, old_attr_name)
-        self.classes[class_name].attributes[index] = new_attr_name
-        print("attribute {} has been renamed to {}".format(old_attr_name, new_attr_name))
+        # renames the field to new_field_name
+        index = self.find_field(class_name, old_field_name)
+        self.classes[class_name].fields[index].name = new_field_name
+        print("field {} has been renamed to {}".format(old_field_name, new_field_name))
 
     ######################################################################
-    
-    def delete_attribute(self, class_name:str, attribute_name:str):
-        """Deletes a given attribute for a given class
+
+    def delete_field(self, class_name:str, field_name:str):
+        """Deletes a given field for a given class
             - class_name (string) - the name of the class
-            - attribute_name (string) - the name for an attribute to 
+            - field_name (string) - the name for a field to 
                 delete
         """
-        # Ensure class exists
+        # checks if the class exists
         if class_name not in self.classes:
             print(f"{class_name} does not exist")
             return 
 
-        # Ensure attribute exists 
-        if not self.classes[class_name].has_attribute(attribute_name):
-            print(f"{attribute_name} is not an attribute of {class_name}")
+        # checks if the field exists in the class
+        if not self.classes[class_name].has_field(field_name):
+            print(f"{field_name} is not a field of {class_name}")
 
         
-        # Delete the attribute
-        self.classes[class_name].remove_attribute(attribute_name)
+        # deletes the field
+        self.classes[class_name].remove_field(field_name)
 
-        # Give user verification that attribute was deleted
-        print("{} has been deleted from {}".format(attribute_name, class_name))
+        # gives user verification that the field was deleted
+        print("field {} has been deleted from {}".format(field_name, class_name))
 
     ######################################################################
     
@@ -357,22 +358,22 @@ class UMLModel:
 
     ######################################################################
 
-    def list_attributes(self, class_name:str):
+    def list_fields(self, class_name:str):
         """
-            Prints all of the attributes for a given class
+            Prints all of the fields for a given class
             - class_name (string) - the name of the class to print 
-                attributes
+                fields
         """
         # ensure class exists
         if class_name in self.classes:
-            # ensure class has attributes
-            if not self.classes[class_name].attributes:
-                print("Class '" + class_name + "' has no attributes") 
+            # ensure class has fields
+            if not self.classes[class_name].fields:
+                print("Class '" + class_name + "' has no fields") 
             else:
                 # loop the classes by the name
-                attribute = self.classes[class_name].attributes
-                for i in range(len(attribute)):
-                    print(attribute[i])
+                field = self.classes[class_name].fields
+                for i in range(len(field)):
+                    print(field[i].name)
         # not valid class
         else:
             print (f"{class_name} is not a class")
