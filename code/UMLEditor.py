@@ -11,6 +11,7 @@
 # Imports
 
 from UMLModel import UMLModel
+from Visibility import Visibility
 import UMLClass
 import UMLRelationship
 import CommandData
