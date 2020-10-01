@@ -9,19 +9,23 @@
 ##########################################################################
 # Imports
 
-import UMLClass
-import UMLRelationship
-import Visibility
-import RelationshipType
 import json
+import sys
 import os.path
 from os import path
+
+# Relative imports
+from .UMLClass import UMLClass
+from .UMLRelationship import UMLRelationship
+from .Visibility import Visibility
+from .RelationshipType import RelationshipType
+
 
 ##########################################################################
 # Constants 
 
 # The directory where models are saved
-MODEL_DIRECTORY = "models/"
+MODEL_DIRECTORY = os.path.join(os.getcwd(), "data/")
 
 ##########################################################################
 
@@ -53,7 +57,7 @@ class UMLModel:
             print("{} already exists.".format(name))
         else:
             # Creates class object and assigns it to a key
-            self.classes[name] = UMLClass.UMLClass(name)
+            self.classes[name] = UMLClass(name)
 
     ######################################################################
     
@@ -89,7 +93,6 @@ class UMLModel:
             print("{} does not exist.".format(name))
 
     ######################################################################
-
     def create_field(self, class_name:str, visibility:str, field_type:str, field_name:str):
         """Creates an attribute for a given class
             - class_name (string) - the name of the class
@@ -125,10 +128,9 @@ class UMLModel:
             # Finds the attribute 
             if self.classes[class_name].fields[i] == field_name:
                 return i
-        return -1    
+        return -1     
 
     ######################################################################
-
     def rename_field(self, class_name:str, old_field_name:str, new_field_name:str):
         """Renames a field for a given class
             - class_name (string) - the name of the class
@@ -156,7 +158,6 @@ class UMLModel:
         print("field {} has been renamed to {}".format(old_field_name, new_field_name))
 
     ######################################################################
-
     def delete_field(self, class_name:str, field_name:str):
         """Deletes a given field for a given class
             - class_name (string) - the name of the class
@@ -190,7 +191,7 @@ class UMLModel:
         """
         # Ensure relationship type is valid 
         rtype = RelationshipType.from_string(relationship_type)
-        if rtype == RelationshipType.RelationshipType.INVALID:
+        if rtype == RelationshipType.INVALID:
             print (f"'{relationship_type}' is not a valid relationship type.")
             return 
         # Ensure first class exists
@@ -309,7 +310,7 @@ class UMLModel:
         file.close()
 
         # Clear out previous model
-        self.classes = {class_name : UMLClass.UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
+        self.classes = {class_name : UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
 
         # Tell user load was successful
         print (f"Loaded model from {filename}")

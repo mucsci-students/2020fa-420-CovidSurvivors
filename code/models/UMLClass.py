@@ -8,10 +8,12 @@
 ##########################################################################
 # Imports 
 
-from UMLField import UMLField
-from UMLMethod import UMLMethod
-import Visibility
-import UMLRelationship
+# Relative imports
+from .UMLField import UMLField
+from .UMLMethod import UMLMethod
+from .UMLRelationship import UMLRelationship
+from .Visibility import Visibility
+from .RelationshipType import RelationshipType
 
 ##########################################################################
 
@@ -259,7 +261,7 @@ class UMLClass:
         Postcondition:
         - relationship will be added to the dictionary of relationships
         """
-        self.relationships += [UMLRelationship.UMLRelationship(rtype, other_class_name)]
+        self.relationships += [UMLRelationship(rtype, other_class_name)]
 
 ##########################################################################
 
@@ -342,7 +344,7 @@ class UMLClass:
         c.attributes = data["attributes"]
         c.fields = [UMLField.from_raw_data(field) for field in data["fields"]]
         c.methods = [UMLMethod.from_raw_data(method) for method in data["methods"]]
-        c.relationships = [UMLRelationship.UMLRelationship.from_raw_data(relationship) for relationship in data["relationships"]]
+        c.relationships = [UMLRelationship.from_raw_data(relationship) for relationship in data["relationships"]]
         return c
 
 ##########################################################################
