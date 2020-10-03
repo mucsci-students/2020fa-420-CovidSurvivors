@@ -4,15 +4,19 @@
 #   This acts as our main Controller of the GUI
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     October 2 2020
+# Date:     October 3 2020
 ##########################################################################
 # Imports
 
 import os
+import sys
 from flask import Flask, render_template, send_file, request
 from flask import url_for, redirect
-from models.UMLModel import UMLModel
 from werkzeug.utils import secure_filename
+
+# Include parent directory
+sys.path.append(os.getcwd())
+from models.UMLModel import UMLModel
 
 ##########################################################################
 # Globals 
@@ -100,4 +104,10 @@ def upload():
 ##########################################################################
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # run in debug mode
+    # server will automatically close and restart if 
+    # a source code file was changed 
+    if len(sys.argv) == 2 and sys.argv[1] == '-debug':
+        app.run(debug=True)
+    else:
+        app.run(debug=False)
