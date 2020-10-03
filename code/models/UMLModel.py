@@ -179,9 +179,7 @@ class UMLModel:
 
         # gives user verification that the field was deleted
         print("field {} has been deleted from {}".format(field_name, class_name))
-
-    ######################################################################
-    
+    ###########################################################################
     def create_relationship(self, relationship_type:str, class_name1:str, class_name2:str):
         """Creates a relationship between two given classes
             - relationship_type (string) - the type of the relationship.
@@ -414,3 +412,23 @@ class UMLModel:
                         print (class_name,"---", relationship.type, "-->",relationship.other)
 
 ##########################################################################
+    def create_method(self, class_name:str, visibility:str, method_type:str, method_name:str):
+        """Creates a method for a given class
+            - class_name (string) - the name of the class
+            - visibility (string) - the visibility of a method, should be 'public' or 'private'
+            - method_name (string) - the name of the method
+            - method_type (string) - the type of the method
+        """
+         # checks if the the class exists
+        if class_name in self.classes:
+            # checks if the class does not have an method with the same name inputted
+            if  method_name not in self.classes[class_name].methods:
+                # creates method in class
+                self.classes[class_name].add_method(visibility, method_name, method_type)
+                print("method {} of type {} has been created in {}, it is a {} method"
+                .format(method_name, method_type, class_name, visibility))
+            else:
+                print("method {} already exists in {}".format(method_name, class_name))     
+        else:
+            print("{} does not exist".format(class_name))
+######################################################################################            
