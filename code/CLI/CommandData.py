@@ -151,6 +151,14 @@ COMMANDS = {
             "function" : UMLModel.list_relationships,
             "num_arguments" : 1
         }
+    ],
+      "create_method" : [
+        {
+            "usage" : "create_method <class_name> <visibility> <method_type> <method_name>",
+            "desc" : "creates a method named <method_name> of type <method_type> and adds it to the given class \n <visibility> determines if the method is public/private,",
+            "function" : UMLModel.create_method,
+            "num_arguments" : 4
+        }
     ]
 
 }
