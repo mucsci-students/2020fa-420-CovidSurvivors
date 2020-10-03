@@ -9,6 +9,7 @@
 # Imports
 
 import sys
+import webbrowser
 from WebApp import main as GUIMain
 from CLI import CLIEditor
 
@@ -21,6 +22,8 @@ def main():
     if len(sys.argv) == 1:
         print ("Running WebApp version of UMLEditor")
         print ("Open a browser and go to 'localhost:5000' to see the local webpage")
+        # Opens up GUI application in user's default browser
+        webbrowser.open('http://localhost:5000/')
         GUIMain.app.run(debug=True)
     # Argument is -cli for command line interface
     elif len(sys.argv) == 2 and sys.argv[1] == '-cli':
