@@ -179,9 +179,7 @@ class UMLModel:
 
         # gives user verification that the field was deleted
         print("field {} has been deleted from {}".format(field_name, class_name))
-
-    ######################################################################
-    
+    ###########################################################################
     def create_relationship(self, relationship_type:str, class_name1:str, class_name2:str):
         """Creates a relationship between two given classes
             - relationship_type (string) - the type of the relationship.
@@ -413,8 +411,8 @@ class UMLModel:
                     for relationship in self.classes[class_name].relationships:
                         print (class_name,"---", relationship.type, "-->",relationship.other)
 
-    ###################################################################################### 
-   
+##########################################################################
+
     def create_method(self, class_name:str, visibility:str, method_type:str, method_name:str):
         """Creates a method for a given class
             - class_name (string) - the name of the class
@@ -462,4 +460,6 @@ class UMLModel:
         # renames the old_method_name to new_method_name
         self.classes[class_name].rename_method(old_method_name, new_method_name)
         print("method => {} has been renamed to  => {}".format(old_method_name, new_method_name))
+
+######################################################################################            
 

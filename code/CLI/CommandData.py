@@ -167,5 +167,5 @@ COMMANDS = {
             "function" : UMLModel.rename_method,
             "num_arguments" : 3
         }
-    ] 
+    ]
 }
