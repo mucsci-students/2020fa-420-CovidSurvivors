@@ -152,13 +152,20 @@ COMMANDS = {
             "num_arguments" : 1
         }
     ],
-      "create_method" : [
+     "create_method" : [
         {
             "usage" : "create_method <class_name> <visibility> <method_type> <method_name>",
             "desc" : "creates a method named <method_name> of type <method_type> and adds it to the given class \n <visibility> determines if the method is public/private,",
             "function" : UMLModel.create_method,
             "num_arguments" : 4
         }
+    ],
+    "rename_method" : [
+        {
+            "usage" : "rename_method <class_name> <old_name> <new_name>",
+            "desc" : "renames the method <old_name> with the <new_name> for the class, <class_name>",
+            "function" : UMLModel.rename_method,
+            "num_arguments" : 3
+        }
     ]
-
 }
