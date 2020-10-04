@@ -167,5 +167,13 @@ COMMANDS = {
             "function" : UMLModel.rename_method,
             "num_arguments" : 3
         }
+    ],
+    "delete_method" : [
+        {
+            "usage" : "delete_method <class_name> <method_name>",
+            "desc" : "deletes the method from the class",
+            "function" : UMLModel.delete_method,
+            "num_arguments" : 2
+        }
     ]
 }
