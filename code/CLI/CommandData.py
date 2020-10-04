@@ -151,6 +151,14 @@ COMMANDS = {
             "function" : UMLModel.list_relationships,
             "num_arguments" : 1
         }
+    ],
+    "rename_method" : [
+        {
+            "usage" : "rename_method <class_name> <old_name> <new_name>",
+            "desc" : "renames the method <old_name> with the <new_name> for the class, <class_name>",
+            "function" : UMLModel.rename_method,
+            "num_arguments" : 3
+        }
     ]
 
 }

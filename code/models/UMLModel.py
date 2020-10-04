@@ -413,4 +413,33 @@ class UMLModel:
                     for relationship in self.classes[class_name].relationships:
                         print (class_name,"---", relationship.type, "-->",relationship.other)
 
-##########################################################################
+    ###################################################################################### 
+    
+    def rename_method(self, class_name:str, old_method_name:str, new_method_name:str):
+        """
+            - Renames a method for a given class
+            - class_name (string) - the name of the class
+            - old_method_name (string) - the name of the method to rename
+             - new_method_name (string) - the new name of the method
+        """
+        # checks if the class exists
+        if class_name not in self.classes:
+            print (f"{class_name} does not exist")
+            return
+
+        # checks if the method exists in the class
+        if not self.classes[class_name].has_method(old_method_name):
+            print("method => {} does not exist in {}".format(old_method_name, class_name))
+            return
+
+        # checks if the inputted new method name already exists in the class
+        if self.classes[class_name].has_method(new_method_name):  
+            print("method => {} already exists in {}".format(new_method_name, class_name))
+            return
+                
+        # renames the old_method_name to new_method_name
+        index = self.classes[class_name].method_index(old_method_name)
+        self.classes[class_name].methods[index].name = new_method_name
+        print("method => {} has been renamed to  => {}".format(old_method_name, new_method_name))
+        
+    ###########################################################################
