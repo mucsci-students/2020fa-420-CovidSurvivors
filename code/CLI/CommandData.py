@@ -175,5 +175,13 @@ COMMANDS = {
             "function" : UMLModel.delete_method,
             "num_arguments" : 2
         }
+    ],
+    "list_methods" : [
+        {
+            "usage" : "list_methods <class_name>",
+            "desc" : "prints all of the methods for a given class",
+            "function" : UMLModel.list_methods,
+            "num_arguments" : 1
+        }
     ]
 }
