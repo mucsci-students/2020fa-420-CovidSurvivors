@@ -485,5 +485,27 @@ class UMLModel:
         # gives user verification that the method was deleted
         print("method => {} has been deleted from => {}".format(method_name, class_name))
 
-    ######################################################################                    
-
+    ######################################################################
+    
+    def list_methods(self, class_name:str):
+        """
+            Prints all of the methods for a given class
+            
+            - class_name (string) - the name of the class to print 
+            methods
+        """
+        # ensure class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return
+        
+        # ensure class has methods
+        if not self.classes[class_name].methods:
+            print (f"{class_name} has not methods") 
+            return
+        
+        # loop the classes by the name
+        for method in self.classes[class_name].methods:
+            print (class_name,"---", method.type, "-->", method.name)
+            
+    ######################################################################
