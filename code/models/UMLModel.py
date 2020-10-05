@@ -460,6 +460,30 @@ class UMLModel:
         # renames the old_method_name to new_method_name
         self.classes[class_name].rename_method(old_method_name, new_method_name)
         print("method => {} has been renamed to  => {}".format(old_method_name, new_method_name))
+    
+    ############################################################
+    
+    def delete_method(self, class_name:str, method_name:str):
+        """Deletes a given method for a given class
+            - class_name (string) - the name of the class
+            - method_name (string) - the name for a method to 
+                delete
+        """
+        # checks if the class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return 
 
-######################################################################################            
+        # checks if the method exists in the class
+        if not self.classes[class_name].has_method(method_name):
+            print(f"{method_name} does not exist in {class_name}")
+            return
+
+        # deletes the method
+        self.classes[class_name].remove_method(method_name)
+
+        # gives user verification that the method was deleted
+        print("method => {} has been deleted from => {}".format(method_name, class_name))
+
+    ######################################################################                    
 
