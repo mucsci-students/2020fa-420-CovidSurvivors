@@ -486,11 +486,25 @@ class UMLModel:
         print("method => {} has been deleted from => {}".format(method_name, class_name))
 
     ######################################################################
+    # wip
+    #todo: edit command data to include function
     def move_up_method(self, class_name:str, method_name:str):
         # ensure class exists
         if class_name not in self.classes:
             print(f"{class_name} does not exist")
             return
+
+        # checks if the method exists in the class
+        if not self.classes[class_name].has_method(method_name):
+            print(f"{method_name} does not exist in {class_name}")
+            return
+
+        # checks if method is already at front of list
+        # wip (crashes on this check)
+        if method_name == self.classes[class_name].methods[0]:
+            print(f"{method_name} can not move up any further")
+            return
+
 
 
     ######################################################################
@@ -509,7 +523,7 @@ class UMLModel:
         
         # ensure class has methods
         if not self.classes[class_name].methods:
-            print (f"{class_name} has not methods") 
+            print (f"{class_name} has no methods") 
             return
         
         # loop the classes by the name
