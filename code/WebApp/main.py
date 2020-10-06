@@ -36,7 +36,22 @@ TEMP_FILENAME = '__temp__.json'
 # The home page
 @app.route("/")
 def dashboard():
-    return render_template("dashboard.html")
+    # Get current model
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+
+    # Setup template data
+    data = []
+
+    # add each class
+    i = 0 
+    for class_name in model.classes:
+        data += [model.classes[class_name].get_raw_data()]
+        # Give class its index 
+        data[i]["index"] = i+1
+        i += 1
+
+    return render_template("dashboard.html", data=data)
 
 ##########################################################################
 

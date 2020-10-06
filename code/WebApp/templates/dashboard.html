@@ -25,9 +25,15 @@
         {% include "createClassModal.html" %}
         <!--create class modal END -->
 
-        <!-- class card START -->
-        {% include "card.html" %}
-        <!-- class card END -->
+        <!-- display START -->
+        <div class="flex-container" id="display">
+        <!-- Generate each class card -->
+        {% for class in data %}
+            <!-- Generate card -->
+            {% include "card.html" %}
+        {% endfor %}    
+        </div>
+        <!-- display END -->
 
         <!-- edit class modal START -->
         {% include "editClassModal.html" %}
