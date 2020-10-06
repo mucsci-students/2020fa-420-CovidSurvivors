@@ -1,8 +1,5 @@
 // Runs automatically when web application is executed
 $(function() {
-    draggable("#cardId1");
-    draggable("#cardId2");
-    draggable("#cardId3");
 });
 
 // Gives class card the ability to be draggable and calculates
