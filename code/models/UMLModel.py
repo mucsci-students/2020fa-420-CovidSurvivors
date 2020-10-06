@@ -486,6 +486,14 @@ class UMLModel:
         print("method => {} has been deleted from => {}".format(method_name, class_name))
 
     ######################################################################
+    def move_up_method(self, class_name:str, method_name:str):
+        # ensure class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return
+
+
+    ######################################################################
     
     def list_methods(self, class_name:str):
         """
@@ -509,3 +517,5 @@ class UMLModel:
             print (class_name,"---", method.type, "-->", method.name)
             
     ######################################################################
+
+    
