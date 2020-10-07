@@ -1,3 +1,8 @@
+// Saves the name to the delete class modal  
+function setDeleteData(classname) {
+    $('#deleteClassInputName').val(classname);
+} 
+ 
 // Runs automatically when web application is executed
 $(function() {
     classCardBtns();

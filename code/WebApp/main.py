@@ -55,6 +55,28 @@ def dashboard():
 
 ##########################################################################
 
+# Server for deleting a class
+@app.route("/deleteClass", methods=["GET", "POST"])
+def deleteClass():
+
+    # Ensure method was post
+    if request.method != 'POST':
+        return "<h1 style='text-align:center'>Nothing sent in POST</h1>"
+
+    # Print out what is being deleted
+    print (f"Deleting class '{request.form.get('class_name')}' from the model")
+    
+    # Delete from the model
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+    model.delete_class(request.form.get('class_name'))
+    model.save_model(WORKING_FILENAME)
+
+    # Redirect user back to main page 
+    return redirect(url_for('dashboard'))
+
+##########################################################################
+
 # Server for Downloading models 
 @app.route("/download")
 def download():

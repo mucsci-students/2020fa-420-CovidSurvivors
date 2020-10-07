@@ -250,20 +250,21 @@ class UMLModel:
             - filename (string) - the name of a JSON file to save to
         """
         # Ensure file does not exist
-        if path.exists(MODEL_DIRECTORY+filename):
+        # ** Commented out because it stalls the server **
+        # if path.exists(MODEL_DIRECTORY+filename):
             
-            # continuously prompt until valid answer
-            answer = ""
-            while answer != "yes" and answer != "no":# prompt user if they want to overwrite or not
-                print (f"File {filename} already exists.")
-                print ("Do you want to overwrite the file? (yes/no)")
+        #     # continuously prompt until valid answer
+        #     answer = ""
+        #     while answer != "yes" and answer != "no":# prompt user if they want to overwrite or not
+        #         print (f"File {filename} already exists.")
+        #         print ("Do you want to overwrite the file? (yes/no)")
 
-                answer = input().lower()
+        #         answer = input().lower()
 
-            if answer == "no":
-                # cancel saving 
-                print ("Saving FAILED")
-                return
+        #     if answer == "no":
+        #         # cancel saving 
+        #         print ("Saving FAILED")
+        #         return
 
 
         # object to hold JSON compatible version of the data
