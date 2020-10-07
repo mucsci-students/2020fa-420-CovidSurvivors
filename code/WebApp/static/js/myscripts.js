@@ -2,6 +2,12 @@
 $(function() {
 });
 
+// Saves the name to the delete class modal  
+function setDeleteData(classname) {
+    $('#deleteClassInputName').val(classname);
+}
+
+
 // Gives class card the ability to be draggable and calculates
 // the coordinates of the class card on the display  
 function draggable(card) {
