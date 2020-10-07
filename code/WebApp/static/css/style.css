@@ -109,6 +109,9 @@ body {
     font-weight: bold;
 }
 
+.addRelationship, .addTextArea {
+    margin-bottom: 5px;
+}
 
 /* DISPLAY AREA */
 .flex-container {

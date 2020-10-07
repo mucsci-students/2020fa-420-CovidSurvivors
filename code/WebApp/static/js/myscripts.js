@@ -45,7 +45,7 @@ function classCardBtns() {
 
         // Preload the information we got into the appropriate textboxes of the edit Class Modal
 
-        alert("Edit class: #" + getId);
+        //alert("Edit class: #" + getId);
 
     });
 }
@@ -55,21 +55,19 @@ function createEditClassModalBtns() {
     // Adds a new text area for the fields and methods 
     $('.form-group').on('click', '.addTextArea', function() {
         var table = $(this).closest('.form-group');
-        table.append('<div class="input-group mb-3"><input type="text" class="form-control" placeholder="Enter name" aria-label="Name of field" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary addTextArea" type="button"><i class="fas fa-plus"></i></button><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div>');
+        table.append('<div class="input-group mb-3"><input type="text" class="form-control" placeholder="Enter name" aria-label="Name of field" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div>');
     });
 
     // Adds a new drop menu and text area for the relationships
     $('.form-group').on('click', '.addRelationship', function() {
         var table = $(this).closest('.form-group');
-        table.append('<div class="input-group mb-3"><select id="inputRelationship" class="form-control"><option selected>Choose type...</option><option>Aggregation</option><option>Composition</option><option>Inheritance</option><option>Generalization</option></select><input type="text" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary addRelationship" type="button"><i class="fas fa-plus"></i></button><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div></div>');
+        table.append('<div class="input-group mb-3"><select id="inputRelationship" class="form-control"><option selected>Choose type...</option><option>Aggregation</option><option>Composition</option><option>Inheritance</option><option>Generalization</option></select><input type="text" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div></div>');
     });
 
     // Deletes the fields, methods, or relationship text area that is no longer needed
     $('.form-group').on('click', '.delTextArea', function() {
         var table = $(this).closest('.form-group');
-        if (table.find('input:text').length > 1) {
-            $(this).closest('.input-group').remove();
-        }
+        $(this).closest('.input-group').remove();
     });
 
     // Displays new class card
