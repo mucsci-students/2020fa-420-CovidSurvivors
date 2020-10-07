@@ -104,7 +104,7 @@ body {
     font-weight: bold;
 }
 
-#deleteModal {
+#deleteModal, #confirmModal {
     font-size: large;
     font-weight: bold;
 }
