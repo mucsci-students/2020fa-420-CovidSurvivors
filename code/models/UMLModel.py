@@ -104,7 +104,7 @@ class UMLModel:
         # checks if the the class exists
         if class_name in self.classes:
             # checks if the class does not have an field with the same name inputted
-            if field_name not in self.classes[class_name].fields:
+            if not self.classes[class_name].has_field(field_name):
                 # creates field in class
                 self.classes[class_name].add_field(visibility, field_name, field_type)
                 print("field {} of type {} has been created in {}, it is a {} field"
@@ -155,7 +155,7 @@ class UMLModel:
         # renames the field to new_field_name
         index = self.find_field(class_name, old_field_name)
         self.classes[class_name].fields[index].name = new_field_name
-        print("field {} has been renamed to {}".format(old_field_name, new_field_name))
+        print("field {} has been renamed to => {}".format(old_field_name, new_field_name))
 
     ######################################################################
     def delete_field(self, class_name:str, field_name:str):
@@ -372,7 +372,7 @@ class UMLModel:
                 # loop the classes by the name
                 field = self.classes[class_name].fields
                 for i in range(len(field)):
-                    print(field[i].name)
+                    print("{} '{}'".format(field[i].type, field[i].name))
         # not valid class
         else:
             print (f"{class_name} is not a class")
@@ -423,7 +423,7 @@ class UMLModel:
          # checks if the the class exists
         if class_name in self.classes:
             # checks if the class does not have an method with the same name inputted
-            if  method_name not in self.classes[class_name].methods:
+            if not self.classes[class_name].has_method(method_name):
                 # creates method in class
                 self.classes[class_name].add_method(visibility, method_name, method_type)
                 print("method {} of type {} has been created in {}, it is a {} method"
@@ -459,7 +459,7 @@ class UMLModel:
                 
         # renames the old_method_name to new_method_name
         self.classes[class_name].rename_method(old_method_name, new_method_name)
-        print("method => {} has been renamed to  => {}".format(old_method_name, new_method_name))
+        print("method => {} has been renamed to => {}".format(old_method_name, new_method_name))
     
     ############################################################
     
@@ -501,7 +501,7 @@ class UMLModel:
         
         # ensure class has methods
         if not self.classes[class_name].methods:
-            print (f"{class_name} has not methods") 
+            print (f"{class_name} has no methods") 
             return
         
         # loop the classes by the name

@@ -11,7 +11,8 @@
 import unittest
 import sys
 sys.path.append('../')
-from UMLModel import UMLModel
+from models.UMLModel import UMLModel
+from models.UMLClass import UMLClass
 import io 
 
 ##########################################################################
@@ -81,42 +82,87 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
     
-    def test_create_attribute(self):
+    def test_create_field(self):
         model = UMLModel()
         model.create_class("class1")
+        testClass = model.classes["class1"]
 
-        # Ensure attrib is created
-        model.create_attribute("class1", "a1")
-        self.assertTrue("a1" in model.classes["class1"].attributes)
+        # Ensure field is created
+        model.create_field("class1", "public", "void", "a1")
+        self.assertTrue(testClass.has_field("a1"))
 
-        # Ensure duplicate attrib is not created 
+
+        # Ensure duplicate field is not created 
         # use io capture to grab output of create_class
         captured = io.StringIO()
         sys.stdout = captured
-        model.create_attribute("class1", "a1")
-        self.assertEqual(captured.getvalue(), "a1 already exists in class1\n")
+        model.create_field("class1", "public", "void", "a1")
+        self.assertEqual(captured.getvalue(), "field a1 already exists in class1\n")
 
     ######################################################################
 
-    def test_rename_attribute(self):
+    def test_rename_field(self):
         model = UMLModel()
         model.create_class("class1")
-        model.create_attribute("class1", "a1")
+        model.create_field("class1", "public", "void", "a1")
 
-        # Ensure attrib is renamed
-        model.rename_attribute("class1", "a1", "a2")
-        self.assertEqual(model.classes["class1"].attributes, ["a2"])
+        # Ensure field is renamed
+        model.rename_field("class1", "a1", "a2")
+        self.assertEqual(model.classes["class1"].fields[0].name, "a2")
 
     ######################################################################
 
-    def test_delete_attribute(self):
+    def test_delete_field(self):
         model = UMLModel()
         model.create_class("class1")
-        model.create_attribute("class1","a1")
+        model.create_field("class1", "public", "void", "a1")
+        testClass = model.classes["class1"]
 
-        # Ensure attrib is deleted
-        model.delete_attribute("class1", "a1")
-        self.assertTrue("a1" not in model.classes["class1"].attributes)
+        # Ensure field is deleted
+        model.delete_field("class1", "a1")
+        self.assertFalse(testClass.has_field("a1"))
+
+    ######################################################################
+    
+    def test_create_method(self):
+        model = UMLModel()
+        model.create_class("class1")
+        testClass = model.classes["class1"]
+
+        # Ensure method is created
+        model.create_method("class1", "public", "void", "add")
+        self.assertTrue(testClass.has_method("add"))
+
+
+        # Ensure duplicate method is not created 
+        # use io capture to grab output of create_class
+        captured = io.StringIO()
+        sys.stdout = captured
+        model.create_method("class1", "public", "void", "add")
+        self.assertEqual(captured.getvalue(), "method add already exists in class1\n")
+
+    ######################################################################
+
+    def test_rename_method(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "void", "add")
+
+        # Ensure method is renamed
+        model.rename_method("class1", "add", "subtract")
+        self.assertEqual(model.classes["class1"].methods[0].name, "subtract")
+
+    ######################################################################
+
+    def test_delete_method(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "void", "add")
+        testClass = model.classes["class1"]
+
+        # Ensure method is deleted
+        model.delete_method("class1", "add")
+        self.assertFalse(testClass.has_method("add"))
 
     ######################################################################
 
@@ -126,15 +172,15 @@ class UMLModelTest(unittest.TestCase):
         model.create_class("c2")
 
         # Ensure relationship is created
-        model.create_relationship("r1", "c1", "c2")
+        model.create_relationship("composition", "c1", "c2")
         self.assertTrue(model.classes["c1"].has_relationship("c2"))
         self.assertTrue(model.classes["c2"].has_relationship("c1"))
 
         # Ensure already existing rel 
         captured = io.StringIO()
         sys.stdout = captured
-        model.create_relationship("r1","c2","c1")
-        self.assertEqual(captured.getvalue(), "Relationship between c2 and c1 already exists.\n")
+        model.create_relationship("composition","c2","c1")
+        self.assertEqual(captured.getvalue(), "Relationship between 'c2' and 'c1' already exists.\n")
 
     ######################################################################
 

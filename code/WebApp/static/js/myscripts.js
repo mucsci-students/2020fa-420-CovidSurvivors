@@ -41,6 +41,7 @@ function classCardBtns() {
         // Preload the information we got into the appropriate textboxes of the edit Class Modal
 
         alert("Edit class: #" + getId);
+
     });
 }
 
