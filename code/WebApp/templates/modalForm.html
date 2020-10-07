@@ -1,0 +1,54 @@
+<!-- class name START -->
+<div class="form-group">
+    <label for="classname">{{data.name}}</label>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Enter class name" aria-label="Name of class" aria-describedby="basic-addon2">
+    </div>
+</div>
+<!-- class name END -->
+
+<!-- fields START -->
+<div class="form-group">
+    <label for="fieldname">Fields</label>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Enter field name" aria-label="Name of field" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary addTextArea" type="button"><i class="fas fa-plus"></i></button>
+            <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
+        </div>
+    </div>
+</div>
+<!-- fields END -->
+
+<!-- methods START -->
+<div class="form-group">
+    <label for="methodname">Methods</label>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary addTextArea" type="button"><i class="fas fa-plus"></i></button>
+            <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
+        </div>
+    </div>
+</div>
+<!-- methods END -->
+
+<!-- relationships START -->
+<div class="form-group">
+    <label for="relationship">Relationships</label>
+    <div class="input-group mb-3">
+        <select id="inputRelationship" class="form-control">
+            <option selected>Choose type...</option>
+            <option>Aggregation</option>
+            <option>Composition</option>
+            <option>Inheritance</option>
+            <option>Generalization</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary addRelationship" type="button"><i class="fas fa-plus"></i></button>
+            <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
+        </div>
+    </div>
+</div>
+<!-- relationships END -->
