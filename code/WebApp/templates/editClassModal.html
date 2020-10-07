@@ -6,66 +6,13 @@
                         <h4 class="modal-title w-100" id="myModalLabel">Edit class</h4>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <!-- class name START -->
-                            <div class="form-group">
-                                <label for="classname">Class Name</label>
-                                <div class="input-group mb-3">
-                                    <input type="text" name="class_name" class="form-control" placeholder="...preloaded class name..." aria-label="Name of class" aria-describedby="basic-addon2">
-                                </div>
-                            </div>
-                            <!-- class name END -->
-
-                            <!-- fields START -->
-                            <div class="form-group">
-                                <label for="fieldname">Fields</label>
-                                <button class="btn btn-outline-secondary btn-sm float-right addField" type="button">Add Field</button>
-                                <div class="input-group mb-3">
-                                    <input type="text" name="field_name" class="form-control" placeholder="...preloaded field name..." aria-label="Name of field" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- fields END -->
-
-                            <!-- methods START -->
-                            <div class="form-group">
-                                <label for="methodname">Methods</label>
-                                <button class="btn btn-outline-secondary btn-sm float-right addMethod" type="button">Add Method</button>
-                                <div class="input-group mb-3">
-                                    <input type="text" name="method_name" class="form-control" placeholder="...preloaded method name..." aria-label="Name of method" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- methods END -->
-
-                            <!-- relationships START -->
-                            <div class="form-group">
-                                <label for="relationship">Relationships</label>
-                                <button class="btn btn-outline-secondary btn-sm float-right addRelationship" type="button">Add Relationship</button>
-                                <div class="input-group mb-3">
-                                    <select id="inputRelationship" class="form-control">
-                                        <option selected>Choose type...</option>
-                                        <option>Aggregation</option>
-                                        <option>Composition</option>
-                                        <option>Inheritance</option>
-                                        <option>Generalization</option>
-                                    </select>
-                                    <input type="text" name="relationship_other" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- relationships END -->
+                        <form id="editClassForm" action="{{url_for('editClass')}}" method="POST">
+                            <!-- form inputs get loaded here -->
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary btn-sm">Save</button>
+                        <button type="submit" form="editClassForm" class="btn btn-primary btn-sm">Save</button>
                     </div>
                 </div>
             </div>
