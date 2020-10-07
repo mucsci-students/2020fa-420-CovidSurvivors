@@ -19,10 +19,10 @@
                     <!-- fields START -->
                     <div class="form-group">
                         <label for="fieldname">Fields</label>
+                        <button class="btn btn-outline-secondary btn-sm float-right addField" type="button">Add Field</button>
                         <div class="input-group mb-3">
                             <input type="text" name="field_name" class="form-control" placeholder="Enter field name" aria-label="Name of field" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary addTextArea" type="button"><i class="fas fa-plus"></i></button>
                                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
@@ -32,10 +32,10 @@
                     <!-- methods START -->
                     <div class="form-group">
                         <label for="methodname">Methods</label>
+                        <button class="btn btn-outline-secondary btn-sm float-right addMethod" type="button">Add Method</button>
                         <div class="input-group mb-3">
                             <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary addTextArea" type="button"><i class="fas fa-plus"></i></button>
                                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
@@ -45,6 +45,7 @@
                     <!-- relationships START -->
                     <div class="form-group">
                         <label for="relationship">Relationships</label>
+                        <button class="btn btn-outline-secondary btn-sm float-right addRelationship" type="button">Add Relationship</button>
                         <div class="input-group mb-3">
                             <select id="inputRelationship" name="relationship_type" class="form-control">
                                 <option selected>Choose type...</option>
@@ -55,7 +56,6 @@
                             </select>
                             <input type="text" name="relationship_other" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary addRelationship" type="button"><i class="fas fa-plus"></i></button>
                                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
