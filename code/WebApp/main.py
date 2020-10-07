@@ -74,6 +74,10 @@ def createClass():
     relationship_others = list(request.form.getlist('relationship_other'))
     
     # create the class
+    # Ensure it does not already exist
+    if class_name in model.classes:
+        return "Class already exists"
+
     model.create_class(class_name)
 
     # add the fields
