@@ -55,6 +55,70 @@ def dashboard():
 
 ##########################################################################
 
+# Creates a class from the given class data in POST request
+@app.route("/createClass", methods=["GET", "POST"])
+def createClass():
+    # Ensure there was a POST request
+    if request.method != "POST":
+        return "Nothing in POST"
+
+    # Build new class
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+
+    # Grab the data from the POST request 
+    class_name = request.form.get('class_name')
+    field_names = list(request.form.getlist('field_name'))
+    method_names = list(request.form.getlist('method_name'))
+    relationship_types = list(request.form.getlist('relationship_type'))
+    relationship_others = list(request.form.getlist('relationship_other'))
+    
+    # create the class
+    # Ensure it does not already exist
+    if class_name in model.classes:
+        return "Class already exists"
+
+    model.create_class(class_name)
+
+    # add the fields
+    for i in range(len(field_names)):
+        model.create_field(class_name, "private", "int", field_names[i])
+
+    # add the methods
+    for i in range(len(method_names)):
+        model.create_method(class_name, "public", "int", method_names[i])
+
+    # add relationships
+    for i in range(len(relationship_types)):
+        model.create_relationship(relationship_types[i].lower(), class_name, relationship_others[i])
+
+    model.list_class(class_name)
+
+    # No errors 
+    # Save the model with the new class
+    model.save_model(WORKING_FILENAME)
+
+    return redirect(url_for('dashboard'))
+
+##########################################################################
+
+# Serves the contents of the modal with a given class_name
+# This is for the edit modal
+@app.route("/modalForm", methods=['GET', 'POST'])
+def modalForm():
+    if request.method != "POST":
+        return "Nothing in POST"
+    
+    # grab class data
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+    data = model.classes[request.form.get('class_name')].get_raw_data()
+
+    # Build modal form inputs
+    return render_template("modalForm.html", data=data)
+
+##########################################################################
+
 # Server for deleting a class
 @app.route("/deleteClass", methods=["GET", "POST"])
 def deleteClass():
