@@ -19,7 +19,7 @@ function draggable(card) {
 function classCardBtns() {
     var getId;
     // Gets the unique ID of a class card
-    $('.getID').click(function () {
+    $('.card-footer').on('click', '.getID', function () {
         getId = $($(this).closest('.card')).attr("id");
     });
 
@@ -33,8 +33,8 @@ function classCardBtns() {
         $("#confirmModal").modal('show');
     });
 
-    // Allows us to edit a specific class card on click of its edit button  
-    $('.editCard').click(function () {
+    // Allows us to edit a specific class card on click of its edit button
+    $('.card-footer').on('click', '.editCard', function () {
         // Get all the information pertaining to the class we wish to edit using the unique class ID
 
         // Preload the information we got into the appropriate textboxes of the edit Class Modal
