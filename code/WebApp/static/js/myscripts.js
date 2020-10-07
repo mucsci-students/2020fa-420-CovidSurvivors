@@ -52,10 +52,17 @@ function classCardBtns() {
 
 // Functionality for the create class and edit class modal buttons
 function createEditClassModalBtns() {
-    // Adds a new text area for the fields and methods 
-    $('.form-group').on('click', '.addTextArea', function() {
+
+     // Adds a new text area for the fields
+     $('.form-group').on('click', '.addField', function() {
         var table = $(this).closest('.form-group');
-        table.append('<div class="input-group mb-3"><input type="text" class="form-control" placeholder="Enter name" aria-label="Name of field" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div>');
+        table.append('<div class="input-group mb-3"><input type="text" name="field_name" class="form-control" placeholder="Enter field name" aria-label="Name of field" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div>');
+    });
+
+    // Adds a new text area for the methods 
+    $('.form-group').on('click', '.addMethod', function() {
+        var table = $(this).closest('.form-group');
+        table.append('<div class="input-group mb-3"><input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of field" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div>');
     });
 
     // Adds a new drop menu and text area for the relationships
@@ -68,11 +75,5 @@ function createEditClassModalBtns() {
     $('.form-group').on('click', '.delTextArea', function() {
         var table = $(this).closest('.form-group');
         $(this).closest('.input-group').remove();
-    });
-
-    // Displays new class card
-    $('#saveNewClass').click(function () {
-        $('#display').prepend('<div class="card shadow" id="cardId1"><div class="card-header">New Card</div><div class="card-body"><ul class="list-group list-group-flush" id="fieldName"><li>Field 1</li></ul></div><div class="card-body"><ul class="list-group list-group-flush"><li>Method 1</li></ul></div><div class="card-body"><ul class="list-group list-group-flush"><li>Relationship <i class="fas fa-long-arrow-alt-right"></i> Class 2</li></ul></div><div class="card-footer nav justify-content-end nav-pills "><button type="button" class="btn btn-primary getID editCard" data-toggle="modal" data-target="#editClassModal"><i class="fas fa-edit"></i></button><button type="button" class="btn btn-primary getID" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt"></i></button></div></div>');
-        $("#createClassModal").modal('hide');
     });
 }

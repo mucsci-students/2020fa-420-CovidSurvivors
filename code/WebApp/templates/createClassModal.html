@@ -6,12 +6,12 @@
                 <h4 class="modal-title w-100" id="myModalLabel">Create a new class</h4>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="createClassModalForm" action="{{url_for('createClass')}}" method="POST">
                     <!-- class name START -->
                     <div class="form-group">
                         <label for="classname">Class Name</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Enter class name" aria-label="Name of class" aria-describedby="basic-addon2">
+                            <input type="text" name="class_name" class="form-control" placeholder="Enter class name" aria-label="Name of class" aria-describedby="basic-addon2">
                         </div>
                     </div>
                     <!-- class name END -->
@@ -19,9 +19,9 @@
                     <!-- fields START -->
                     <div class="form-group">
                         <label for="fieldname">Fields</label>
-                        <button class="btn btn-outline-secondary btn-sm float-right addTextArea" type="button">Add Field</button>
+                        <button class="btn btn-outline-secondary btn-sm float-right addField" type="button">Add Field</button>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Enter field name" aria-label="Name of field" aria-describedby="basic-addon2">
+                            <input type="text" name="field_name" class="form-control" placeholder="Enter field name" aria-label="Name of field" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                             </div>
@@ -32,9 +32,9 @@
                     <!-- methods START -->
                     <div class="form-group">
                         <label for="methodname">Methods</label>
-                        <button class="btn btn-outline-secondary btn-sm float-right addTextArea" type="button">Add Method</button>
+                        <button class="btn btn-outline-secondary btn-sm float-right addMethod" type="button">Add Method</button>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
+                            <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                             </div>
@@ -47,14 +47,14 @@
                         <label for="relationship">Relationships</label>
                         <button class="btn btn-outline-secondary btn-sm float-right addRelationship" type="button">Add Relationship</button>
                         <div class="input-group mb-3">
-                            <select id="inputRelationship" class="form-control">
+                            <select id="inputRelationship" name="relationship_type" class="form-control">
                                 <option selected>Choose type...</option>
                                 <option>Aggregation</option>
                                 <option>Composition</option>
                                 <option>Inheritance</option>
                                 <option>Generalization</option>
                             </select>
-                            <input type="text" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
+                            <input type="text" name="relationship_other" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                             </div>
@@ -65,7 +65,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary btn-sm" id="saveNewClass">Save</button>
+                <button type="submit" form="createClassModalForm" class="btn btn-primary btn-sm" id="saveNewClass">Save</button>
             </div>
         </div>
     </div>

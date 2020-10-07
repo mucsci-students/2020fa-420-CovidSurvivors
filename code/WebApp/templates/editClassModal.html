@@ -11,7 +11,7 @@
                             <div class="form-group">
                                 <label for="classname">Class Name</label>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="...preloaded class name..." aria-label="Name of class" aria-describedby="basic-addon2">
+                                    <input type="text" name="class_name" class="form-control" placeholder="...preloaded class name..." aria-label="Name of class" aria-describedby="basic-addon2">
                                 </div>
                             </div>
                             <!-- class name END -->
@@ -19,9 +19,9 @@
                             <!-- fields START -->
                             <div class="form-group">
                                 <label for="fieldname">Fields</label>
-                                <button class="btn btn-outline-secondary btn-sm float-right addTextArea" type="button">Add Field</button>
+                                <button class="btn btn-outline-secondary btn-sm float-right addField" type="button">Add Field</button>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="...preloaded field name..." aria-label="Name of field" aria-describedby="basic-addon2">
+                                    <input type="text" name="field_name" class="form-control" placeholder="...preloaded field name..." aria-label="Name of field" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                                     </div>
@@ -32,9 +32,9 @@
                             <!-- methods START -->
                             <div class="form-group">
                                 <label for="methodname">Methods</label>
-                                <button class="btn btn-outline-secondary btn-sm float-right addTextArea" type="button">Add Method</button>
+                                <button class="btn btn-outline-secondary btn-sm float-right addMethod" type="button">Add Method</button>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="...preloaded method name..." aria-label="Name of method" aria-describedby="basic-addon2">
+                                    <input type="text" name="method_name" class="form-control" placeholder="...preloaded method name..." aria-label="Name of method" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                                     </div>
@@ -54,7 +54,7 @@
                                         <option>Inheritance</option>
                                         <option>Generalization</option>
                                     </select>
-                                    <input type="text" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
+                                    <input type="text" name="relationship_other" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
                                     </div>
