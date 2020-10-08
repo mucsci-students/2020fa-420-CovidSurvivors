@@ -28,7 +28,7 @@
         </div>
 
         <div class="card-footer nav justify-content-end nav-pills ">
-            <button type="button" class="btn btn-primary getID editCard" data-toggle="modal" data-target="#editClassModal"><i class="fas fa-edit"></i></button>
+            <button type="button" onclick="loadEditClassModal('{{class.name}}')" class="btn btn-primary getID editCard" data-toggle="modal" data-target="#editClassModal"><i class="fas fa-edit"></i></button>
             <button type="button" class="btn btn-primary getID" onclick="setDeleteData('{{ class.name }}')" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt"></i></button>
         </div>
         <!-- Make this card draggable -->

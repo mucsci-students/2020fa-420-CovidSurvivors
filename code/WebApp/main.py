@@ -102,16 +102,73 @@ def createClass():
 
 ##########################################################################
 
+# Edits an existing class
+@app.route("/editClass", methods=["GET", "POST"])
+def editClass():
+    # Ensure there was a POST request
+    if request.method != "POST":
+        return "Nothing in POST"
+
+    # load model
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+
+    # Ensure it was an existing class
+    if request.form.get("original_name") not in model.classes:
+        return f"{request.form.get('original_name')} is not a valid class"
+
+    # removing class to replace with new class data
+    model.delete_class(request.form.get('original_name'))
+
+    # Create new class with new data
+    # Grab the data from the POST request 
+    class_name = request.form.get('class_name')
+    field_names = list(request.form.getlist('field_name'))
+    method_names = list(request.form.getlist('method_name'))
+    relationship_types = list(request.form.getlist('relationship_type'))
+    relationship_others = list(request.form.getlist('relationship_other'))
+
+    model.create_class(class_name)
+
+    # add the fields
+    for i in range(len(field_names)):
+        model.create_field(class_name, "private", "int", field_names[i])
+
+    # add the methods
+    for i in range(len(method_names)):
+        model.create_method(class_name, "public", "int", method_names[i])
+
+    # add relationships
+    for i in range(len(relationship_types)):
+        model.create_relationship(relationship_types[i].lower(), class_name, relationship_others[i])
+
+    model.list_class(class_name)
+    
+    # No errors 
+    # Save the model with the new class
+    model.save_model(WORKING_FILENAME)
+
+    return redirect(url_for('dashboard'))
+
+##########################################################################
+
 # Serves the contents of the modal with a given class_name
 # This is for the edit modal
-@app.route("/modalForm", methods=['GET', 'POST'])
-def modalForm():
+@app.route("/editForm", methods=['GET', 'POST'])
+def editForm():
+    # Ensure there was a POST request
     if request.method != "POST":
         return "Nothing in POST"
     
-    # grab class data
+    # load model
     model = UMLModel()
     model.load_model(WORKING_FILENAME)
+
+    # ensure class exists
+    if request.form.get('class_name') not in model.classes:
+        return f"Class '{request.form.get('class_name')}' does not exist"
+
+    # grab class data
     data = model.classes[request.form.get('class_name')].get_raw_data()
 
     # Build modal form inputs
