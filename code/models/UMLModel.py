@@ -500,11 +500,21 @@ class UMLModel:
             return
 
         # checks if method is already at front of list
-        # wip (crashes on this check)
         else:
             method = self.classes[class_name].methods
             if method_name == method[0].name:
                 print(f"{method_name} can not move up any further in {class_name}")
+            else:
+                for i in range(len(method)):
+                    if method_name == method[i].name:
+                        mover = method[i]
+                        preceder = method[i-1]
+                        method[i-1] = mover
+                        method[i] = preceder
+                        print(f"{method_name} has been moved up in {class_name}")
+                        return
+
+
 
 
 
