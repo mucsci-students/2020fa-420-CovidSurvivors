@@ -86,6 +86,9 @@ class UMLModel:
         """
         # Checks to see if specified class exists
         if name in self.classes:
+            # Delete all relationships to this class
+            for rel in self.classes[name].relationships:
+                self.delete_relationship(name, rel.other)
             # Deletes key-value pair for specified class
             del self.classes[name]
             print("{} has been deleted.".format(name))
@@ -202,8 +205,10 @@ class UMLModel:
             return 
 
         # Ensure relationship does not already exist
-        # we only have to check one of the classes
         if self.classes[class_name1].has_relationship(class_name2):
+            print(f"Relationship between '{class_name1}' and '{class_name2}' already exists.")
+            return
+        if self.classes[class_name2].has_relationship(class_name1):
             print(f"Relationship between '{class_name1}' and '{class_name2}' already exists.")
             return
         
