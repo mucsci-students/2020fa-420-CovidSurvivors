@@ -45,7 +45,7 @@
     <button class="btn btn-outline-secondary btn-sm float-right addRelationship" type="button">Add Relationship</button>
     {% for relationship in data.relationships %}
         <div class="input-group mb-3">
-            <select id="inputRelationship" class="form-control">
+            <select id="inputRelationship" name="relationship_type" class="form-control">
                 {% if relationship.type == "aggregation" %}
                     <option selected>Aggregation</option>
                     <option>Composition</option>

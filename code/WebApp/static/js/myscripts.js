@@ -83,7 +83,7 @@ function createEditClassModalBtns() {
     // Adds a new drop menu and text area for the relationships
     $('.form-group').on('click', '.addRelationship', function() {
         var table = $(this).closest('.form-group');
-        table.append('<div class="input-group mb-3"><select id="inputRelationship" class="form-control"><option>Aggregation</option><option>Composition</option><option>Inheritance</option><option>Realization</option></select><input type="text" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div></div>');
+        table.append('<div class="input-group mb-3"><select name="relationship_type" id="inputRelationship" class="form-control"><option>Aggregation</option><option>Composition</option><option>Inheritance</option><option>Realization</option></select><input type="text" name="relationship_other" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button></div></div>');
     });
 
     // Deletes the fields, methods, or relationship text area that is no longer needed
