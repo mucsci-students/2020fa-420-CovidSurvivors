@@ -508,6 +508,7 @@ class UMLModel:
             method = self.classes[class_name].methods
             if method_name == method[0].name:
                 print(f"{method_name} can not move up any further in {class_name}")
+                return
             else:
                 for i in range(len(method)):
                     #swaps target method with the method in front of it
@@ -518,6 +519,42 @@ class UMLModel:
                         method[i] = preceder
                         print(f"{method_name} has been moved up in {class_name}")
                         return
+
+    ######################################################################
+
+    #wip
+    def move_down_method(self, class_name:str, method_name:str):
+        """Moves a method down one position in a list of methods for a given class
+            - class_name (string) - the name of the class
+            - method_name (string) - the name of the method being moved down
+        """
+        # ensure class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return
+
+        # checks if the method exists in the class
+        if not self.classes[class_name].has_method(method_name):
+            print(f"{method_name} does not exist in {class_name}")
+            return
+
+        else:
+            # checks if method is already at back of list
+            method = self.classes[class_name].methods
+            if method_name == method[len(method)-1].name:
+                print(f"{method_name} can not move down any further in {class_name}")
+                return
+            else:
+                for i in range(len(method)):
+                    #swaps target method with the method behind it
+                    if method_name == method[i].name:
+                        mover = method[i]
+                        succeeder = method[i+1]
+                        method[i+1] = mover
+                        method[i] = succeeder
+                        print(f"{method_name} has been moved down in {class_name}")
+                        return
+        
 
 
 
