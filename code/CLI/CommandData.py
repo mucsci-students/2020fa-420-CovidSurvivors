@@ -176,6 +176,22 @@ COMMANDS = {
             "num_arguments" : 2
         }
     ],
+    "move_up_method" : [
+        {
+            "usage" : "move_up_method <class_name> <method_name>",
+            "desc" : "moves method up one space in a list of methods",
+            "function" : UMLModel.move_up_method,
+            "num_arguments" : 2
+        }
+    ],
+    "move_down_method" : [
+        {
+            "usage" : "move_down_method <class_name> <method_name>",
+            "desc" : "moves method down one space in a list of methods",
+            "function" : UMLModel.move_down_method,
+            "num_arguments" : 2
+        }
+    ],
     "list_methods" : [
         {
             "usage" : "list_methods <class_name>",
