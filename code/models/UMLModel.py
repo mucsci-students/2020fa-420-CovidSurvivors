@@ -183,6 +183,73 @@ class UMLModel:
         # gives user verification that the field was deleted
         print("field {} has been deleted from {}".format(field_name, class_name))
     ###########################################################################
+    def move_up_field(self, class_name:str, field_name:str):
+        """Moves a field up one position in a list of fields for a given class
+            - class_name (string) - the name of the class
+            - field_name (string) - the name of the field being moved up
+        """
+        
+        # ensure class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return
+
+        # checks if the field exists in the class
+        if not self.classes[class_name].has_field(field_name):
+            print(f"{field_name} does not exist in {class_name}")
+            return
+
+        else:
+            # checks if field is already at front of list
+            field = self.classes[class_name].fields
+            if field_name == field[0].name:
+                print(f"{field_name} can not move up any further in {class_name}")
+                return
+            else:
+                for i in range(len(field)):
+                    #swaps target field with the field in front of it
+                    if field_name == field[i].name:
+                        mover = field[i]
+                        preceder = field[i-1]
+                        field[i-1] = mover
+                        field[i] = preceder
+                        print(f"{field_name} has been moved up in {class_name}")
+                        return
+
+    ######################################################################
+    def move_down_field(self, class_name:str, field_name:str):
+        """Moves a field down one position in a list of fields for a given class
+            - class_name (string) - the name of the class
+            - field_name (string) - the name of the field being moved down
+        """
+        # ensure class exists
+        if class_name not in self.classes:
+            print(f"{class_name} does not exist")
+            return
+
+        # checks if the field exists in the class
+        if not self.classes[class_name].has_field(field_name):
+            print(f"{field_name} does not exist in {class_name}")
+            return
+
+        else:
+            # checks if field is already at back of list
+            field = self.classes[class_name].fields
+            if field_name == field[len(field)-1].name:
+                print(f"{field_name} can not move down any further in {class_name}")
+                return
+            else:
+                for i in range(len(field)):
+                    #swaps target field with the field behind it
+                    if field_name == field[i].name:
+                        mover = field[i]
+                        succeeder = field[i+1]
+                        field[i+1] = mover
+                        field[i] = succeeder
+                        print(f"{field_name} has been moved down in {class_name}")
+                        return
+
+    ###########################################################################
     def create_relationship(self, relationship_type:str, class_name1:str, class_name2:str):
         """Creates a relationship between two given classes
             - relationship_type (string) - the type of the relationship.
