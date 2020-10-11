@@ -83,6 +83,7 @@ class TestUMLEditor(unittest.TestCase):
         print("Testing create_field.")
         editor.execute(model, "create_field", ["ClassOne", "public", "int", "foo"])
         editor.execute(model, "create_field", ["ClassOne", "private", "string", "John"])
+        editor.execute(model, "create_field", ["ClassOne", "public", "double", "salary"])
 
         # test list_fields
         separate()
@@ -91,6 +92,20 @@ class TestUMLEditor(unittest.TestCase):
         separate()
         print("Testing list_fields for ClassTwo.")
         editor.execute(model, "list_fields", ["ClassTwo"])
+
+        # test move_down_field
+        separate()
+        print("Testing move_down_field")
+        editor.execute(model, "move_down_field", ["ClassOne", "foo"])
+        print("Current field list for ClassOne:")
+        editor.execute(model, "list_fields", ["ClassOne"])
+        
+        # test move_up_field
+        separate()
+        print("Testing move_up_field")
+        editor.execute(model, "move_up_field", ["ClassOne", "foo"])
+        print("Current field list for ClassOne:")
+        editor.execute(model, "list_fields", ["ClassOne"])
 
         # test rename_field
         separate()
@@ -109,12 +124,12 @@ class TestUMLEditor(unittest.TestCase):
         # test create_method
         separate()
         print("Testing create_method.")
-        editor.execute(model, "create_method", ["ClassOne", "public", "void", "concatenate()"])
-        editor.execute(model, "create_method", ["ClassOne", "private", "string", "getLastName()"])
-        editor.execute(model, "create_method", ["ClassOne", "public", "int", "add()"])
-        editor.execute(model, "create_method", ["ClassTwo", "private", "char", "getInitial()"])
-        editor.execute(model, "create_method", ["ClassTwo", "public", "double", "getSalary()"])
-        editor.execute(model, "create_method", ["ClassTwo", "private", "string", "getSSN()"])
+        editor.execute(model, "create_method", ["ClassOne", "public", "void", "concatenate"])
+        editor.execute(model, "create_method", ["ClassOne", "private", "string", "getLastName"])
+        editor.execute(model, "create_method", ["ClassOne", "public", "int", "add"])
+        editor.execute(model, "create_method", ["ClassTwo", "private", "char", "getInitial"])
+        editor.execute(model, "create_method", ["ClassTwo", "public", "double", "getSalary"])
+        editor.execute(model, "create_method", ["ClassTwo", "private", "string", "getSSN"])
 
         # test list_methods
         separate()
@@ -123,6 +138,26 @@ class TestUMLEditor(unittest.TestCase):
         separate()
         print("Testing list_methods for ClassTwo.")
         editor.execute(model, "list_methods", ["ClassTwo"])
+
+        # test move_down_method
+        separate()
+        print("Testing move_down_method")
+        editor.execute(model, "move_down_method", ["ClassOne", "concatenate"])
+        print("Current method list for ClassOne:")
+        editor.execute(model, "list_methods", ["ClassOne"])
+        editor.execute(model, "move_down_method", ["ClassTwo", "getSalary"])
+        print("Current method list for ClassTwo:")
+        editor.execute(model, "list_methods", ["ClassTwo"])
+        
+        # test move_up_method
+        separate()
+        print("Testing move_up_method")
+        editor.execute(model, "move_up_method", ["ClassOne", "add"])
+        print("Current method list for ClassOne:")
+        editor.execute(model, "list_methods", ["ClassOne"])
+        editor.execute(model, "move_up_method", ["ClassOne", "add"])
+        print("Current method list for ClassOne:")
+        editor.execute(model, "list_methods", ["ClassOne"])
 
         # test rename_field
         separate()
