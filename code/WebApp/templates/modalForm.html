@@ -4,7 +4,7 @@
     <input type="text" name="original_name" value="{{data.name}}" hidden>
     <label for="classname">Class Name</label>
     <div class="input-group mb-3">
-        <input type="text" value="{{data.name}}" name="class_name" class="form-control" placeholder="...preloaded class name..." aria-label="Name of class" aria-describedby="basic-addon2">
+        <input type="text" value="{{data.name}}" name="class_name" class="form-control" aria-label="Name of class" aria-describedby="basic-addon2">
     </div>
 </div>
 <!-- class name END -->
@@ -15,6 +15,16 @@
     <button class="btn btn-outline-secondary btn-sm float-right addField" type="button">Add Field</button>
     {% for field in data.fields %}
         <div class="input-group mb-3">
+            <select name="field_visibility" class="form-control">
+                {% if field.visibility == "public" %}
+                    <option selected>Public</option>
+                    <option>Private</option>
+                {% else %}
+                    <option>Public</option>
+                    <option selected>Private</option>
+                {% endif %}
+            </select>
+            <input type="text" name="field_type" value="{{field.type}}" class="form-control" aria-label="Type of field" aria-describedby="basic-addon2">
             <input type="text" name="field_name" value="{{field.name}}" class="form-control" aria-label="Name of field" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
@@ -30,7 +40,17 @@
     <button class="btn btn-outline-secondary btn-sm float-right addMethod" type="button">Add Method</button>
     {% for method in data.methods %}
         <div class="input-group mb-3">
-            <input type="text" name="method_name" value="{{method.name}}" class="form-control" placeholder="...preloaded method name..." aria-label="Name of method" aria-describedby="basic-addon2">
+            <select name="method_visibility" class="form-control">
+                {% if method.visibility == "public" %}
+                    <option selected>Public</option>
+                    <option>Private</option>
+                {% else %}
+                    <option>Public</option>
+                    <option selected>Private</option>
+                {% endif %}
+            </select>
+            <input type="text" name="method_type" value="{{method.type}}" class="form-control" aria-label="Type of method" aria-describedby="basic-addon2">
+            <input type="text" name="method_name" value="{{method.name}}" class="form-control" aria-label="Name of method" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
             </div>
