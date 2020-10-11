@@ -123,7 +123,11 @@ def editClass():
     # Create new class with new data
     # Grab the data from the POST request 
     class_name = request.form.get('class_name')
+    field_visibilities = list(request.form.getlist('field_visibility'))
+    field_types = list(request.form.getlist('field_type'))
     field_names = list(request.form.getlist('field_name'))
+    method_visibilities = list(request.form.getlist('method_visibility'))
+    method_types = list(request.form.getlist('method_type'))
     method_names = list(request.form.getlist('method_name'))
     relationship_types = list(request.form.getlist('relationship_type'))
     relationship_others = list(request.form.getlist('relationship_other'))
@@ -132,11 +136,11 @@ def editClass():
 
     # add the fields
     for i in range(len(field_names)):
-        model.create_field(class_name, "private", "int", field_names[i])
+        model.create_field(class_name, field_visibilities[i].lower(), field_types[i], field_names[i])
 
     # add the methods
     for i in range(len(method_names)):
-        model.create_method(class_name, "public", "int", method_names[i])
+        model.create_method(class_name, method_visibilities[i].lower(), method_types[i], method_names[i])
 
     # add relationships
     for i in range(len(relationship_types)):
@@ -147,6 +151,9 @@ def editClass():
     # No errors 
     # Save the model with the new class
     model.save_model(WORKING_FILENAME)
+
+    # Print success status 
+    print("SUCCESS")
 
     return redirect(url_for('dashboard'))
 

@@ -272,17 +272,18 @@ class UMLModel:
             return 
 
         # Ensure relationship does not already exist
-        if self.classes[class_name1].has_relationship(class_name2):
-            print(f"Relationship between '{class_name1}' and '{class_name2}' already exists.")
-            return
-        if self.classes[class_name2].has_relationship(class_name1):
+        if (self.classes[class_name1].has_relationship(class_name2) and
+            self.classes[class_name2].has_relationship(class_name1)):
             print(f"Relationship between '{class_name1}' and '{class_name2}' already exists.")
             return
         
         # does not find existing relationship
         # Ready to add relationship
-        self.classes[class_name1].add_relationship(rtype, class_name2)
-        self.classes[class_name2].add_relationship(rtype, class_name1)
+        # this uses a look-before-leaping approach to weed out any bugs
+        if not self.classes[class_name1].has_relationship(class_name2):
+            self.classes[class_name1].add_relationship(rtype, class_name2)
+        if not self.classes[class_name2].has_relationship(class_name1):
+            self.classes[class_name2].add_relationship(rtype, class_name1)
 
         # Prompt success
         print(f"Relationship between '{class_name1}' and '{class_name2}' was created")
@@ -304,14 +305,17 @@ class UMLModel:
             return
         
         # Ensure relationship exists
-        # We only need to check one class
-        if not self.classes[class_name1].has_relationship(class_name2):
+        if (not self.classes[class_name1].has_relationship(class_name2) and
+            not self.classes[class_name2].has_relationship(class_name1)):
             print (f"Relationship between {class_name1} and {class_name2} does not exist.")
             return 
 
         # Remove relationship from both classes 
-        self.classes[class_name1].remove_relationship(class_name2)
-        self.classes[class_name2].remove_relationship(class_name1)
+        # This has a look-before-leap approach to weed out any potential bugs
+        if self.classes[class_name1].has_relationship(class_name2):
+            self.classes[class_name1].remove_relationship(class_name2)
+        if self.classes[class_name2].has_relationship(class_name1):
+            self.classes[class_name2].remove_relationship(class_name1)
 
         print (f"Relationship between {class_name1} and {class_name2} has been deleted")
 
