@@ -82,6 +82,22 @@ COMMANDS = {
             "num_arguments" : 2
         }
     ],
+    "move_up_field" : [
+        {
+            "usage" : "move_up_field <class_name> <field_name>",
+            "desc" : "moves field up one space in a list of fields",
+            "function" : UMLModel.move_up_field,
+            "num_arguments" : 2
+        }
+    ],
+    "move_down_field" : [
+        {
+            "usage" : "move_down_field <class_name> <field_name>",
+            "desc" : "moves field down one space in a list of foe;ds",
+            "function" : UMLModel.move_down_field,
+            "num_arguments" : 2
+        }
+    ],
     "create_relationship" : [
         {
             "usage" : "create_relationship <relationship_type> <class1> <class2>",
