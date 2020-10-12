@@ -1,0 +1,20 @@
+        <!-- edit class modal START -->
+        <div class="modal fade" id="editClassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title w-100" id="myModalLabel">Edit class</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editClassForm" action="{{url_for('editClass')}}" method="POST">
+                            <!-- form inputs get loaded here -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="editClassForm" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--edit class modal END -->

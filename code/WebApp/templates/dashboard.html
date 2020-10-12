@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+<!-- body START -->
+{% block body %}
+        <!-- sidebar wrapper START -->
+        <div class="wrapper">
+            <!-- sidebar START -->
+            <div class="sidebar">
+                <h3>UMLEditor</h3>
+                <ul>
+                    <li><button type="button" class="btn" data-toggle="modal" data-target="#loadFileModal"><i class="fas fa-file-upload"></i>Load File</button></li>
+                    <li><a href="{{url_for('download')}}" download><button type="button" class="btn"><i class="fas fa-save"></i>Save Project</button></a></li>
+                    <li><button type="button" class="btn" data-toggle="modal" data-target="#createClassModal"><i class="fas fa-pencil-ruler"></i>Create Class</button></li>
+                </ul>            
+            </div>
+            <!-- sidebar END -->
+        </div>
+        <!-- sidebar wrapper END -->
+    
+        <!-- load file modal START -->
+        {% include "loadFileModal.html" %}
+        <!--load file modal END -->
+
+        <!--create class modal START -->
+        {% include "createClassModal.html" %}
+        <!--create class modal END -->
+
+        <!-- display START -->
+        <div class="flex-container" id="display">
+        <!-- Generate each class card -->
+        {% for class in data %}
+            <!-- Generate card -->
+            {% include "card.html" %}
+        {% endfor %}    
+        </div>
+        <!-- display END -->
+
+        <!-- edit class modal START -->
+        {% include "editClassModal.html" %}
+        <!--edit class modal END -->
+
+        <!-- delete class modal START -->
+        {% include "deleteClassModal.html" %}
+        <!--delete class modal END -->
+
+{% endblock %}
+<!-- body END -->

@@ -19,6 +19,9 @@ import UMLEditor as editor
 
 model = UMLModel()
 
+def separate():
+    print("-----------------------------------------------------------------------------------------------")
+
 # Unit test for the UMLEditor
 
 class TestUMLEditor(unittest.TestCase):
@@ -30,22 +33,22 @@ class TestUMLEditor(unittest.TestCase):
     # validates intended behavior of execute method
     def test_execute(self):
         # test help WITHOUT arguments
-        print("-------------------------------")
-        print("-------------------------------")
+        separate()
+        separate()
         print("Testing invalid commands.")
         print("Command: dog")
         editor.execute(model, "dog", [])
-        print("-------------------------------")
+        separate()
         print("Testing help without arguments.")
         editor.execute(model, "help", [])
 
         # test help WITH arguments
-        print("------------------------------")
+        separate()
         print("Testing help with arguments.")
         editor.execute(model, "help", ["create_class"])
 
         # test create_class
-        print("------------------------------")
+        separate()
         print("Testing create_class.")
         editor.execute(model, "create_class", ["ClassA"])
         editor.execute(model, "create_class", ["ClassB"])
@@ -53,19 +56,21 @@ class TestUMLEditor(unittest.TestCase):
 
         # check current list of classes
         # test list_classes
-        print("-------------------------------")
+        separate()
         print("Testing list_classes.")
         print("Current list of classes:")
         editor.execute(model, "list_classes", [])
 
         # test rename_class
-        print("-------------------------------")
+        separate()
         print("Testing rename_class.")
         editor.execute(model, "rename_class", ["ClassA", "ClassOne"])
         editor.execute(model, "rename_class", ["ClassB", "ClassTwo"])
+        print("Current list of classes:")
+        editor.execute(model, "list_classes", [])
 
         # test delete_class
-        print("-------------------------------")
+        separate()
         print("Testing delete_class.")
         editor.execute(model, "delete_class", ["ClassC"])
 
@@ -74,72 +79,54 @@ class TestUMLEditor(unittest.TestCase):
         editor.execute(model, "list_classes", [])
 
         # test create_attribute
-        print("-------------------------------")
+        separate()
         print("Testing create_attribute.")
         editor.execute(model, "create_attribute", ["ClassOne", "foo"])
         editor.execute(model, "create_attribute", ["ClassOne", "John"])
 
         # test list_attributes
-        print("-------------------------------")
+        separate()
         print("Testing list_attributes for ClassOne.")
         editor.execute(model, "list_attributes", ["ClassOne"])
-        print("-------------------------------")
+        separate()
         print("Testing list_attributes for ClassTwo.")
         editor.execute(model, "list_attributes", ["ClassTwo"])
 
         # test rename_attribute
-        print("-------------------------------")
+        separate()
         print("Testing rename_attribute.")
         editor.execute(model, "rename_attribute", ["ClassOne", "foo", "bar"])
         print("Current attribute list for ClassOne:")
         editor.execute(model, "list_attributes", ["ClassOne"])
 
         # test delete_attribute
-        print("-------------------------------")
+        separate()
         print("Testing delete_attribute.")
         editor.execute(model, "delete_attribute", ["ClassOne", "John"])
         print("Current attribute list for ClassOne:")
         editor.execute(model, "list_attributes", ["ClassOne"])
 
         # test create_relationship
-        print("-------------------------------")
+        separate()
         print("Testing create_relationship.")
         editor.execute(model, "create_relationship", ["pow", "ClassOne", "ClassTwo"])
 
         # test list_relationships WITHOUT arguments
-        print("-------------------------------")
+        separate()
         print("Testing list_relationships without arguments.")
         print("Current list of relationships:")
         editor.execute(model, "list_relationships", [])
 
         #test list_relationships WITH arguments
-        print("-------------------------------")
+        separate()
         print("Testing list_relationships with arguments.")
         editor.execute(model, "list_relationships", ["ClassOne"])
 
         # test delete relationships
-        print("-------------------------------")
+        separate()
         print("Testing delete_relationship.")
         editor.execute(model, "delete_relationship", ["ClassOne", "ClassTwo"])
         editor.execute(model, "list_relationships", ["ClassOne"])
-
-        # test save_editor
-        print("-------------------------------")
-        print("Testing save_editor")
-        editor.execute(model, "save_model", [])
-
-        # test exit
-        print("-------------------------------")
-        print("Testing exit")
-        editor.execute(model, "exit", ["boo"])
-
-        # restart REPL
-        editor.REPL()
-
-        # test load_editor
-        print("-------------------------------")
-        print("Testing save_editor")
-        editor.execute(model, "load_model", ["boo"])
 
 ##########################################################################
 

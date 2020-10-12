@@ -1,0 +1,22 @@
+<!-- load file modal START -->
+<div class="modal fade" id="loadFileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{url_for('upload')}}" method="POST" enctype='multipart/form-data' >
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Load File</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Load">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--load file modal END -->

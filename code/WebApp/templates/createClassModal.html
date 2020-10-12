@@ -1,0 +1,51 @@
+<!-- create class modal START -->
+<div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Create a new class</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createClassModalForm" action="{{url_for('createClass')}}" method="POST">
+                    <!-- class name START -->
+                    <div class="form-group">
+                        <label for="classname">Class Name</label>
+                        <div class="input-group mb-3">
+                            <input type="text" name="class_name" class="form-control" placeholder="Enter class name" aria-label="Name of class" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                    <!-- class name END -->
+
+                    <!-- fields START -->
+                    <div class="form-group">
+                        <label for="fieldname">Fields</label>
+                        <button class="btn btn-outline-secondary btn-sm float-right addField" type="button">Add Field</button>
+                        <!-- field inputs loaded here -->
+                    </div>
+                    <!-- fields END -->
+
+                    <!-- methods START -->
+                    <div class="form-group">
+                        <label for="methodname">Methods</label>
+                        <button class="btn btn-outline-secondary btn-sm float-right addMethod" type="button">Add Method</button>
+                        <!-- method inputs loaded here -->
+                    </div>
+                    <!-- methods END -->
+
+                    <!-- relationships START -->
+                    <div class="form-group">
+                        <label for="relationship">Relationships</label>
+                        <button class="btn btn-outline-secondary btn-sm float-right addRelationship" type="button">Add Relationship</button>
+                        <!-- relationship inputs loaded here -->
+                    </div>
+                    <!-- relationships END -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="createClassModalForm" class="btn btn-primary btn-sm" id="saveNewClass">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--create class modal END -->
