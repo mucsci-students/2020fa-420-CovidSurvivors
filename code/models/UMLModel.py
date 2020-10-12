@@ -250,6 +250,15 @@ class UMLModel:
 
     ######################################################################
     
+    def move_up_relationship(self, class_name1:str, relationship_name2:str):
+        """Moves a relationship up one position in a list of relationships for tw
+            - class_name (string) - the name of the class
+            - class_name1 (string) - the name of the first class
+            - class_name2 (string) - the name of the second class
+        """
+    
+    ######################################################################    
+
     def save_model(self, filename):
         """Saves the model's data to a given JSON file
             - filename (string) - the name of a JSON file to save to
@@ -528,7 +537,6 @@ class UMLModel:
 
     ######################################################################
 
-    #wip
     def move_down_method(self, class_name:str, method_name:str):
         """Moves a method down one position in a list of methods for a given class
             - class_name (string) - the name of the class
@@ -560,11 +568,6 @@ class UMLModel:
                         method[i] = succeeder
                         print(f"{method_name} has been moved down in {class_name}")
                         return
-        
-
-
-
-
 
     ######################################################################
     
