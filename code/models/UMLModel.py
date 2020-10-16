@@ -338,7 +338,7 @@ class UMLModel:
             return
 
         # ensure relationship exists
-        if (not self.classes[class_name1].has_relationship(class_name2) and #how to check for relationship type
+        if (not self.classes[class_name1].has_relationship(class_name2) and
             not self.classes[class_name2].has_relationship(class_name1)):
             print (f"Relationship between {class_name1} and {class_name2} does not exist.")
             return
@@ -358,9 +358,6 @@ class UMLModel:
                 rships[i] = preceder
                 print(f"The relationship with {class_name2} has been moved up in {class_name1}")
                 return
-
-               
-
 
     ######################################################################  
 
@@ -382,13 +379,26 @@ class UMLModel:
             return
 
         # ensure relationship exists
-        if (not self.classes[class_name1].has_relationship(class_name2) and #how to check for relationship type
+        if (not self.classes[class_name1].has_relationship(class_name2) and
             not self.classes[class_name2].has_relationship(class_name1)):
             print (f"Relationship between {class_name1} and {class_name2} does not exist.")
             return
 
         else:
-            print("wip")
+            i = self.classes[class_name1].relationship_index(class_name2)
+            rships = self.classes[class_name1].relationships
+            # checks if relationship is already at back of list
+            if i == len(rships)-1:
+                print(f"The relationship with {class_name2} can not move down any further in {class_name1}")
+                return
+            # swaps target relationship with the relationship behind it
+            else:
+                mover = rships[i]
+                succeeder = rships[i+1]
+                rships[i+1] = mover
+                rships[i] = succeeder
+                print(f"The relationship with {class_name2} has been moved down in {class_name1}")
+                return
 
     ######################################################################    
 
