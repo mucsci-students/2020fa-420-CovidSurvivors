@@ -325,31 +325,9 @@ class UMLModel:
         """Saves the model's data to a given JSON file
             - filename (string) - the name of a JSON file to save to
         """
-        # Ensure file does not exist
-        # ** Commented out because it stalls the server **
-        # if path.exists(MODEL_DIRECTORY+filename):
-            
-        #     # continuously prompt until valid answer
-        #     answer = ""
-        #     while answer != "yes" and answer != "no":# prompt user if they want to overwrite or not
-        #         print (f"File {filename} already exists.")
-        #         print ("Do you want to overwrite the file? (yes/no)")
-
-        #         answer = input().lower()
-
-        #     if answer == "no":
-        #         # cancel saving 
-        #         print ("Saving FAILED")
-        #         return
-
 
         # object to hold JSON compatible version of the data
-        raw_model = {}
-
-        # grab class data 
-        for name in self.classes:
-            # raw data for the class
-            raw_model[name] = self.classes[name].get_raw_data()
+        raw_model = self.get_data()
 
         # Convert data into a JSON object
         json_data = json.dumps(raw_model, indent=4)
@@ -360,6 +338,13 @@ class UMLModel:
 
         # Tell user that save was successful 
         print (f"Saved model to file {filename}")
+
+    def get_data(self):
+        raw_model = {}
+        for name in self.classes:
+            # raw data for the class
+            raw_model[name] = self.classes[name].get_raw_data()
+        return raw_model
 
     ######################################################################
     
@@ -384,12 +369,14 @@ class UMLModel:
         raw_model = json.loads(file.read())
         file.close()
 
-        # Clear out previous model
-        self.classes = {class_name : UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
+        self.set_data(raw_model)
 
         # Tell user load was successful
         print (f"Loaded model from {filename}")
 
+    def set_data(self, raw_model):
+        # Clear out previous model
+        self.classes = {class_name : UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
 
     ######################################################################
 
@@ -400,6 +387,7 @@ class UMLModel:
         # Ensure class exists
         if class_name not in self.classes:
             print (f"'{class_name}' is not a valid class")
+            return 
         
         print (f"Class: {class_name}")
 
