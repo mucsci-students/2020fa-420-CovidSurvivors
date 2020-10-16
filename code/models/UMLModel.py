@@ -321,13 +321,45 @@ class UMLModel:
 
     ######################################################################
     
-    def move_up_relationship(self, class_name1:str, relationship_name2:str):
+    #wip
+    def move_up_relationship(self, relationship_type:str, class_name1:str, class_name2:str):
         """Moves a relationship up one position in a list of relationships for tw
-            - class_name (string) - the name of the class
+            - relationship_type (string) - the type of the relationship
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
         """
-    
+        
+        # ensure class 1 exists
+        if class_name1 not in self.classes:
+            print (f"{class_name1} does not exist")
+            return 
+
+        # ensure class 2 exists
+        if class_name2 not in self.classes:
+            print (f"{class_name2} does not exist")
+            return
+
+        # ensure relationship exists
+        if (not self.classes[class_name1].has_relationship(class_name2) and #how to check for relationship type
+            not self.classes[class_name2].has_relationship(class_name1)):
+            print (f"Relationship between {class_name1} and {class_name2} does not exist.")
+            return
+
+        else:
+            relationship = self.relationships         
+
+
+    ######################################################################  
+
+     #wip
+     def move_down_relationship(self, class_name1:str, class_name2:str):
+        """Moves a relationship down one position in a list of relationships 
+            - class_name (string) - the name of the class
+            - relationship_type (string) - the type of the relationship.
+            - class_name1 (string) - the name of the first class
+            - class_name2 (string) - the name of the second class
+        """   
+
     ######################################################################    
 
     def save_model(self, filename):
