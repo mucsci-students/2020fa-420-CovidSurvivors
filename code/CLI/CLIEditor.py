@@ -5,13 +5,15 @@
 #   This file is the entry point into the UML Editor 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     September 20 2020
+# Date:     October 16 2020
 
 ##########################################################################
 # Imports
 
 from models.UMLModel import UMLModel
 from . import CommandData
+from command.command import CLICommand, Command, UndoableCLICommand
+from command.command import CommandHistory
 
 ##########################################################################
 # Constants 
@@ -21,6 +23,16 @@ PROMPT_COLOR  = "\033[1;36m"
 ERROR_COLOR   = "\033[91m"
 SUCCESS_COLOR = "\033[92m"
 NORMAL_COLOR  = "\033[0;37m"
+
+# The number of commands that are saved for undo-ing
+HISTORY_LIMIT = 20
+
+
+##########################################################################
+# Globals
+
+# Keeps track of the commands that were performed
+command_history = CommandHistory(HISTORY_LIMIT)
 
 ##########################################################################
 
@@ -103,8 +115,42 @@ def print_help_message(model:UMLModel, command = ""):
 
 ##########################################################################
 
-def execute(model:UMLModel, command:str, arguments:list = []):
-    """Executes a given command with any arguments
+def undo(model:UMLModel):
+
+    # get undoable command
+    command = command_history.pop_undo()
+
+    # ensure there was a command
+    if command == None:
+        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} No command to undo")
+        return
+    
+    # undo the command
+    command.undo()
+
+    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} undid command")
+
+##########################################################################
+
+def redo(model:UMLModel):
+
+    # get undone command
+    command = command_history.pop_redo()
+
+    # ensure there was a command
+    if command == None:
+        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} No command to redo")
+        return
+    
+    # redo the command
+    command.execute()
+
+    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} redid command")
+
+##########################################################################
+
+def getCommand(model:UMLModel, command:str, arguments:list = []) -> Command:
+    """Returns the matching command with any arguments
 
     Params:
     - model (UMLModel) - the model to modify with commands
@@ -118,10 +164,8 @@ def execute(model:UMLModel, command:str, arguments:list = []):
         for usage in CommandData.COMMANDS[command]:
             # if the usage matches the num of args
             if usage["num_arguments"] == len(arguments):
-                # call command with proper usage and arguments
-                # *arguments uses the list as the parameters 
-                usage["function"](model, *arguments)
-                return True
+                # construct command
+                return usage["command"](model, usage["function"], arguments)
         print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
             f"Incorrect usage of {command}\ntype 'help {command}' to see valid usages of {command}")
     else: 
@@ -164,9 +208,28 @@ def REPL():
         # If user presses enter
         if len(words) == 0:
             continue
-                    
+
+        # Grab command           
         # This handles the case where there are no arguments
-        execute(model, words[0], words[1:])
+        command = getCommand(model, words[0], words[1:])
+
+        # execute the command 
+        if isinstance(command, UndoableCLICommand):
+            print("Undoable Command")
+            # save backup 
+            command.saveBackup()
+            # execute the command
+            status = command.execute()
+            command_history.push(command)
+            # # if the command was successful
+            # if status:
+            #     # add to the list of history
+            #     command_history.push(command)
+            # else:
+            #     print("cannot determine if command failed")
+        elif isinstance(command, CLICommand):
+            print("Non-Undoable Command")
+            command.execute()
 
 ##########################################################################
 
