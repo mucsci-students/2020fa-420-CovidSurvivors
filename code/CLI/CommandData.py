@@ -146,6 +146,22 @@ COMMANDS = {
             "num_arguments" : 2
         }
     ],
+    "move_up_relationship" : [
+       {
+        "usage" : "move_up_relationship <class_name1> <class_name2>",
+        "desc" : "moves relationship up one space in a list of the first specified class's relationships",
+        "function" : UMLModel.move_up_relationship,
+        "num_arguments" : 2
+       }
+    ],
+    "move_down_relationship" : [
+       {
+        "usage" : "move_down_relationship <class_name1> <class_name2>",
+        "desc" : "moves relationship down one space in a list of the first specified class's relationships",
+        "function" : UMLModel.move_down_relationship,
+        "num_arguments" : 2
+       }
+    ],
     "save_model" : [
         {
             "usage" : "save_model <filename>",

@@ -321,6 +321,87 @@ class UMLModel:
 
     ######################################################################
     
+    def move_up_relationship(self, class_name1:str, class_name2:str):
+        """Moves a relationship up one position in a list of relationships for tw
+            - class_name1 (string) - the name of the first class
+            - class_name2 (string) - the name of the second class
+        """
+        
+        # ensure class 1 exists
+        if class_name1 not in self.classes:
+            print (f"{class_name1} does not exist")
+            return 
+
+        # ensure class 2 exists
+        if class_name2 not in self.classes:
+            print (f"{class_name2} does not exist")
+            return
+
+        # ensure relationship exists
+        if (not self.classes[class_name1].has_relationship(class_name2) and
+            not self.classes[class_name2].has_relationship(class_name1)):
+            print (f"Relationship between {class_name1} and {class_name2} does not exist.")
+            return
+
+        else:  
+            i = self.classes[class_name1].relationship_index(class_name2)
+            # check if relationship is at top of list
+            if i == 0:
+                print(f"The relationship with {class_name2} can not move up any further in {class_name1}")
+                return
+            # swap with relationship in front of it
+            else:   
+                rships = self.classes[class_name1].relationships
+                mover = rships[i]
+                preceder = rships[i-1]
+                rships[i-1] = mover
+                rships[i] = preceder
+                print(f"The relationship with {class_name2} has been moved up in {class_name1}")
+                return
+
+    ######################################################################  
+
+    def move_down_relationship(self, class_name1:str, class_name2:str):
+        """Moves a relationship down one position in a list of relationships 
+            - class_name (string) - the name of the class
+            - class_name1 (string) - the name of the first class
+            - class_name2 (string) - the name of the second class
+        """   
+
+         # ensure class 1 exists
+        if class_name1 not in self.classes:
+            print (f"{class_name1} does not exist")
+            return 
+
+        # ensure class 2 exists
+        if class_name2 not in self.classes:
+            print (f"{class_name2} does not exist")
+            return
+
+        # ensure relationship exists
+        if (not self.classes[class_name1].has_relationship(class_name2) and
+            not self.classes[class_name2].has_relationship(class_name1)):
+            print (f"Relationship between {class_name1} and {class_name2} does not exist.")
+            return
+
+        else:
+            i = self.classes[class_name1].relationship_index(class_name2)
+            rships = self.classes[class_name1].relationships
+            # checks if relationship is already at back of list
+            if i == len(rships)-1:
+                print(f"The relationship with {class_name2} can not move down any further in {class_name1}")
+                return
+            # swaps target relationship with the relationship behind it
+            else:
+                mover = rships[i]
+                succeeder = rships[i+1]
+                rships[i+1] = mover
+                rships[i] = succeeder
+                print(f"The relationship with {class_name2} has been moved down in {class_name1}")
+                return
+
+    ######################################################################    
+
     def save_model(self, filename):
         """Saves the model's data to a given JSON file
             - filename (string) - the name of a JSON file to save to
@@ -587,7 +668,6 @@ class UMLModel:
 
     ######################################################################
 
-    #wip
     def move_down_method(self, class_name:str, method_name:str):
         """Moves a method down one position in a list of methods for a given class
             - class_name (string) - the name of the class
@@ -619,11 +699,6 @@ class UMLModel:
                         method[i] = succeeder
                         print(f"{method_name} has been moved down in {class_name}")
                         return
-        
-
-
-
-
 
     ######################################################################
     
