@@ -9,6 +9,7 @@
 # Imports
 
 import unittest
+import pytest
 import sys
 sys.path.append('../')
 import CLI.CLIEditor as editor
