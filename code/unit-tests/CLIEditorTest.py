@@ -12,6 +12,7 @@ import unittest
 import pytest
 import sys
 sys.path.append('../')
+sys.path.append('code/')
 import CLI.CLIEditor as editor
 from CLI.CLIEditor import UMLModel
 

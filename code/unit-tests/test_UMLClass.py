@@ -12,6 +12,7 @@ import unittest
 import pytest
 import sys
 sys.path.append('../')
+sys.path.append('code/')
 from models.UMLClass import UMLClass
 from models.UMLRelationship import UMLRelationship
 
