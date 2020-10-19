@@ -259,6 +259,7 @@ class UMLModel:
         """
         # Ensure relationship type is valid 
         rtype = RelationshipType.from_string(relationship_type)
+        reverseRtype = RelationshipType.from_string("reverse " + relationship_type)
         if rtype == RelationshipType.INVALID:
             print (f"'{relationship_type}' is not a valid relationship type.")
             return 
@@ -283,7 +284,7 @@ class UMLModel:
         if not self.classes[class_name1].has_relationship(class_name2):
             self.classes[class_name1].add_relationship(rtype, class_name2)
         if not self.classes[class_name2].has_relationship(class_name1):
-            self.classes[class_name2].add_relationship(rtype, class_name1)
+            self.classes[class_name2].add_relationship(reverseRtype, class_name1)
 
         # Prompt success
         print(f"Relationship between '{class_name1}' and '{class_name2}' was created")
@@ -488,7 +489,8 @@ class UMLModel:
 
         # Print relationships 
         for relationship in self.classes[class_name].relationships:
-            print (RelationshipType.to_string(relationship.type), relationship.other)
+            print (class_name, RelationshipType.to_arrow(relationship.type)
+            , relationship.other)
 
         print ("=================================")
 
@@ -544,7 +546,7 @@ class UMLModel:
                     print("Class '" + class_name + "' has no relationships")
                 else:
                     for relationship in self.classes[class_name].relationships:
-                        print (class_name,"---", relationship.type, "-->",relationship.other)
+                        print (class_name, RelationshipType.to_arrow(relationship.type), relationship.other)
 
             # class_name is invalid
             else: 
@@ -555,7 +557,7 @@ class UMLModel:
             for class_name in self.classes:
                 # for each relationship
                     for relationship in self.classes[class_name].relationships:
-                        print (class_name,"---", relationship.type, "-->",relationship.other)
+                        print (class_name, RelationshipType.to_arrow(relationship.type), relationship.other)
 
 ##########################################################################
 
