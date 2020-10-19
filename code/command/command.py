@@ -104,7 +104,6 @@ class UndoableCLICommand(Command, Undoable):
         self.model.set_data(self.backup)
 
     def execute(self) -> bool:
-        # the payload stores just the class name
         return self.receiver_function(self.model, *self.arguments)
 
 ##########################################################################
@@ -124,3 +123,149 @@ class CLICommand(Command):
     def execute(self) -> bool:
         # the payload stores just the class name
         return self.receiver_function(self.model, *self.arguments)
+
+##########################################################################
+
+# This is for the GUI
+class CreateClassGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+    def execute(self) -> bool:
+        # Load model to
+        self.model.load_model(self.payload["filename"])
+        
+        # Ensure class does not already exist
+        if self.payload["class_name"] in self.model.classes:
+            print("Class already Exists")
+            return False
+
+        # create the class
+        self.model.create_class(self.payload["class_name"])
+
+        # add the fields
+        for i in range(len(self.payload["field_names"])):
+            self.model.create_field(self.payload["class_name"], self.payload["field_visibilities"][i].lower(), self.payload["field_types"][i], self.payload["field_names"][i])
+
+        # add the methods
+        for i in range(len(self.payload["method_names"])):
+            self.model.create_method(self.payload["class_name"], self.payload["method_visibilities"][i].lower(), self.payload["method_types"][i], self.payload["method_names"][i])
+
+        # add relationships
+        for i in range(len(self.payload["relationship_types"])):
+            self.model.create_relationship(self.payload["relationship_types"][i].lower(), self.payload["class_name"], self.payload["relationship_others"][i])
+
+        self.model.list_class(self.payload["class_name"])
+
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+        return True
+
+##########################################################################
+
+# This is for the GUI
+class EditClassGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+    def execute(self) -> bool:
+        # Load model 
+        self.model.load_model(self.payload["filename"])
+        
+        # Ensure it was an existing class
+        if self.payload["original_name"] not in self.model.classes:
+            print(f"{self.payload['original_name']} is not a valid class")
+            return False
+
+        # remove the original class to replace it
+        self.model.delete_class(self.payload["original_name"])
+
+        # create the class
+        self.model.create_class(self.payload["class_name"])
+
+        # add the fields
+        for i in range(len(self.payload["field_names"])):
+            self.model.create_field(self.payload["class_name"], self.payload["field_visibilities"][i].lower(), self.payload["field_types"][i], self.payload["field_names"][i])
+
+        # add the methods
+        for i in range(len(self.payload["method_names"])):
+            self.model.create_method(self.payload["class_name"], self.payload["method_visibilities"][i].lower(), self.payload["method_types"][i], self.payload["method_names"][i])
+
+        # add relationships
+        for i in range(len(self.payload["relationship_types"])):
+            self.model.create_relationship(self.payload["relationship_types"][i].lower(), self.payload["class_name"], self.payload["relationship_others"][i])
+
+        self.model.list_class(self.payload["class_name"])
+
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+        return True
+
+##########################################################################
+
+# This is for the GUI
+class DeleteClassGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+    def execute(self) -> bool:
+        # Load model to delete class
+        self.model.load_model(self.payload["filename"])
+        # delete class
+        self.model.delete_class(self.payload["class_name"])
+        # save model
+        self.model.save_model(self.payload["filename"])
+        return True

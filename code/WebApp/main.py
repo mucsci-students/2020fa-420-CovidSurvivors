@@ -16,6 +16,8 @@ from werkzeug.utils import secure_filename
 
 # Include parent directory
 sys.path.append(os.getcwd())
+from command.command import CommandHistory, CreateClassGUICommand
+from command.command import EditClassGUICommand, DeleteClassGUICommand
 from models.UMLModel import UMLModel
 
 ##########################################################################
@@ -30,6 +32,10 @@ DATA_FOLDER = os.path.join(os.getcwd(), 'data/')
 # The name of the server's current working model file
 WORKING_FILENAME = '__WorkingModel__.json'
 TEMP_FILENAME = '__temp__.json'
+HISTORY_LIMIT = 20
+
+# keeps track of prior commands 
+command_history = CommandHistory(HISTORY_LIMIT)
 
 ##########################################################################
 
@@ -41,14 +47,16 @@ def dashboard():
     model.load_model(WORKING_FILENAME)
 
     # Setup template data
-    data = []
+    data = {
+        "classes" : []
+    }
 
     # add each class
     i = 0 
     for class_name in model.classes:
-        data += [model.classes[class_name].get_raw_data()]
+        data["classes"] += [model.classes[class_name].get_raw_data()]
         # Give class its index 
-        data[i]["index"] = i+1
+        data["classes"][i]["index"] = i+1
         i += 1
 
     return render_template("dashboard.html", data=data)
@@ -62,41 +70,29 @@ def createClass():
     if request.method != "POST":
         return "Nothing in POST"
 
-    # Build new class
-    model = UMLModel()
-    model.load_model(WORKING_FILENAME)
-
     # Grab the data from the POST request 
-    class_name = request.form.get('class_name')
-    field_names = list(request.form.getlist('field_name'))
-    method_names = list(request.form.getlist('method_name'))
-    relationship_types = list(request.form.getlist('relationship_type'))
-    relationship_others = list(request.form.getlist('relationship_other'))
-    
-    # create the class
-    # Ensure it does not already exist
-    if class_name in model.classes:
-        return "Class already exists"
+    # and structure it for the command
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "class_name" : request.form.get('class_name'),
+        "field_visibilities" : list(request.form.getlist('field_visibility')),
+        "field_types" : list(request.form.getlist('field_type')),
+        "field_names" : list(request.form.getlist('field_name')),
+        "method_visibilities" : list(request.form.getlist('method_visibility')),
+        "method_types" : list(request.form.getlist('method_type')),
+        "method_names" : list(request.form.getlist('method_name')),
+        "relationship_types" : list(request.form.getlist('relationship_type')),
+        "relationship_others" : list(request.form.getlist('relationship_other'))
+    }
 
-    model.create_class(class_name)
-
-    # add the fields
-    for i in range(len(field_names)):
-        model.create_field(class_name, "private", "int", field_names[i])
-
-    # add the methods
-    for i in range(len(method_names)):
-        model.create_method(class_name, "public", "int", method_names[i])
-
-    # add relationships
-    for i in range(len(relationship_types)):
-        model.create_relationship(relationship_types[i].lower(), class_name, relationship_others[i])
-
-    model.list_class(class_name)
-
-    # No errors 
-    # Save the model with the new class
-    model.save_model(WORKING_FILENAME)
+    # create command 
+    command = CreateClassGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    status = command.execute()
+    # add to history
+    command_history.push(command)
 
     return redirect(url_for('dashboard'))
 
@@ -109,48 +105,30 @@ def editClass():
     if request.method != "POST":
         return "Nothing in POST"
 
-    # load model
-    model = UMLModel()
-    model.load_model(WORKING_FILENAME)
-
-    # Ensure it was an existing class
-    if request.form.get("original_name") not in model.classes:
-        return f"{request.form.get('original_name')} is not a valid class"
-
-    # removing class to replace with new class data
-    model.delete_class(request.form.get('original_name'))
-
     # Create new class with new data
     # Grab the data from the POST request 
-    class_name = request.form.get('class_name')
-    field_visibilities = list(request.form.getlist('field_visibility'))
-    field_types = list(request.form.getlist('field_type'))
-    field_names = list(request.form.getlist('field_name'))
-    method_visibilities = list(request.form.getlist('method_visibility'))
-    method_types = list(request.form.getlist('method_type'))
-    method_names = list(request.form.getlist('method_name'))
-    relationship_types = list(request.form.getlist('relationship_type'))
-    relationship_others = list(request.form.getlist('relationship_other'))
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "original_name" : request.form.get('original_name'),
+        "class_name" : request.form.get('class_name'),
+        "field_visibilities" : list(request.form.getlist('field_visibility')),
+        "field_types" : list(request.form.getlist('field_type')),
+        "field_names" : list(request.form.getlist('field_name')),
+        "method_visibilities" : list(request.form.getlist('method_visibility')),
+        "method_types" : list(request.form.getlist('method_type')),
+        "method_names" : list(request.form.getlist('method_name')),
+        "relationship_types" : list(request.form.getlist('relationship_type')),
+        "relationship_others" : list(request.form.getlist('relationship_other'))
+    }
 
-    model.create_class(class_name)
-
-    # add the fields
-    for i in range(len(field_names)):
-        model.create_field(class_name, field_visibilities[i].lower(), field_types[i], field_names[i])
-
-    # add the methods
-    for i in range(len(method_names)):
-        model.create_method(class_name, method_visibilities[i].lower(), method_types[i], method_names[i])
-
-    # add relationships
-    for i in range(len(relationship_types)):
-        model.create_relationship(relationship_types[i].lower(), class_name, relationship_others[i])
-
-    model.list_class(class_name)
-    
-    # No errors 
-    # Save the model with the new class
-    model.save_model(WORKING_FILENAME)
+    # create command 
+    command = EditClassGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    status = command.execute()
+    # add to history
+    command_history.push(command)
 
     # Print success status 
     print("SUCCESS")
@@ -194,11 +172,56 @@ def deleteClass():
     # Print out what is being deleted
     print (f"Deleting class '{request.form.get('class_name')}' from the model")
     
-    # Delete from the model
-    model = UMLModel()
-    model.load_model(WORKING_FILENAME)
-    model.delete_class(request.form.get('class_name'))
-    model.save_model(WORKING_FILENAME)
+    # Grab the data from the POST request 
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "class_name" : request.form.get('class_name')
+    }
+    
+    # create command 
+    command = DeleteClassGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    status = command.execute()
+    # add to history
+    command_history.push(command)
+
+    # Redirect user back to main page 
+    return redirect(url_for('dashboard'))
+
+##########################################################################
+
+# Undoes a previously executed command
+@app.route("/undo")
+def undo():
+    # get undoable command
+    command = command_history.pop_undo()
+
+    # ensure there was a command
+    if command == None:
+        return "ERROR: No command to undo"
+    
+    # undo the command
+    command.undo()
+
+    # Redirect user back to main page 
+    return redirect(url_for('dashboard'))
+
+##########################################################################
+
+# redo a previously undone command
+@app.route("/redo")
+def redo():
+    # get undone command
+    command = command_history.pop_redo()
+
+    # ensure there was a command
+    if command == None:
+        return "ERROR: No command to redo"
+    
+    # redo the command
+    command.execute()
 
     # Redirect user back to main page 
     return redirect(url_for('dashboard'))
