@@ -10,6 +10,7 @@
 # Imports
 
 from abc import ABC, abstractmethod
+from typing import Tuple
 
 ##########################################################################
 # Main Inherited Command Class
@@ -103,7 +104,7 @@ class UndoableCLICommand(Command, Undoable):
     def undo(self) -> None:
         self.model.set_data(self.backup)
 
-    def execute(self) -> bool:
+    def execute(self) -> Tuple[bool, str]:
         return self.receiver_function(self.model, *self.arguments)
 
 ##########################################################################
@@ -120,7 +121,7 @@ class CLICommand(Command):
         self.receiver_function = receiver_function 
         self.arguments = arguments
 
-    def execute(self) -> bool:
+    def execute(self) -> Tuple[bool, str]:
         # the payload stores just the class name
         return self.receiver_function(self.model, *self.arguments)
 
@@ -154,8 +155,7 @@ class CreateClassGUICommand(Command, Undoable):
         
         # Ensure class does not already exist
         if self.payload["class_name"] in self.model.classes:
-            print("Class already Exists")
-            return False
+            return False, f"{self.payload['class_name']} already exists"
 
         # create the class
         self.model.create_class(self.payload["class_name"])
@@ -177,7 +177,7 @@ class CreateClassGUICommand(Command, Undoable):
         # save model
         self.model.save_model(self.payload["filename"])
 
-        return True
+        return True, f"{self.payload['class_name']} was created successfully"
 
 ##########################################################################
 
@@ -209,14 +209,18 @@ class EditClassGUICommand(Command, Undoable):
         
         # Ensure it was an existing class
         if self.payload["original_name"] not in self.model.classes:
-            print(f"{self.payload['original_name']} is not a valid class")
-            return False
+            return False, f"{self.payload['original_name']} is not a valid class"
 
         # remove the original class to replace it
         self.model.delete_class(self.payload["original_name"])
 
         # create the class
-        self.model.create_class(self.payload["class_name"])
+        status, msg = self.model.create_class(self.payload["class_name"])
+
+        # ensure new class was created successfully 
+        # this fails if the user entered a new name that already exists
+        if not status:
+            return status, msg
 
         # add the fields
         for i in range(len(self.payload["field_names"])):
@@ -235,7 +239,7 @@ class EditClassGUICommand(Command, Undoable):
         # save model
         self.model.save_model(self.payload["filename"])
 
-        return True
+        return True, "Class was updated successfully"
 
 ##########################################################################
 
@@ -265,7 +269,13 @@ class DeleteClassGUICommand(Command, Undoable):
         # Load model to delete class
         self.model.load_model(self.payload["filename"])
         # delete class
-        self.model.delete_class(self.payload["class_name"])
+        status, msg = self.model.delete_class(self.payload["class_name"])
+        
+        # delete failed
+        if not status:
+            return status, msg
+        
         # save model
         self.model.save_model(self.payload["filename"])
-        return True
+
+        return True, f"{self.payload['class_name']} was deleted"

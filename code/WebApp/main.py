@@ -90,11 +90,25 @@ def createClass():
     # save backup
     command.saveBackup()
     # execute command
-    status = command.execute()
-    # add to history
-    command_history.push(command)
+    response = command.execute()
 
-    return redirect(url_for('dashboard'))
+    # ensure response
+    if response:
+        status, msg = response
+
+        # command was successful 
+        if status:
+            # add to history
+            command_history.push(command)
+
+            # print success message 
+            print(msg)
+        
+            return redirect(url_for('dashboard'))
+
+    # command failed
+    print(f"ERROR: {msg}")
+    return msg
 
 ##########################################################################
 
@@ -126,14 +140,25 @@ def editClass():
     # save backup
     command.saveBackup()
     # execute command
-    status = command.execute()
-    # add to history
-    command_history.push(command)
+    response = command.execute()
 
-    # Print success status 
-    print("SUCCESS")
+    # ensure response
+    if response:
+        status, msg = response
 
-    return redirect(url_for('dashboard'))
+        # command was successful 
+        if status:
+            # add to history
+            command_history.push(command)
+        
+            # print success message 
+            print(msg)
+
+            return redirect(url_for('dashboard'))
+
+    # command failed
+    print(f"ERROR: {msg}")
+    return msg
 
 ##########################################################################
 
@@ -183,12 +208,25 @@ def deleteClass():
     # save backup
     command.saveBackup()
     # execute command
-    status = command.execute()
-    # add to history
-    command_history.push(command)
+    response = command.execute()
 
-    # Redirect user back to main page 
-    return redirect(url_for('dashboard'))
+    # ensure response
+    if response:
+        status, msg = response
+
+        # command was successful 
+        if status:
+            # add to history
+            command_history.push(command)
+        
+            # print success message 
+            print(msg)
+            
+            return redirect(url_for('dashboard'))
+
+    # command failed
+    print(f"ERROR: {msg}")
+    return msg
 
 ##########################################################################
 
