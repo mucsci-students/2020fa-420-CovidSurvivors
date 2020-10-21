@@ -110,6 +110,11 @@ def print_help_message(model:UMLModel, command = "") -> None:
         for command in CommandData.COMMANDS:
             # print out the command
             print ("\t", command)
+            usages = CommandData.COMMANDS[command]
+            # for each usage
+            for usage in usages:
+                if usage["skip_line"] == True:
+                    print()
     # Invalid command
     else:
         print(f"{ERROR_COLOR}ArgumentError:{NORMAL_COLOR} "
