@@ -8,13 +8,14 @@
 ##########################################################################
 # Imports
 
+from models.Variable import Variable
 from .Visibility import Visibility
 
 ##########################################################################
 
-class UMLMethod:
+class UMLMethod(Variable):
 
-    def __init__(self, visibility:Visibility, name:str, _type:str):
+    def __init__(self, visibility:Visibility, name:str, _type:str, isstatic:bool=False):
         """Represents a method for a UML Class
         
         Params: 
@@ -22,17 +23,15 @@ class UMLMethod:
          either Public or Private
         - name (str) - the name of the method
         - _type (str) - the return type of the method
+        - isstatic (bool) - whether the method is static or not 
         """
         self.visibility = visibility
-        self.name = name
-        self.type = _type
-
-    ######################################################################
-
-    def rename(self, new_name:str):
-        """Replaces the method's name with a new_name
-        """
-        self.name = new_name
+        # Assign name and type in the parent 
+        super().__init__(_type, name)
+        # Keeps track of whether this is a static method or not
+        self.is_static = isstatic 
+        # keeps track of all the parameters for this class
+        self.parameters = []
 
 ##########################################################################
 
