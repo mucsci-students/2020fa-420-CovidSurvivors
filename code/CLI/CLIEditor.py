@@ -10,6 +10,8 @@
 ##########################################################################
 # Imports
 
+from typing import Tuple 
+
 from models.UMLModel import UMLModel
 from . import CommandData
 from command.command import CLICommand, Command, UndoableCLICommand
@@ -36,7 +38,7 @@ command_history = CommandHistory(HISTORY_LIMIT)
 
 ##########################################################################
 
-def prompt_exit(model:UMLModel):
+def prompt_exit(model:UMLModel) -> Tuple[bool, str]:
     """Initiates the exit prompt
 
     Prompts user if they want to save before quitting
@@ -70,7 +72,7 @@ def prompt_exit(model:UMLModel):
         model.save_model(filename)
 
     elif response == "cancel":
-        return
+        return (True, "Exit aborted")
 
     elif response == "no":
         print("Goodbye!")
@@ -79,7 +81,7 @@ def prompt_exit(model:UMLModel):
     
 ##########################################################################
  
-def print_help_message(model:UMLModel, command = ""):
+def print_help_message(model:UMLModel, command = "") -> None:
     """Prints help message
 
     If an invalid command or no command is specified:
@@ -110,42 +112,40 @@ def print_help_message(model:UMLModel, command = ""):
             print ("\t", command)
     # Invalid command
     else:
-        print (f"{ERROR_COLOR}ArgumentError:{NORMAL_COLOR}",
+        print(f"{ERROR_COLOR}ArgumentError:{NORMAL_COLOR} "
                 f"'{command}' is not a valid command")
 
 ##########################################################################
 
-def undo(model:UMLModel):
+def undo(model:UMLModel) -> Tuple[bool, str]:
 
     # get undoable command
     command = command_history.pop_undo()
 
     # ensure there was a command
     if command == None:
-        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} No command to undo")
-        return
+        return (False, "No command to undo")
     
     # undo the command
     command.undo()
 
-    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} undid command")
+    return (True, "undid command")
 
 ##########################################################################
 
-def redo(model:UMLModel):
+def redo(model:UMLModel) -> Tuple[bool, str]:
 
     # get undone command
     command = command_history.pop_redo()
 
     # ensure there was a command
     if command == None:
-        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} No command to redo")
-        return
+        return (False, "No command to redo")
     
     # redo the command
     command.execute()
 
-    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} redid command")
+    return (True, "redid command")
 
 ##########################################################################
 
@@ -214,22 +214,28 @@ def REPL():
         command = getCommand(model, words[0], words[1:])
 
         # execute the command 
+        # undoable command
         if isinstance(command, UndoableCLICommand):
-            print("Undoable Command")
             # save backup 
             command.saveBackup()
-            # execute the command
-            status = command.execute()
-            command_history.push(command)
-            # # if the command was successful
-            # if status:
-            #     # add to the list of history
-            #     command_history.push(command)
-            # else:
-            #     print("cannot determine if command failed")
-        elif isinstance(command, CLICommand):
-            print("Non-Undoable Command")
-            command.execute()
+
+        # execute the command
+        response = command.execute()
+        
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+        # no response given 
+        # don't print anything
 
 ##########################################################################
 

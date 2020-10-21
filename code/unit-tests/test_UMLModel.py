@@ -32,11 +32,9 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(model.classes["class1"].name, "class1")
 
         # Ensure duplicate class is not created 
-        # use io capture to grab output of create_class
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.create_class("class1")
-        self.assertEqual(captured.getvalue(), "class1 already exists.\n")
+        status, msg = model.create_class("class1")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class1 already exists.")
 
     ######################################################################
 
@@ -52,17 +50,16 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(model.classes["classA"].name, "classA")
 
         # Ensure unknown class is rejected
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.rename_class("class1", "classB")
-        self.assertEqual(captured.getvalue(), "class1 does not exist.\n")
+        status, msg = model.rename_class("class1", "classB")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class1 does not exist.")
 
         # Ensure duplicate newname is rejected
         model.create_class("class1")
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.rename_class("classA", "class1")
-        self.assertEqual(captured.getvalue(), "class1 already exists.\n")
+        status, msg = model.rename_class("classA", "class1")
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "class1 already exists.")
 
     ######################################################################
 
@@ -77,10 +74,10 @@ class UMLModelTest(unittest.TestCase):
         self.assertTrue("class1" not in model.classes)
 
         # Ensure no errors when class DNE
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.delete_class("class1")
-        self.assertEqual(captured.getvalue(), "class1 does not exist.\n")
+        status, msg = model.delete_class("class1")
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "class1 does not exist.")
 
     ######################################################################
     
@@ -93,13 +90,11 @@ class UMLModelTest(unittest.TestCase):
         model.create_field("class1", "public", "void", "a1")
         self.assertTrue(testClass.has_field("a1"))
 
-
         # Ensure duplicate field is not created 
-        # use io capture to grab output of create_class
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.create_field("class1", "public", "void", "a1")
-        self.assertEqual(captured.getvalue(), "field a1 already exists in class1\n")
+        status, msg = model.create_field("class1", "public", "void", "a1")
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "field a1 already exists in class1")
 
     ######################################################################
 
@@ -135,13 +130,11 @@ class UMLModelTest(unittest.TestCase):
         model.create_method("class1", "public", "void", "add")
         self.assertTrue(testClass.has_method("add"))
 
-
         # Ensure duplicate method is not created 
-        # use io capture to grab output of create_class
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.create_method("class1", "public", "void", "add")
-        self.assertEqual(captured.getvalue(), "method add already exists in class1\n")
+        status, msg = model.create_method("class1", "public", "void", "add")
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "method add already exists in class1")
 
     ######################################################################
 
@@ -179,10 +172,10 @@ class UMLModelTest(unittest.TestCase):
         self.assertTrue(model.classes["c2"].has_relationship("c1"))
 
         # Ensure already existing rel 
-        captured = io.StringIO()
-        sys.stdout = captured
-        model.create_relationship("composition","c2","c1")
-        self.assertEqual(captured.getvalue(), "Relationship between 'c2' and 'c1' already exists.\n")
+        status, msg = model.create_relationship("composition","c2","c1")
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "Relationship between 'c2' and 'c1' already exists.")
 
     ######################################################################
 
