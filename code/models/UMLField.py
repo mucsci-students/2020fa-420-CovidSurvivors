@@ -8,11 +8,12 @@
 ##########################################################################
 # Imports
 
+from models.Variable import Variable
 from .Visibility import Visibility
 
 ##########################################################################
 
-class UMLField:
+class UMLField(Variable):
 
     def __init__(self, visibility:Visibility, name:str, _type:str):
         """Represents a field for a UML Class
@@ -24,15 +25,9 @@ class UMLField:
         - _type (str) - the type of the field
         """
         self.visibility = visibility
-        self.name = name
-        self.type = _type
-
-    ######################################################################
-
-    def rename(self, new_name:str):
-        """Replaces the field's name with a new_name
-        """
-        self.name = new_name
+        # set up name and type 
+        # done in parent class (Variable)
+        super().__init__(_type, name)
 
 ##########################################################################
 
