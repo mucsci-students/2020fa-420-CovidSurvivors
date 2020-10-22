@@ -11,7 +11,7 @@
 import os
 import sys
 from flask import Flask, render_template, send_file, request
-from flask import url_for, redirect
+from flask import url_for, redirect, flash
 from werkzeug.utils import secure_filename
 
 # Include parent directory
@@ -68,7 +68,9 @@ def dashboard():
 def createClass():
     # Ensure there was a POST request
     if request.method != "POST":
-        return "Nothing in POST"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Grab the data from the POST request 
     # and structure it for the command
@@ -93,22 +95,29 @@ def createClass():
     response = command.execute()
 
     # ensure response
-    if response:
-        status, msg = response
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
 
-        # command was successful 
-        if status:
-            # add to history
-            command_history.push(command)
+    status, msg = response
 
-            # print success message 
-            print(msg)
-        
-            return redirect(url_for('dashboard'))
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
 
-    # command failed
-    print(f"ERROR: {msg}")
-    return msg
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard'))
 
 ##########################################################################
 
@@ -117,7 +126,9 @@ def createClass():
 def editClass():
     # Ensure there was a POST request
     if request.method != "POST":
-        return "Nothing in POST"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Create new class with new data
     # Grab the data from the POST request 
@@ -142,23 +153,30 @@ def editClass():
     # execute command
     response = command.execute()
 
-    # ensure response
-    if response:
-        status, msg = response
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
 
-        # command was successful 
-        if status:
-            # add to history
-            command_history.push(command)
-        
-            # print success message 
-            print(msg)
+    status, msg = response
 
-            return redirect(url_for('dashboard'))
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
 
-    # command failed
-    print(f"ERROR: {msg}")
-    return msg
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard'))
 
 ##########################################################################
 
@@ -168,7 +186,9 @@ def editClass():
 def editForm():
     # Ensure there was a POST request
     if request.method != "POST":
-        return "Nothing in POST"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
     
     # load model
     model = UMLModel()
@@ -192,7 +212,9 @@ def deleteClass():
 
     # Ensure method was post
     if request.method != 'POST':
-        return "<h1 style='text-align:center'>Nothing sent in POST</h1>"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Print out what is being deleted
     print (f"Deleting class '{request.form.get('class_name')}' from the model")
@@ -211,22 +233,30 @@ def deleteClass():
     response = command.execute()
 
     # ensure response
-    if response:
-        status, msg = response
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
 
-        # command was successful 
-        if status:
-            # add to history
-            command_history.push(command)
-        
-            # print success message 
-            print(msg)
-            
-            return redirect(url_for('dashboard'))
+    status, msg = response
 
-    # command failed
-    print(f"ERROR: {msg}")
-    return msg
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard'))
+
 
 ##########################################################################
 
@@ -238,12 +268,16 @@ def undo():
 
     # ensure there was a command
     if command == None:
-        return "ERROR: No command to undo"
+        # send error message as a flash message
+        flash("Nothing to undo", "error")
+        return redirect(url_for('dashboard'))
     
     # undo the command
     command.undo()
 
-    # Redirect user back to main page 
+    # send success message as a flash message
+    print(f"SUCCESS: Successfully undid last command")
+    flash("Undo successful", "success")
     return redirect(url_for('dashboard'))
 
 ##########################################################################
@@ -256,12 +290,16 @@ def redo():
 
     # ensure there was a command
     if command == None:
-        return "ERROR: No command to redo"
+        # send error message as a flash message
+        flash("Nothing to redo", "error")
+        return redirect(url_for('dashboard'))
     
     # redo the command
     command.execute()
 
-    # Redirect user back to main page 
+    # send success message as a flash message
+    print(f"SUCCESS: Redo successful")
+    flash("Redo successful", "success")
     return redirect(url_for('dashboard'))
 
 ##########################################################################
@@ -288,22 +326,30 @@ def is_json(filename):
 def upload():
     # Ensure there was a POST request
     if request.method != 'POST':
-        return "<h1 style='text-align:center'>Nothing sent in POST</h1>"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Ensure POST has a 'file' 
     if 'file' not in request.files:
-        return "<h1 style='text-align:center'>No file</h1>"
+        # send error message as a flash message
+        flash("No file provided", "error")
+        return redirect(url_for('dashboard'))
     
     # Grab file
     file = request.files['file']
 
     # Ensure there was a file submitted
     if file.filename == '':
-        return "<h1 style='text-align:center'>No file submitted</h1>"
+        # send error message as a flash message
+        flash("No file provided", "error")
+        return redirect(url_for('dashboard'))
     
     # Ensure file is a json file
     if not is_json(file.filename):
-        return "<h1 style='text-align:center'>Bad File Extension</h1>"
+        # send error message as a flash message
+        flash("File must be a JSON file", "error")
+        return redirect(url_for('dashboard'))
     
     # Save the file to the server as a temp file
     # User's filename is not used which avoids 
@@ -316,7 +362,9 @@ def upload():
     try:
         model.load_model(TEMP_FILENAME)
     except:
-        return "<h1 style='text-align:center'>Model File Not Parse-able</h1>"
+        # send error message as a flash message
+        flash("File cannot be interpretted as a UMLModel", "error")
+        return redirect(url_for('dashboard'))
 
     # Save file as the new working model 
     with open(DATA_FOLDER + TEMP_FILENAME, "r") as src:
@@ -325,6 +373,7 @@ def upload():
 
     # Redirect to the homepage to display 
     # the newly loaded model
+    flash("File was successfully loaded", "success")
     return redirect(url_for('dashboard'))
         
 ##########################################################################

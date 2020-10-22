@@ -1,7 +1,22 @@
+// Javascript/JQuery for the GUI UML Editor
+// Course:   CSCI 420 - Software Engineering
+// Authors:  Adisa, Amy, Carli, David, Joan
+// Date:     October 21 2020
+// =======================================================================
+
+// Closes the popup status message box with the given ID
+function closeFlashMessage(id) {
+    $(id).remove();
+}
+
+// =======================================================================
+
 // Saves the name to the delete class modal  
 function setDeleteData(classname) {
     $('#deleteClassInputName').val(classname);
 } 
+
+// =======================================================================
 
 // Loads the create class modal form 
 // at the moment, the only loaded data is 
@@ -17,8 +32,9 @@ function loadCreateClassModal() {
             createEditClassModalBtns();
         });
     
-
 }
+
+// =======================================================================
 
 // Loads the edit class modal form 
 function loadEditClassModal(classname) {
@@ -31,15 +47,18 @@ function loadEditClassModal(classname) {
             // Re-attach modal buttons
             createEditClassModalBtns();
         });
-    
 
 }
+
+// =======================================================================
 
 // Runs automatically when web application is executed
 $(function() {
     classCardBtns();
     createEditClassModalBtns();
 });
+
+// =======================================================================
 
 // Gives class card the ability to be draggable and calculates
 // the coordinates of the class card on the display  
@@ -52,6 +71,8 @@ function draggable(card) {
         snap: true
     });
 }
+
+// =======================================================================
 
 // Functionality for the class card buttons
 function classCardBtns() {
@@ -81,6 +102,8 @@ function classCardBtns() {
 
     });
 }
+
+// =======================================================================
 
 // Functionality for the create class and edit class modal buttons
 function createEditClassModalBtns() {
@@ -149,3 +172,5 @@ function createEditClassModalBtns() {
         $(this).closest('.input-group').remove();
     });
 }
+
+// =======================================================================
