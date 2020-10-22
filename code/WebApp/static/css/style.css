@@ -1,3 +1,11 @@
+/*
+ CSS for the GUI UML Editor
+ Course:   CSCI 420 - Software Engineering
+ Authors:  Adisa, Amy, Carli, David, Joan
+ Date:     October 21 2020
+*/
+/************************************************************************/
+
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
 * {
     margin: 0;
@@ -12,7 +20,47 @@ body {
     background-color: #393e46;
 }
 
-/* SIDE BAR */
+/*** FLASH MESSAGES *****************************************************/
+
+.flash-modal-container {
+    /* background-color: yellow; */
+    min-width: 200px;
+    width: 30%;
+    top: 20px;
+    left: 35%;
+    position: absolute;
+    margin: auto;
+    z-index: 10;
+}
+
+.flash-modal {
+    word-wrap: break-word;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 100px;
+    display: block;
+}
+
+.flash-error {
+    background-color: rgb(256, 150, 150);
+    border: 2px solid #BB3333;
+}
+
+.flash-success {
+    background-color: rgb(150, 256, 150);
+    border: 2px solid #33BB33;
+}
+
+.flash-exit-button {
+    float: right;
+    width: 25px;
+    background-color: unset;
+    border: unset;
+}
+
+/*** SIDE BAR ***************************************************************/
+
 .wrapper {
     display: flex;
     position: relative;
@@ -63,8 +111,8 @@ body {
     color: #32e0c4;
 }
 
+/*** MODAL POP-UP WINDOWS ***********************************************/
 
-/* MODAL POP-UP WINDOWS */
 .modal-content {
     border: none;
 }
@@ -113,7 +161,8 @@ body {
     margin-bottom: 5px;
 }
 
-/* DISPLAY AREA */
+/*** DISPLAY AREA *******************************************************/
+
 .flex-container {
     display: flex;
     flex-direction: column;
@@ -121,7 +170,8 @@ body {
     padding-left: 202px;
 }
 
-/* MOVABLE CLASS CARDS */
+/*** MOVABLE CLASS CARDS ************************************************/
+
 .card-body {
     border: #212121;
     border-style: dotted solid;
@@ -170,3 +220,5 @@ body {
 .card-footer .btn:hover {
     background-color: #32e0c4;
 }
+
+/************************************************************************/
