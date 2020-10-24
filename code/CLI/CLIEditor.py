@@ -10,6 +10,7 @@
 ##########################################################################
 # Imports
 
+import cmd
 from typing import Tuple 
 
 from models.UMLModel import UMLModel
@@ -25,6 +26,7 @@ PROMPT_COLOR  = "\033[1;36m"
 ERROR_COLOR   = "\033[91m"
 SUCCESS_COLOR = "\033[92m"
 NORMAL_COLOR  = "\033[0;37m"
+DESCRIPTION_COLOR = "\033[0;33m"
 
 # The number of commands that are saved for undo-ing
 HISTORY_LIMIT = 20
@@ -101,8 +103,8 @@ def print_help_message(model:UMLModel, command = "") -> None:
         # for each usage
         for usage in usages: 
             # print the usage
-            print (usage["usage"])
-            print ("\t", usage["desc"])
+            print (f"{DESCRIPTION_COLOR}",usage["usage"])
+            print ("\t", f"{NORMAL_COLOR}", usage["desc"])
     # Print all commands
     elif command == "":
         print ("Type help <command_name> to see the usage of a command")
@@ -179,54 +181,28 @@ def getCommand(model:UMLModel, command:str, arguments:list = []) -> Command:
 
 ##########################################################################
 
-def REPL():
+class REPL(cmd.Cmd):
     """Read Eval Print Loop for the UMLEditor program
 
     A constantly running loop for the user to input commands to modify 
     the state of a UMLModel object. 
     """
+    intro = "This is the command-line interface for UMLEditor. \nPush 'Tab' to: view commands / help with completion."
+    prompt = "UMLEditor> "
+    file = None
     # Keep a representation of the UML model 
-    model : UMLModel = UMLModel()
-
-    while (True):
-
-        # Give user a prompt 
-        print(PROMPT_COLOR, "UMLEditor> ", NORMAL_COLOR, sep="", end="")
-
-        # Read user's input
-        try:
-            user_input = input()
-
-        # User entered EOF character
-        # Ctrl + D
-        except EOFError:
-            print ()
-            exit()
-
-        # User entered Interrupt
-        except KeyboardInterrupt:
-            print ("\nKeyboardInterrupt")
-
-        # Tokenize user's input 
-        words = user_input.split()
-
-        # If user presses enter
-        if len(words) == 0:
-            continue
-
-        # Grab command           
-        # This handles the case where there are no arguments
-        command = getCommand(model, words[0], words[1:])
-
-        # execute the command 
-        # undoable command
-        if isinstance(command, UndoableCLICommand):
-            # save backup 
-            command.saveBackup()
-
+    global model
+    model = UMLModel()
+    
+    def do_create_class(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "create_class", words[0:])
+        # save backup
+        command.saveBackup()
         # execute the command
         response = command.execute()
-        
         # ensure there was a response
         if response:
             status, msg = response
@@ -239,11 +215,529 @@ def REPL():
                     command_history.push(command)
             else:
                 print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
-        # no response given 
-        # don't print anything
+
+    def do_rename_class(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "rename_class", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_delete_class(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "delete_class", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_list_class(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "list_class", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_list_classes(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "list_classes", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_create_field(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "create_field", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+    
+    def do_rename_field(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "rename_field", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_delete_field(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "delete_field", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_move_up_field(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "move_up_field", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_move_down_field(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "move_down_field", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_list_fields(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "list_fields", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_create_method(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "create_method", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_rename_method(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "rename_method", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_delete_method(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "delete_method", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_move_up_method(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "move_up_method", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_move_down_method(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "move_down_method", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_list_methods(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "list_methods", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_create_relationship(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "create_relationship", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+    
+    def do_delete_relationship(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "delete_relationship", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+    
+    def do_move_up_relationship(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "move_up_relationship", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+    
+    def do_move_down_relationship(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "move_down_relationship", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_list_relationships(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "list_relationships", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_save_model(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "save_model", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_load_model(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "load_model", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_undo(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "undo", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_redo(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "redo", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_help(self, args):
+        if args:
+            print_help_message(model, args)
+        else:
+            print_help_message(model, "")
+
+    def do_exit(self, args):
+        prompt_exit(model)
+
+    def complete_help(self, text, line, begidx, endidx):
+        commands = list(CommandData.COMMANDS.keys())
+        if text:
+            return [
+                command for command in commands
+                if command.startswith(text)
+            ]
+        else:
+            return commands
+    
+##########################################################################
+
+def runCMD():
+    REPL().cmdloop()
 
 ##########################################################################
 
 # Program runs the REPL by default 
 if __name__ == "__main__":
-    REPL()
+    REPL().cmdloop()
