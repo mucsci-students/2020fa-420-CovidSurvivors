@@ -279,3 +279,38 @@ class DeleteClassGUICommand(Command, Undoable):
         self.model.save_model(self.payload["filename"])
 
         return True, f"{self.payload['class_name']} was deleted"
+
+##########################################################################
+
+# This is for the GUI
+class SetClassPositonGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+    def execute(self) -> bool:
+        # Load model to set class position
+        self.model.load_model(self.payload["filename"])
+        # set position of class
+        status, msg = self.model.set_class_position(self.payload["class_name"], self.payload["x"], self.payload["y"], self.payload["zindex"])
+
+        # save model
+        self.model.save_model(self.payload["filename"])
+
+        return True, f"The position of {self.payload['class_name']} has been set to ({self.payload['x']}, {self.payload['y']}) with a z-index of {self.payload['zindex']}."

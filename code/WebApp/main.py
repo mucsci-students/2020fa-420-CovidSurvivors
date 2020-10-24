@@ -17,7 +17,7 @@ from werkzeug.utils import secure_filename
 # Include parent directory
 sys.path.append(os.getcwd())
 from command.command import CommandHistory, CreateClassGUICommand
-from command.command import EditClassGUICommand, DeleteClassGUICommand
+from command.command import EditClassGUICommand, DeleteClassGUICommand, SetClassPositonGUICommand
 from models.UMLModel import UMLModel
 
 ##########################################################################
@@ -203,6 +203,63 @@ def editForm():
 
     # Build modal form inputs
     return render_template("modalForm.html", data=data)
+
+##########################################################################
+
+# Saves the position of a class card based on its location on the dashboard
+@app.route("/saveCardPosition", methods=['POST'])
+def saveCardPosition():
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
+
+    # load model
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+
+    # Grab the position data from the POST request 
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "class_name" : request.form['class_name'],
+        "x" : request.form['x'],
+        "y": request.form['y'],
+        "zindex": request.form['zindex']
+    }
+
+    # create command 
+    command = SetClassPositonGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
+
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
+
+    status, msg = response
+
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard'))
+
 
 ##########################################################################
 
