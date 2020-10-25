@@ -188,7 +188,7 @@ class REPL(cmd.Cmd):
     the state of a UMLModel object. 
     """
     intro = "This is the command-line interface for UMLEditor. \nPush 'Tab' to: view commands / help with completion."
-    prompt = "UMLEditor> "
+    prompt = f"{PROMPT_COLOR}UMLEditor> {NORMAL_COLOR}"
     file = None
     # Keep a representation of the UML model 
     global model
@@ -730,14 +730,35 @@ class REPL(cmd.Cmd):
             ]
         else:
             return commands
-    
+
+    # when user enters an empty command (pushes enter)
+    def emptyline(self):
+         pass
+
+    def do_EOF(self, args):
+        return True       
 ##########################################################################
 
 def runCMD():
-    REPL().cmdloop()
+    while True:
+        try:
+            REPL().cmdloop()
+            # cmdloop ended normally
+            # exit program
+            break
+        except KeyboardInterrupt:
+            # remove intro message
+            # so it does not display again
+            REPL().intro = ""
+            # print a newline so the prompt displays on
+            # the next line 
+            print()
+            print("KeyboardInterrupt")
+            # re-run the cmd loop 
 
 ##########################################################################
 
 # Program runs the REPL by default 
 if __name__ == "__main__":
     REPL().cmdloop()
+
