@@ -35,7 +35,10 @@
                 "type": "composition",
                 "other": "class3"
             }
-        ]
+        ],
+        "x": "14px",
+        "y": "95px",
+        "zindex": "34"
     },
     "class1": {
         "name": "class1",
@@ -68,8 +71,15 @@
             {
                 "type": "inheritance",
                 "other": "class2"
+            },
+            {
+                "type": "reverse composition",
+                "other": "class4"
             }
-        ]
+        ],
+        "x": "129px",
+        "y": "-185px",
+        "zindex": "33"
     },
     "class3": {
         "name": "class3",
@@ -93,6 +103,41 @@
                 "type": "composition",
                 "other": "class2"
             }
-        ]
+        ],
+        "x": "181px",
+        "y": "-759.4px",
+        "zindex": "29"
+    },
+    "class4": {
+        "name": "class4",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "int",
+                "type": "field1"
+            },
+            {
+                "visibility": "private",
+                "name": "float",
+                "type": "field2"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "string",
+                "type": "method1()"
+            }
+        ],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "class1"
+            }
+        ],
+        "x": "231px",
+        "y": "-1006.4px",
+        "zindex": "33"
     }
 }

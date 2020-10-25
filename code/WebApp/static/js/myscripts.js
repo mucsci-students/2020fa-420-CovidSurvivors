@@ -68,7 +68,21 @@ function draggable(card) {
         cursor: "crosshair",
         opacity: 0.5,
         containment: "parent",
-        snap: true
+        snap: true,
+        // sends x and y position of class card, along with its z-index, after the class card has been moved
+        stop: function() {
+            // name of class associated with the class card
+            var classname = $($(this)).attr('name');
+            // x coordinate representing the horizontal position of card on dashboard
+            var x = $(card).css("left");
+            // y coordinate representing the vertical position of card on dashboard
+            var y = $(card).css("top");
+            // the z-index specifing the stack order of the class cards on the dashboard
+            var zindex = $(card).css("z-index");
+
+            // sends class name and the appropriate position data of a class card to the server 
+            $.post("/saveCardPosition", {class_name:classname, x:x, y:y, zindex:zindex}) 
+        }
     });
 }
 
@@ -90,16 +104,6 @@ function classCardBtns() {
         $("#deleteModal").modal('hide');
         // displays a confirmation modal informing user the class card has been deleted
         $("#confirmModal").modal('show');
-    });
-
-    // Allows us to edit a specific class card on click of its edit button
-    $('.card-footer').on('click', '.editCard', function () {
-        // Get all the information pertaining to the class we wish to edit using the unique class ID
-
-        // Preload the information we got into the appropriate textboxes of the edit Class Modal
-
-        //alert("Edit class: #" + getId);
-
     });
 }
 

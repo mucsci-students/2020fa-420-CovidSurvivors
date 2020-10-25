@@ -719,4 +719,32 @@ class UMLModel:
             
     ######################################################################
 
+    def set_class_position(self, class_name:str, x:int, y:int, zindex:int):
+        """
+            Sets the x and y position of a given class based on the position
+            of that class on the dashboard of the GUI
+            
+            - class_name (string) - the name of the class to set the position of
+
+            - x (float) - the horizontal (CSS left property) position of the class card
+
+            - y (float) - the vertical (CSS top property) position of the class card
+        """
+
+        # ensure class exists
+        if class_name not in self.classes:
+            return (False, f"{class_name} does not exist")
+
+        # set the x position
+        (self.classes[class_name]).x = x
+        # set the y position
+        (self.classes[class_name]).y = y
+        # set the z-index
+        (self.classes[class_name]).zindex = zindex
+
+        # gives user verification that the positions have been set
+        return (True, f"The position of '{class_name}' has been set to ('{x}', '{y}')")
+
+    ######################################################################
+
     

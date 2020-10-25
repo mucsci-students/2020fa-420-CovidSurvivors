@@ -36,6 +36,12 @@ class UMLClass:
         self.methods = []
         # A list of all relationships for this class
         self.relationships = []
+        # The x coordinate representing the horizontal positioning of this class on the dashboard of the GUI
+        self.x = 0
+        # The y coordinate representing the vertical positioning of this class on the dashboard of the GUI
+        self.y = 0
+        # The z-index which specifies the stack order of the class cards on the dashboard of the GUI
+        self.zindex = 0
 
 ##########################################################################
 
@@ -329,6 +335,15 @@ class UMLClass:
         # add relationships
         data["relationships"] = [rel.get_raw_data() for rel in self.relationships]
 
+        # add position x
+        data["x"] = self.x
+
+        # add position y
+        data["y"] = self.y
+
+        # add the z-index
+        data["zindex"] = self.zindex
+
         return data
 
 ##########################################################################
@@ -345,6 +360,9 @@ class UMLClass:
         c.fields = [UMLField.from_raw_data(field) for field in data["fields"]]
         c.methods = [UMLMethod.from_raw_data(method) for method in data["methods"]]
         c.relationships = [UMLRelationship.from_raw_data(relationship) for relationship in data["relationships"]]
+        c.x = data["x"]
+        c.y = data["y"]
+        c.zindex = data["zindex"]
         return c
 
 ##########################################################################
