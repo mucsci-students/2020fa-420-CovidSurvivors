@@ -25,7 +25,7 @@ from command.command import CommandHistory
 PROMPT_COLOR  = "\033[1;36m"
 ERROR_COLOR   = "\033[91m"
 SUCCESS_COLOR = "\033[92m"
-NORMAL_COLOR  = "\033[0;37m"
+NORMAL_COLOR  = "\033[0m"
 DESCRIPTION_COLOR = "\033[0;33m"
 
 # The number of commands that are saved for undo-ing
@@ -736,20 +736,23 @@ class REPL(cmd.Cmd):
          pass
 
     def do_EOF(self, args):
+        print()
         return True       
 ##########################################################################
 
+# store repl so we can save it's state between runCMD() calls
+repl = REPL()
 def runCMD():
     while True:
         try:
-            REPL().cmdloop()
+            repl.cmdloop()
             # cmdloop ended normally
             # exit program
             break
         except KeyboardInterrupt:
             # remove intro message
             # so it does not display again
-            REPL().intro = ""
+            repl.intro = ""
             # print a newline so the prompt displays on
             # the next line 
             print()
@@ -760,5 +763,5 @@ def runCMD():
 
 # Program runs the REPL by default 
 if __name__ == "__main__":
-    REPL().cmdloop()
+    runCMD()
 
