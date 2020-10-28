@@ -468,7 +468,19 @@ class UMLModel:
 
         # Print methods
         for method in self.classes[class_name].methods:
-            outputs.append(f"{Visibility.to_string(method.visibility)} {method.name}(): {method.type}")
+            method_str = f"{Visibility.to_string(method.visibility)} {method.name}("
+            
+            # print parameters
+            # add first parameter
+            if len(method.parameters) >= 1:
+                method_str = "".join([method_str, f"{method.parameters[0].type} {method.parameters[0].name}"])
+            for i in range(1, len(method.parameters)):
+                method_str = ", ".join([method_str, f"{method.parameters[i].type} {method.parameters[i].name}"])
+            
+            # add end of method line
+            method_str = "".join([method_str, f"): {method.type}"])
+            # add to output
+            outputs.append(method_str)
 
         outputs.append("=== Relationships ===============")
 
@@ -747,12 +759,12 @@ class UMLModel:
 
     ######################################################################
 
-    def create_parameters_methods(self, class_name:str, method_name:str, parameter_name:str, parameter_type:str)-> Tuple[bool, str]:
+    def create_parameter(self, class_name:str, method_name:str, parameter_type:str, parameter_name:str)-> Tuple[bool, str]:
         """Creates parameters for a given class within method
             - class_name (string) - the name of the class
             - method_name (string) - the name of the method
-            - parameter_name (string) - the namee of the parameter
             - parameter_type (string) - the type of the parameter
+            - parameter_name (string) - the name of the parameter
         """
         #checks if the the class exists
         if class_name not in self.classes:
@@ -767,7 +779,31 @@ class UMLModel:
             return (False, " {} already exists in {}".format(parameter_name, method_name))
 
         # creates parameter in class
-        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].create_parameter(parameter_type, parameter_name)
         return (True, "parameter {} of type {} has been created in {}"
             .format(parameter_name, parameter_type, method_name))
+    ##########################################################################
+
+    def list_parameters(self, class_name:str, method_name:str):
+        """
+            Prints all of the parameters for a given method of a given class
+
+            - class_name (string) - the name of the class
+            - method_name (string) - the name of the method
+        """
+        # ensure class exists
+        if class_name not in self.classes:
+            return (False, f"{class_name} does not exist")
+
+        # ensure class has methods
+        if not self.classes[class_name].has_method(method_name):
+            return (False, f"{class_name} does not have method, {method_name}")
+
+        # loop the classes by the name
+        outputs = [f"Parameters for {method_name}"]
+        for parameter in self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].parameters:
+            outputs.append(f"{parameter.type} {parameter.name}")
+
+        return (True, "\n".join(outputs))
+
     ##########################################################################

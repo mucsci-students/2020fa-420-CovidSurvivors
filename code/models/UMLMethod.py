@@ -36,11 +36,11 @@ class UMLMethod(Variable):
 
 ##########################################################################
 
-    def create_parameters_methods(self, parameter_name:str, parameter_type:str):
+    def create_parameter(self, parameter_type:str, parameter_name:str):
         """Add new pararameters (name , type)
         Params:
-        - parameter_name (string) - the name of the parameter
         - parameter_type (string) - the type of the parameter
+        - parameter_name (string) - the name of the parameter
 
         Preconditions:
         - parameter_name should not already exist
