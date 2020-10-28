@@ -153,6 +153,16 @@ COMMANDS = {
             "skip_line" : False
         }
     ],
+    "create_parameters_methods" : [
+        {
+            "usage" : "create_parameters_methods <class_name> <method_name> <parameter_name> <parameter_type>",
+            "desc" : "creates a parameter named <parameter_name> of type <parameter_type> and adds it to the given class and method\n ",
+            "command" : UndoableCLICommand,
+            "function" : UMLModel.create_parameters_methods,
+            "num_arguments" : 4,
+            "skip_line" : False
+        }
+    ],
     "move_up_method" : [
         {
             "usage" : "move_up_method <class_name> <method_name>",

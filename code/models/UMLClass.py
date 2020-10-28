@@ -248,7 +248,64 @@ class UMLClass:
                 return i
         return -1
 
-##########################################################################   
+########################################################################## 
+    
+    def create_parameters_methods(self, method_name:str, parameter_name:str, parameter_type:str):
+        """Add new pararameters (name , type)
+        Params:
+        - class_name (string) - the name for an existed class
+        - method_name (string) - the name for an existed method 
+        - parameter_name (string) - the name of the parameter
+        - parameter_type (string) - the type of the parameter
+
+        Preconditions:
+        - parameter_name should not already exist
+
+        Postconditions:
+        - the parameter within method will be added to this class
+        
+        """
+        self.methods[method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
+
+########################################################################## 
+    
+    def rename_parameter(self, method_name:str, old_parameter_name:str, new_parameter_name:str):
+        """Edit an existed pararameter (old_parameter_name , new_parameter_type)
+        Params:
+
+        - method_name (string) - the name for an existed method 
+        - old_parameter_name (string) - the name of the parameter
+        - new_parameter_type (string) - the type of the parameter
+
+        Preconditions:
+        - new_parameter_name should not already exist
+
+        Postconditions:
+        - the parameter within method will be edited to this class
+        
+        """
+        self.methods[method_index(method_name)].rename_parameter(old_parameter_name, new_parameter_name)
+
+########################################################################## 
+    
+    def delete_parameter(self, method_name:str, parameter_name:str):
+        """Removes an existed parameter_name from this class
+
+        Params:
+        - method_name (string) - the name of an existing method 
+        - parameter_name(string) - the name of the parameter to delete
+
+        Preconditions:
+        - parameter_name should exist
+
+        Postconditions:
+        - the parameter will be deleted from this class
+        
+        
+        """
+        self.methods[method_index(method_name)].delete_parameter(parameter_name)
+
+########################################################################## 
 
     def add_relationship(self, rtype, other_class_name):
         """Adds a relationship object to this class

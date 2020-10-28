@@ -190,7 +190,26 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(len(model.classes["c1"].relationships), 0)
         self.assertEqual(len(model.classes["c2"].relationships), 0)
         
-##########################################################################
+    ##########################################################################
+
+    def test_create_parameters_methods(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameters_methods("class1", "method1", "param_name", "param_type")
+        
+        #self.assertTrue(model.classes["class1"].methods["method1"].has_parameter("param_name"))
+        self.assertTrue(model.classes["class1"].methods[self.classes["method1"].method_index("method1")].has_parameter("param_name"))
+    
+
+        # Ensure duplicate parameter is not created 
+        status, msg = model.create_parameters_methods("class1", "method1", "param_name", "param_type")
+        
+        # ensure it failed
+        self.assertFalse(status)
+    
+
+    ######################################################################
 
 # runs all of our tests 
 # allows us to run this file using the typical 'python3 test_UMLModel.py' command

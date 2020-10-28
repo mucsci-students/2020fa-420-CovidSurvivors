@@ -10,6 +10,7 @@
 
 from models.Variable import Variable
 from .Visibility import Visibility
+from models.UMLParameter import UMLParameter
 
 ##########################################################################
 
@@ -35,6 +36,79 @@ class UMLMethod(Variable):
 
 ##########################################################################
 
+    def create_parameters_methods(self, parameter_name:str, parameter_type:str):
+        """Add new pararameters (name , type)
+        Params:
+        - parameter_name (string) - the name of the parameter
+        - parameter_type (string) - the type of the parameter
+
+        Preconditions:
+        - parameter_name should not already exist
+
+        Postconditions:
+        - the parameter within method will be added to this class
+        
+        """
+
+        self.parameters.append(UMLParameter(parameter_type, parameter_name))
+
+##########################################################################
+    def rename_parameter(self, old_parameter_name:str, new_parameter_name:str):
+        """Edit an existed pararameter (old_parameter_name , new_parameter_type)
+        Params:
+        - old_parameter_name (string) - the name of the parameter
+        - old_parameter_type (string) - the type of the parameter
+
+        Preconditions:
+        - new_parameter_name should not already exist
+
+        Postconditions:
+        - the old_parameter_name within method will be edited from this class
+        
+        """
+
+        self.parameters[parameter_index(old_parameter_name)].rename(old_parameter_name, new_parameter_name)
+
+##########################################################################
+    def remove_parameter(self, parameter_name:str):
+        """Removes a parameter within this method class
+
+        Params:
+        - method_name (string) - the name for a parameter to remove wthin this method class
+
+        Preconditions:
+        - parameter_name should exist
+
+        Postconditions:
+        - the parameter will be deleted 
+        """
+
+        self.parameters.pop(parameter_index(parameter_name))
+
+##########################################################################
+
+    def parameter_index(self, parameter_name:str):
+        """Returns the index for a given parameter in the list
+        
+        returns -1 if not present 
+        """
+        for i in range(len(self.parameters)):
+            if self.parameters[i].name == parameter_name:
+                return i
+        return -1
+
+##########################################################################  
+
+    def has_parameter(self, parameter_name:str):
+        """Returns true if this class has a parameter matching the given name
+
+        Params:
+        - parameter_name (string) - the name for a parameter
+        """
+        return self.parameters[parameter_index(parameter_name)] != -1
+
+##########################################################################
+    
     def get_raw_data(self):
         """Returns a JSON convertible form of the data"""
         return {

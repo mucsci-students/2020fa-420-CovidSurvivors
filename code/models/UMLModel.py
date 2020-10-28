@@ -746,5 +746,32 @@ class UMLModel:
         return (True, f"The position of '{class_name}' has been set to ('{x}', '{y}')")
 
     ######################################################################
+        
+    def create_parameters_methods(self, class_name:str, method_name:str, parameter_name:str, parameter_type:str)-> Tuple[bool, str]:
+        """Creates parameters for a given class within method
+            - class_name (string) - the name of the class
+            - method_name (string) - the name of the method
+            - parameter_name (string) - the namee of the parameter
+            - parameter_type (string) - the type of the parameter
+        """
+        #checks if the the class exists
+        if class_name not in self.classes:
+            return (False, "{} does not exist".format(class_name))
+
+        #ensure the method name exist
+        if not self.classes[class_name].has_method(method_name):
+            return (False, "method {} does not exist in {}".format(method_name, class_name))
+        
+        # ensure the parameter do not exist
+        #if self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(parameter_name):
+        if self.classes[class_name].methods[method_name].has_parameter(parameter_name):
+            return (False, " {} already exists in {}".format(parameter_name, method_name)) 
+
+        # creates parameter in class
+        self.classes[class_name].methods[method_name].create_parameters_methods(parameter_name, parameter_type)
+        #self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
+        return (True, "parameter {} of type {} has been created in {}, it is a {} parameter"
+            .format(parameter_name, parameter_type))
+    ##########################################################################
 
     
