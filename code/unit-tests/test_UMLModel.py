@@ -159,6 +159,23 @@ class UMLModelTest(unittest.TestCase):
         model.delete_method("class1", "add")
         self.assertFalse(testClass.has_method("add"))
 
+    ##########################################################################
+
+    def test_create_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+
+        self.assertTrue(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].has_parameter("param_name"))
+
+
+        # Ensure duplicate parameter is not created
+        status, msg = model.create_parameter("class1", "method1", "param_type", "param_name")
+
+        # ensure it failed
+        self.assertFalse(status)
+
     ######################################################################
 
     def test_create_relationship(self):
@@ -189,25 +206,6 @@ class UMLModelTest(unittest.TestCase):
         model.delete_relationship("c1","c2")
         self.assertEqual(len(model.classes["c1"].relationships), 0)
         self.assertEqual(len(model.classes["c2"].relationships), 0)
-
-    ##########################################################################
-
-    def test_create_parameters_methods(self):
-        model = UMLModel()
-        model.create_class("class1")
-        model.create_method("class1", "public", "string", "method1")
-        model.create_parameters_methods("class1", "method1", "param_name", "param_type")
-
-        #self.assertTrue(model.classes["class1"].methods["method1"].has_parameter("param_name"))
-        self.assertTrue(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].has_parameter("param_name"))
-
-
-        # Ensure duplicate parameter is not created
-        status, msg = model.create_parameters_methods("class1", "method1", "param_name", "param_type")
-
-        # ensure it failed
-        self.assertFalse(status)
-
 
     ######################################################################
 
