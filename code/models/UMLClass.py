@@ -265,7 +265,7 @@ class UMLClass:
         - the parameter within method will be added to this class
         
         """
-        self.methods[method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
+        self.methods[self.method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
 
 ########################################################################## 
     
@@ -284,7 +284,7 @@ class UMLClass:
         - the parameter within method will be edited to this class
         
         """
-        self.methods[method_index(method_name)].rename_parameter(old_parameter_name, new_parameter_name)
+        self.methods[self.method_index(method_name)].rename_parameter(old_parameter_name, new_parameter_name)
 
 ########################################################################## 
     
@@ -303,7 +303,7 @@ class UMLClass:
         
         
         """
-        self.methods[method_index(method_name)].delete_parameter(parameter_name)
+        self.methods[self.method_index(method_name)].delete_parameter(parameter_name)
 
 ########################################################################## 
 
