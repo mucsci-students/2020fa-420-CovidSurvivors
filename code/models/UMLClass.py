@@ -417,9 +417,12 @@ class UMLClass:
         c.fields = [UMLField.from_raw_data(field) for field in data["fields"]]
         c.methods = [UMLMethod.from_raw_data(method) for method in data["methods"]]
         c.relationships = [UMLRelationship.from_raw_data(relationship) for relationship in data["relationships"]]
-        c.x = data["x"]
-        c.y = data["y"]
-        c.zindex = data["zindex"]
+        if "x" in data:
+            c.x = data["x"]
+        if "y" in data:
+            c.y = data["y"]
+        if "zindex" in data:
+            c.zindex = data["zindex"]
         return c
 
 ##########################################################################
