@@ -250,13 +250,13 @@ class UMLClass:
 
 ########################################################################## 
     
-    def create_parameters_methods(self, method_name:str, parameter_name:str, parameter_type:str):
+    def create_parameter(self, method_name:str, parameter_type:str, parameter_name:str):
         """Add new pararameters (name , type)
         Params:
         - class_name (string) - the name for an existed class
         - method_name (string) - the name for an existed method 
-        - parameter_name (string) - the name of the parameter
         - parameter_type (string) - the type of the parameter
+        - parameter_name (string) - the name of the parameter
 
         Preconditions:
         - parameter_name should not already exist
@@ -265,7 +265,7 @@ class UMLClass:
         - the parameter within method will be added to this class
         
         """
-        self.methods[self.method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
+        self.methods[self.method_index(method_name)].create_parameter(parameter_type, parameter_name)
 
 ########################################################################## 
     

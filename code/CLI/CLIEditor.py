@@ -484,28 +484,6 @@ class REPL(cmd.Cmd):
             else:
                 print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
 
-    def do_create_parameters_methods(self, args):
-        words = args.split()
-        # grab the command
-        # this handles the case where there are no arguments
-        command = getCommand(model, "create_parameters_methods", words[0:])
-        # save backup
-        command.saveBackup()
-        # execute the command
-        response = command.execute()
-        # ensure there was a response
-        if response:
-            status, msg = response
-            # Ensure command was successful
-            if status:
-                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
-                # Undoable Commands 
-                if isinstance(command, UndoableCLICommand):
-                    # add to the list of history
-                    command_history.push(command)
-            else:
-                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")            
-
     def do_move_up_method(self, args):
         words = args.split()
         # grab the command
@@ -565,6 +543,44 @@ class REPL(cmd.Cmd):
                 print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
             else:
                 print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+
+    def do_create_parameter(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "create_parameter", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")            
+
+    def do_list_parameters(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "list_parameters", words[0:])
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}") 
 
     def do_create_relationship(self, args):
         words = args.split()
