@@ -417,10 +417,15 @@ def upload():
     # To ensure the file will work as the model
     model = UMLModel()
     try:
-        model.load_model(TEMP_FILENAME)
+        status, msg = model.load_model(TEMP_FILENAME)
     except:
         # send error message as a flash message
         flash("File cannot be interpretted as a UMLModel", "error")
+        return redirect(url_for('dashboard'))
+
+    # load model failed
+    if not status:
+        flash(msg, "error")
         return redirect(url_for('dashboard'))
 
     # Save file as the new working model 
