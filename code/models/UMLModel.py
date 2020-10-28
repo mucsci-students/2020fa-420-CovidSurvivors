@@ -1,7 +1,7 @@
 # A representation of the state of a UML Model
-# Description:     
+# Description:
 #   This file keeps track of all the classes that are in the UML Model
-#   It also handles saving/loading the Model to/from a JSON file 
+#   It also handles saving/loading the Model to/from a JSON file
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
 # Date:     October 20 2020
@@ -23,7 +23,7 @@ from .RelationshipType import RelationshipType
 
 
 ##########################################################################
-# Constants 
+# Constants
 
 # The directory where models are saved
 MODEL_DIRECTORY = os.path.join(os.getcwd(), "data/")
@@ -35,46 +35,46 @@ class UMLModel:
     """
     UMLModel
 
-    A represenation of a UML Model which features classes that can have 
-    attributes and relationships to other classes. 
+    A represenation of a UML Model which features classes that can have
+    attributes and relationships to other classes.
 
     """
 
     ######################################################################
-    
+
     def __init__(self):
         """Constructs an empty UMLModel"""
         # Dictionary mapping class names to their class object
         self.classes = {}
 
     ######################################################################
-    
+
     def create_class(self, name:str) -> Tuple[bool, str]:
         """Creates UML Class object and adds it to the model
             - name (string) - the name for the new class
         """
-        # Ensure class does not already exist 
+        # Ensure class does not already exist
         if name in self.classes:
             return (False, "{} already exists.".format(name))
-            
+
         # Creates class object and assigns it to a key
         self.classes[name] = UMLClass(name)
 
-        # return success 
+        # return success
         return (True, f"Class '{name}' was created.")
 
     ######################################################################
-    
+
     def rename_class(self, oldClassName:str, newClassName:str) -> Tuple[bool, str]:
-        """Renames an existing UML Class 
+        """Renames an existing UML Class
             oldClassName (string) - name of class to rename
             newClassName (string) - new name for the class
         """
-        # Checks if the old class name exists       
+        # Checks if the old class name exists
         if oldClassName not in self.classes:
             return (False, "{} does not exist.".format(oldClassName))
 
-        # Checks if the new class name is already in use 
+        # Checks if the new class name is already in use
         if newClassName in self.classes:
             return (False, "{} already exists.".format(newClassName))
 
@@ -83,16 +83,16 @@ class UMLModel:
         # Assigns the renamed class object to a key with the new class name
         self.classes[newClassName] = self.classes.pop(oldClassName)
 
-        # return success 
+        # return success
         return (True, f"Class '{oldClassName}' was renamed to '{newClassName}'.")
 
     ######################################################################
-    
+
     def delete_class(self, name:str) -> Tuple[bool, str]:
         """Deletes UML Class object from the model
             - name (string) - the name of the class to delete
         """
-        # Ensure class exists 
+        # Ensure class exists
         if name not in self.classes:
             return (False, "{} does not exist.".format(name))
 
@@ -110,7 +110,7 @@ class UMLModel:
     def create_field(self, class_name:str, visibility:str, field_type:str, field_name:str) -> Tuple[bool, str]:
         """Creates an attribute for a given class
             - class_name (string) - the name of the class
-            - visibility (string) - the visibility of a field, should be 
+            - visibility (string) - the visibility of a field, should be
             'public' or 'private'
             - field_name (string) - the name of the field
             - field_type (string) - the type of the field
@@ -118,33 +118,33 @@ class UMLModel:
         # Ensure class exists
         if class_name not in self.classes:
             return (False, "{} does not exist".format(class_name))
-        
+
         # Ensure field does not already exist
         if self.classes[class_name].has_field(field_name):
             return (False, "field {} already exists in {}".format(field_name, class_name))
 
         # creates field in class
         self.classes[class_name].add_field(visibility, field_name, field_type)
-        
+
         # Return success
         return (True, "field {} of type {} has been created in {}, it is a {} field"
-        .format(field_name, field_type, class_name, visibility)) 
+        .format(field_name, field_type, class_name, visibility))
 
     ######################################################################
-    
+
     def find_field(self, class_name:str, field_name:str):
         """Gives the index of a given field in a given class
 
-            If field does not exist, then -1 is returned 
+            If field does not exist, then -1 is returned
 
             - class_name (string) - the name of the class
-            - field_name (string) - the name of the field 
+            - field_name (string) - the name of the field
         """
         for i in range(len(self.classes[class_name].fields)):
-            # Finds the attribute 
+            # Finds the attribute
             if self.classes[class_name].fields[i] == field_name:
                 return i
-        return -1     
+        return -1
 
     ######################################################################
     def rename_field(self, class_name:str, old_field_name:str, new_field_name:str) -> Tuple[bool, str]:
@@ -160,9 +160,9 @@ class UMLModel:
         # checks if the field exists in the class
         if not self.classes[class_name].has_field(old_field_name):
             return (False, "field {} does not exist in {}".format(old_field_name, class_name))
-        
+
         # checks if the inputted new field name already exists in the class
-        if self.classes[class_name].has_field(new_field_name):  
+        if self.classes[class_name].has_field(new_field_name):
             return (False, "field {} already exists in {}".format(new_field_name, class_name))
 
         # renames the field to new_field_name
@@ -176,18 +176,18 @@ class UMLModel:
     def delete_field(self, class_name:str, field_name:str) -> Tuple[bool, str]:
         """Deletes a given field for a given class
             - class_name (string) - the name of the class
-            - field_name (string) - the name for a field to 
+            - field_name (string) - the name for a field to
                 delete
         """
         # checks if the class exists
         if class_name not in self.classes:
-            return (False, f"{class_name} does not exist") 
+            return (False, f"{class_name} does not exist")
 
         # checks if the field exists in the class
         if not self.classes[class_name].has_field(field_name):
             return (False, f"{field_name} is not a field of {class_name}")
 
-        
+
         # deletes the field
         self.classes[class_name].remove_field(field_name)
 
@@ -200,7 +200,7 @@ class UMLModel:
             - class_name (string) - the name of the class
             - field_name (string) - the name of the field being moved up
         """
-        
+
         # ensure class exists
         if class_name not in self.classes:
             return (False, f"{class_name} does not exist")
@@ -213,7 +213,7 @@ class UMLModel:
         field = self.classes[class_name].fields
         if field_name == field[0].name:
             return (False, f"{field_name} can not move up any further in {class_name}")
-            
+
         for i in range(len(field)):
             #swaps target field with the field in front of it
             if field_name == field[i].name:
@@ -241,7 +241,7 @@ class UMLModel:
         field = self.classes[class_name].fields
         if field_name == field[len(field)-1].name:
             return (False, f"{field_name} can not move down any further in {class_name}")
-        
+
         for i in range(len(field)):
             #swaps target field with the field behind it
             if field_name == field[i].name:
@@ -259,7 +259,7 @@ class UMLModel:
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
         """
-        # Ensure relationship type is valid 
+        # Ensure relationship type is valid
         rtype = RelationshipType.from_string(relationship_type)
         reverseRtype = RelationshipType.from_string("reverse " + relationship_type)
         if rtype == RelationshipType.INVALID:
@@ -277,7 +277,7 @@ class UMLModel:
         if (self.classes[class_name1].has_relationship(class_name2) and
             self.classes[class_name2].has_relationship(class_name1)):
             return (False, f"Relationship between '{class_name1}' and '{class_name2}' already exists.")
-        
+
         # does not find existing relationship
         # Ready to add relationship
         # this uses a look-before-leaping approach to weed out any bugs
@@ -290,7 +290,7 @@ class UMLModel:
         return (True, f"Relationship between '{class_name1}' and '{class_name2}' was created")
 
     ######################################################################
-    
+
     def delete_relationship(self, class_name1:str, class_name2:str) -> Tuple[bool, str]:
         """Deletes a relationship between two given classes
             - class_name1 (string) - the name of the first class
@@ -299,17 +299,17 @@ class UMLModel:
         # Class1 does not exist
         if class_name1 not in self.classes:
             return (False, f"{class_name1} does not exist")
-            
+
         # Class2 does not exist
         if class_name2 not in self.classes:
             return (False, f"{class_name2} does not exist")
-        
+
         # Ensure relationship exists
         if (not self.classes[class_name1].has_relationship(class_name2) and
             not self.classes[class_name2].has_relationship(class_name1)):
             return (False, f"Relationship between {class_name1} and {class_name2} does not exist.")
 
-        # Remove relationship from both classes 
+        # Remove relationship from both classes
         # This has a look-before-leap approach to weed out any potential bugs
         if self.classes[class_name1].has_relationship(class_name2):
             self.classes[class_name1].remove_relationship(class_name2)
@@ -319,13 +319,13 @@ class UMLModel:
         return (True, f"Relationship between {class_name1} and {class_name2} has been deleted")
 
     ######################################################################
-    
+
     def move_up_relationship(self, class_name1:str, class_name2:str):
         """Moves a relationship up one position in a list of relationships for tw
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
         """
-        
+
         # ensure class 1 exists
         if class_name1 not in self.classes:
             return (False, f"{class_name1} does not exist")
@@ -352,14 +352,14 @@ class UMLModel:
         rships[i] = preceder
         return (True, f"The relationship with {class_name2} has been moved up in {class_name1}")
 
-    ######################################################################  
+    ######################################################################
 
     def move_down_relationship(self, class_name1:str, class_name2:str) -> Tuple[bool, str]:
-        """Moves a relationship down one position in a list of relationships 
+        """Moves a relationship down one position in a list of relationships
             - class_name (string) - the name of the class
             - class_name1 (string) - the name of the first class
             - class_name2 (string) - the name of the second class
-        """   
+        """
 
          # ensure class 1 exists
         if class_name1 not in self.classes:
@@ -379,7 +379,7 @@ class UMLModel:
         # checks if relationship is already at back of list
         if i == len(rships)-1:
             return (False, f"The relationship with {class_name2} can not move down any further in {class_name1}")
-            
+
         # swaps target relationship with the relationship behind it
         mover = rships[i]
         succeeder = rships[i+1]
@@ -388,7 +388,7 @@ class UMLModel:
 
         return (True, f"The relationship with {class_name2} has been moved down in {class_name1}")
 
-    ######################################################################    
+    ######################################################################
 
     def save_model(self, filename) -> Tuple[bool, str]:
         """Saves the model's data to a given JSON file
@@ -405,7 +405,7 @@ class UMLModel:
         with open(MODEL_DIRECTORY+filename, "w") as file:
             file.write(json_data)
 
-        # Tell user that save was successful 
+        # Tell user that save was successful
         return (True, f"Saved model to file {filename}")
 
     def get_data(self):
@@ -416,13 +416,13 @@ class UMLModel:
         return raw_model
 
     ######################################################################
-    
+
     def load_model(self, filename) -> Tuple[bool, str]:
         """Loads the UML model from a given JSON file
             - filename (string) - the name of a JSON file to load from
 
             NOTE: File should be a JSON file generated by save_model() to
-                ensure parsing is correct 
+                ensure parsing is correct
         """
 
         # Ensure file exists
@@ -455,24 +455,24 @@ class UMLModel:
         # Ensure class exists
         if class_name not in self.classes:
             return (False, f"'{class_name}' is not a valid class")
-        
+
         outputs = [f"Class: {class_name}"]
 
         outputs.append("=== Fields ======================")
 
-        # Print fields 
+        # Print fields
         for field in self.classes[class_name].fields:
             outputs.append(f"{Visibility.to_string(field.visibility)} {field.name}: {field.type}")
 
         outputs.append("=== Methods =====================")
 
-        # Print methods 
+        # Print methods
         for method in self.classes[class_name].methods:
             outputs.append(f"{Visibility.to_string(method.visibility)} {method.name}(): {method.type}")
 
         outputs.append("=== Relationships ===============")
 
-        # Print relationships 
+        # Print relationships
         for relationship in self.classes[class_name].relationships:
             outputs.append(f"{class_name} {RelationshipType.to_arrow(relationship.type)} {relationship.other}")
 
@@ -501,7 +501,7 @@ class UMLModel:
     def list_fields(self, class_name:str) -> Tuple[bool, str]:
         """
             Prints all of the fields for a given class
-            - class_name (string) - the name of the class to print 
+            - class_name (string) - the name of the class to print
                 fields
         """
         # ensure class exists
@@ -510,8 +510,8 @@ class UMLModel:
 
         # ensure class has fields
         if not self.classes[class_name].fields:
-            return (True, "Class '" + class_name + "' has no fields") 
-            
+            return (True, "Class '" + class_name + "' has no fields")
+
         # loop the classes by the name
         outputs = [f"Fields of {class_name}"]
         field = self.classes[class_name].fields
@@ -525,10 +525,10 @@ class UMLModel:
     def list_relationships(self, class_name:str = "") -> Tuple[bool, str]:
         """
             Prints all relationships for a given class
-            
+
             If no class is specified, then all relationships are printed.
 
-            - class_name (string) - the name of the class to print 
+            - class_name (string) - the name of the class to print
                 relationships
         """
         # list relationships for a specific class
@@ -538,7 +538,7 @@ class UMLModel:
             if class_name not in self.classes:
                 return (False, f"{class_name} does not exist")
 
-            # ensure class has relationships 
+            # ensure class has relationships
             if not self.classes[class_name].relationships:
                 return (True, "Class '" + class_name + "' has no relationships")
 
@@ -556,11 +556,11 @@ class UMLModel:
                 # for each relationship
                 for relationship in self.classes[class_name].relationships:
                     outputs.append(f"{class_name} {RelationshipType.to_arrow(relationship.type)} {relationship.other}")
-            
+
             # ensure there were relationships
             if len(outputs) == 1:
                 return (True, "No relationships exist for the current model")
-            
+
             return (True, "\n".join(outputs))
 
 ##########################################################################
@@ -578,15 +578,15 @@ class UMLModel:
 
         # checks if the class does not have an method with the same name inputted
         if self.classes[class_name].has_method(method_name):
-            return (False, "method {} already exists in {}".format(method_name, class_name)) 
+            return (False, "method {} already exists in {}".format(method_name, class_name))
 
         # creates method in class
         self.classes[class_name].add_method(visibility, method_name, method_type)
         return (True, "method {} of type {} has been created in {}, it is a {} method"
             .format(method_name, method_type, class_name, visibility))
-    
-    ######################################################################################  
-    
+
+    ######################################################################################
+
     def rename_method(self, class_name:str, old_method_name:str, new_method_name:str) -> Tuple[bool, str]:
         """
             - Renames a method for a given class
@@ -603,19 +603,19 @@ class UMLModel:
             return (False, "method {} does not exist in {}".format(old_method_name, class_name))
 
         # checks if the inputted new method name already exists in the class
-        if self.classes[class_name].has_method(new_method_name):  
+        if self.classes[class_name].has_method(new_method_name):
             return (False, "method '{}' already exists in '{}'".format(new_method_name, class_name))
-                
+
         # renames the old_method_name to new_method_name
         self.classes[class_name].rename_method(old_method_name, new_method_name)
         return (True, "method '{}' has been renamed to '{}'".format(old_method_name, new_method_name))
-    
+
     ############################################################
-    
+
     def delete_method(self, class_name:str, method_name:str) -> Tuple[bool, str]:
         """Deletes a given method for a given class
             - class_name (string) - the name of the class
-            - method_name (string) - the name for a method to 
+            - method_name (string) - the name for a method to
                 delete
         """
         # checks if the class exists
@@ -633,13 +633,13 @@ class UMLModel:
         return (True, "method '{}' has been deleted from '{}'".format(method_name, class_name))
 
     ######################################################################
-   
+
     def move_up_method(self, class_name:str, method_name:str) -> Tuple[bool, str]:
         """Moves a method up one position in a list of methods for a given class
             - class_name (string) - the name of the class
             - method_name (string) - the name of the method being moved up
         """
-        
+
         # ensure class exists
         if class_name not in self.classes:
             return (False, f"{class_name} does not exist")
@@ -652,7 +652,7 @@ class UMLModel:
         method = self.classes[class_name].methods
         if method_name == method[0].name:
             return (False, f"{method_name} can not move up any further in {class_name}")
-        
+
         for i in range(len(method)):
             #swaps target method with the method in front of it
             if method_name == method[i].name:
@@ -694,36 +694,36 @@ class UMLModel:
                 return (True, f"{method_name} has been moved down in {class_name}")
 
     ######################################################################
-    
+
     def list_methods(self, class_name:str):
         """
             Prints all of the methods for a given class
-            
-            - class_name (string) - the name of the class to print 
+
+            - class_name (string) - the name of the class to print
             methods
         """
         # ensure class exists
         if class_name not in self.classes:
             return (False, f"{class_name} does not exist")
-        
+
         # ensure class has methods
         if not self.classes[class_name].methods:
-            return (True, f"{class_name} has no methods") 
-        
+            return (True, f"{class_name} has no methods")
+
         # loop the classes by the name
         outputs = [f"Methods for {class_name}"]
         for method in self.classes[class_name].methods:
             outputs.append(f"{method.visibility.name} {method.name}() : {method.type}")
 
         return (True, "\n".join(outputs))
-            
+
     ######################################################################
 
     def set_class_position(self, class_name:str, x:int, y:int, zindex:int):
         """
             Sets the x and y position of a given class based on the position
             of that class on the dashboard of the GUI
-            
+
             - class_name (string) - the name of the class to set the position of
 
             - x (float) - the horizontal (CSS left property) position of the class card
@@ -746,7 +746,7 @@ class UMLModel:
         return (True, f"The position of '{class_name}' has been set to ('{x}', '{y}')")
 
     ######################################################################
-        
+
     def create_parameters_methods(self, class_name:str, method_name:str, parameter_name:str, parameter_type:str)-> Tuple[bool, str]:
         """Creates parameters for a given class within method
             - class_name (string) - the name of the class
@@ -761,17 +761,13 @@ class UMLModel:
         #ensure the method name exist
         if not self.classes[class_name].has_method(method_name):
             return (False, "method {} does not exist in {}".format(method_name, class_name))
-        
+
         # ensure the parameter do not exist
-        #if self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(parameter_name):
-        if self.classes[class_name].methods[method_name].has_parameter(parameter_name):
-            return (False, " {} already exists in {}".format(parameter_name, method_name)) 
+        if self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(parameter_name):
+            return (False, " {} already exists in {}".format(parameter_name, method_name))
 
         # creates parameter in class
-        self.classes[class_name].methods[method_name].create_parameters_methods(parameter_name, parameter_type)
-        #self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
-        return (True, "parameter {} of type {} has been created in {}, it is a {} parameter"
-            .format(parameter_name, parameter_type))
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].create_parameters_methods(parameter_name, parameter_type)
+        return (True, "parameter {} of type {} has been created in {}"
+            .format(parameter_name, parameter_type, method_name))
     ##########################################################################
-
-    
