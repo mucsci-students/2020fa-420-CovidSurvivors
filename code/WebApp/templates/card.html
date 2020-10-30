@@ -1,6 +1,6 @@
 {% block card %}
     <!-- class START -->
-    <div class="card shadow" id="cardId{{class.index}}">
+    <div class="card shadow" id="cardId{{class.index}}" name="{{class.name}}" style="left: {{class.x}}; top: {{class.y}}; z-index: {{class.zindex}};">
         <div class="card-header">
             {{ class.name }}
         </div>
@@ -16,6 +16,9 @@
             <ul class="list-group list-group-flush">
                 {% for method in class.methods %}
                     <li>{{method.visibility}} {{ method.name }}(): {{method.type}}</li>
+                    {% for parameter in method.parameters %}
+                        <li>{{parameter.type}} {{parameter.name}}</li>
+                    {% endfor %}
                 {% endfor %}
             </ul>
         </div>
@@ -25,6 +28,7 @@
                     <li><i class="fas fa-long-arrow-alt-right"></i> {{relationship.type}} {{relationship.other}}</li>
                 {% endfor %}
             </ul>
+            <div class="result" style="color: red;"></div>
         </div>
 
         <div class="card-footer nav justify-content-end nav-pills ">

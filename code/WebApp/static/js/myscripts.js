@@ -68,7 +68,21 @@ function draggable(card) {
         cursor: "crosshair",
         opacity: 0.5,
         containment: "parent",
-        snap: true
+        snap: true,
+        // sends x and y position of class card, along with its z-index, after the class card has been moved
+        stop: function() {
+            // name of class associated with the class card
+            var classname = $($(this)).attr('name');
+            // x coordinate representing the horizontal position of card on dashboard
+            var x = $(card).css("left");
+            // y coordinate representing the vertical position of card on dashboard
+            var y = $(card).css("top");
+            // the z-index specifing the stack order of the class cards on the dashboard
+            var zindex = $(card).css("z-index");
+
+            // sends class name and the appropriate position data of a class card to the server 
+            $.post("/saveCardPosition", {class_name:classname, x:x, y:y, zindex:zindex}) 
+        }
     });
 }
 
@@ -90,16 +104,6 @@ function classCardBtns() {
         $("#deleteModal").modal('hide');
         // displays a confirmation modal informing user the class card has been deleted
         $("#confirmModal").modal('show');
-    });
-
-    // Allows us to edit a specific class card on click of its edit button
-    $('.card-footer').on('click', '.editCard', function () {
-        // Get all the information pertaining to the class we wish to edit using the unique class ID
-
-        // Preload the information we got into the appropriate textboxes of the edit Class Modal
-
-        //alert("Edit class: #" + getId);
-
     });
 }
 
@@ -137,7 +141,29 @@ function createEditClassModalBtns() {
                         <option>Private</option>
                 </select>
                 <input type="text" name="method_type" class="form-control" placeholder="Enter method return type" aria-label="Type of method" aria-describedby="basic-addon2">
-                <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of field" aria-describedby="basic-addon2">
+                <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm addParameter" type="button">
+                        Add Parameter
+                    </button>
+                    <button class="btn btn-outline-secondary delTextArea" type="button">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>`);
+    });
+
+    // wip
+    // Adds a drop down menu and text area for declaring a parameters name and type
+    $('form-group').on('click', '.addParameter', function() {
+        var table = $(this).closest('.form-group');
+        table.append(
+            `<div class="input-group mb-3">
+                <select name="parameter_type" id="inputRelationship" class="form-control">
+                    <option>Type 1</option>
+                    <option>Type 2</option>
+                </select>
+                <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary delTextArea" type="button">
                         <i class="fas fa-minus"></i>

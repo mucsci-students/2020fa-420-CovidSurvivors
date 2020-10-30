@@ -1,42 +1,4 @@
 {
-    "class2": {
-        "name": "class2",
-        "attributes": [],
-        "fields": [
-            {
-                "visibility": "public",
-                "name": "field1",
-                "type": "string"
-            },
-            {
-                "visibility": "public",
-                "name": "field2",
-                "type": "Object"
-            }
-        ],
-        "methods": [
-            {
-                "visibility": "public",
-                "name": "method1",
-                "type": "string"
-            },
-            {
-                "visibility": "public",
-                "name": "method2",
-                "type": "boolean"
-            }
-        ],
-        "relationships": [
-            {
-                "type": "inheritance",
-                "other": "class1"
-            },
-            {
-                "type": "composition",
-                "other": "class3"
-            }
-        ]
-    },
     "class1": {
         "name": "class1",
         "attributes": [],
@@ -66,10 +28,17 @@
         ],
         "relationships": [
             {
-                "type": "inheritance",
+                "type": "reverse composition",
+                "other": "class4"
+            },
+            {
+                "type": "reverse inheritance",
                 "other": "class2"
             }
-        ]
+        ],
+        "x": "74px",
+        "y": "0.390625px",
+        "zindex": "4"
     },
     "class3": {
         "name": "class3",
@@ -93,6 +62,98 @@
                 "type": "composition",
                 "other": "class2"
             }
-        ]
+        ],
+        "x": "181px",
+        "y": "-759.4px",
+        "zindex": "29"
+    },
+    "class4": {
+        "name": "class4",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "int",
+                "type": "field1"
+            },
+            {
+                "visibility": "private",
+                "name": "float",
+                "type": "field2"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "string",
+                "type": "method1()"
+            }
+        ],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "class1"
+            }
+        ],
+        "x": "16px",
+        "y": "-527px",
+        "zindex": "5"
+    },
+    "class2": {
+        "name": "class2",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "public",
+                "name": "field1",
+                "type": "string"
+            },
+            {
+                "visibility": "public",
+                "name": "field2",
+                "type": "Object"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "method1",
+                "type": "string"
+            },
+            {
+                "visibility": "public",
+                "name": "method2",
+                "type": "boolean"
+            }
+        ],
+        "relationships": [
+            {
+                "type": "inheritance",
+                "other": "class1"
+            },
+            {
+                "type": "composition",
+                "other": "class3"
+            }
+        ],
+        "x": "72px",
+        "y": "-277px",
+        "zindex": "5"
+    },
+    "": {
+        "name": "",
+        "attributes": [],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "hthsr",
+                "type": "tht"
+            }
+        ],
+        "relationships": [],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
     }
 }
