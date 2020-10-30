@@ -159,10 +159,7 @@ function createEditClassModalBtns() {
         var table = $(this).closest('.form-group');
         table.append(
             `<div class="input-group mb-3">
-                <select name="parameter_type" id="inputRelationship" class="form-control">
-                    <option>Type 1</option>
-                    <option>Type 2</option>
-                </select>
+                <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
                 <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary delTextArea" type="button">

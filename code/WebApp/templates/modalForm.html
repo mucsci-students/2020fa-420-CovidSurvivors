@@ -58,14 +58,7 @@
         </div>
         {% for parameter in method.parameters %}
             <div class='input-group mb-3'>
-                <select name="parameter_type" class="form-control">
-                    {% if parameter.type == "Type 1" %}
-                        <option selected>Type 1</option>
-                        <option>Type 2</option>
-                    {% else %}
-                        <option>Type 1</option>
-                        <option selected>Type 2</option>
-                </select>
+                <input type="text" name="parameter_type" value="{{parameter.name}}" class="form-control" aria-label="Type of parameter" aria-describedby="basic-addon2">
                 <input type="text" name="parameter_name" value="{{parameter.name}}" class="form-control" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary delTextArea" type="button">
