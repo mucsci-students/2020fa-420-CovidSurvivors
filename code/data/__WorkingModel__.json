@@ -18,12 +18,32 @@
             {
                 "visibility": "private",
                 "name": "method1",
-                "type": "String"
+                "type": "String",
+                "parameters": [
+                    {
+                        "type": "String",
+                        "name": "param1"
+                    },
+                    {
+                        "type": "String",
+                        "name": "param2"
+                    }
+                ]
             },
             {
                 "visibility": "private",
                 "name": "method2",
-                "type": "int"
+                "type": "int",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "param1"
+                    },
+                    {
+                        "type": "string",
+                        "name": "param2"
+                    }
+                ]
             }
         ],
         "relationships": [
@@ -36,9 +56,9 @@
                 "other": "class2"
             }
         ],
-        "x": "74px",
-        "y": "0.390625px",
-        "zindex": "4"
+        "x": "391px",
+        "y": "54px",
+        "zindex": "5"
     },
     "class3": {
         "name": "class3",
