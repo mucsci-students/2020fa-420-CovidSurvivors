@@ -67,7 +67,7 @@ class UMLMethod(Variable):
 
         """
 
-        self.parameters[self.parameter_index(old_parameter_name)].rename(old_parameter_name, new_parameter_name)
+        self.parameters[self.parameter_index(old_parameter_name)].rename(new_parameter_name)
 
 ##########################################################################
     def remove_parameter(self, parameter_name:str):

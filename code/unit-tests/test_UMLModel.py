@@ -185,10 +185,10 @@ class UMLModelTest(unittest.TestCase):
         model.create_parameter("class1", "method1", "param_type", "param_name")
         
         #ensure parameter is renamed
-        model.rename_parameter("class1", "method1", "old_param_name", "new_param_name")
+        model.rename_parameter("class1", "method1", "param_name", "new_param_name")
         
         # Ensure duplicate parameter is not created
-        self.assertEqual(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].parameters[0].name, "param_name")
+        self.assertEqual(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].parameters[0].name, "new_param_name")
 
     ######################################################################
 
