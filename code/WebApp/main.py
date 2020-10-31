@@ -28,7 +28,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '2ca8690a209df45699ccf028b6a47015'
 
 # Where the data model is saved
-DATA_FOLDER = os.path.join(os.getcwd(), 'data/')
+DATA_FOLDER = os.path.join(os.getcwd(), 'server-data/')
 # The name of the server's current working model file
 WORKING_FILENAME = '__WorkingModel__.json'
 TEMP_FILENAME = '__temp__.json'
@@ -39,12 +39,25 @@ command_history = CommandHistory(HISTORY_LIMIT)
 
 ##########################################################################
 
-# The home page
+# The main page 
+# where you select which model you want to edit 
+@app.route("/models")
+def models():
+    return render_template("models.html")
+
+##########################################################################
+
+# The model editing page
 @app.route("/")
+@app.route("/dashboard")
 def dashboard():
     # Get current model
     model = UMLModel()
-    model.load_model(WORKING_FILENAME)
+    status, msg = model.load_model(WORKING_FILENAME, directory=DATA_FOLDER)
+
+    if not status:
+        flash(msg, "error")
+        return render_template("dashboard.html", data={})
 
     # Setup template data
     data = {
@@ -76,6 +89,7 @@ def createClass():
     # and structure it for the command
     class_data = {
         "filename" : WORKING_FILENAME,
+        "directory" : DATA_FOLDER,
         "class_name" : request.form.get('class_name'),
         "field_visibilities" : list(request.form.getlist('field_visibility')),
         "field_types" : list(request.form.getlist('field_type')),
@@ -134,6 +148,7 @@ def editClass():
     # Grab the data from the POST request 
     class_data = {
         "filename" : WORKING_FILENAME,
+        "directory" : DATA_FOLDER,
         "original_name" : request.form.get('original_name'),
         "class_name" : request.form.get('class_name'),
         "field_visibilities" : list(request.form.getlist('field_visibility')),
@@ -192,7 +207,7 @@ def editForm():
     
     # load model
     model = UMLModel()
-    model.load_model(WORKING_FILENAME)
+    model.load_model(WORKING_FILENAME, directory=DATA_FOLDER)
 
     # ensure class exists
     if request.form.get('class_name') not in model.classes:
@@ -217,11 +232,12 @@ def saveCardPosition():
 
     # load model
     model = UMLModel()
-    model.load_model(WORKING_FILENAME)
+    model.load_model(WORKING_FILENAME, directory=DATA_FOLDER)
 
     # Grab the position data from the POST request 
     class_data = {
         "filename" : WORKING_FILENAME,
+        "directory" : DATA_FOLDER,
         "class_name" : request.form['class_name'],
         "x" : request.form['x'],
         "y": request.form['y'],
@@ -279,6 +295,7 @@ def deleteClass():
     # Grab the data from the POST request 
     class_data = {
         "filename" : WORKING_FILENAME,
+        "directory" : DATA_FOLDER,
         "class_name" : request.form.get('class_name')
     }
     
@@ -417,7 +434,7 @@ def upload():
     # To ensure the file will work as the model
     model = UMLModel()
     try:
-        model.load_model(TEMP_FILENAME)
+        model.load_model(TEMP_FILENAME, directory=DATA_FOLDER)
     except:
         # send error message as a flash message
         flash("File cannot be interpretted as a UMLModel", "error")
