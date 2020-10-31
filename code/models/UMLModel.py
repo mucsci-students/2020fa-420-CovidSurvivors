@@ -434,17 +434,45 @@ class UMLModel:
 
         # read json from file
         file = open(MODEL_DIRECTORY+filename, "r")
-        raw_model = json.loads(file.read())
+        try:
+            raw_model = json.loads(file.read())
+        except json.decoder.JSONDecodeError:
+            return (False, "File cannot be parsed. Invalid JSON")
         file.close()
 
-        self.set_data(raw_model)
+        status, msg = self.set_data(raw_model)
+
+        # parse failed
+        if not status:
+            return status, msg
 
         # Tell user load was successful
         return (True, f"Loaded model from {filename}")
 
-    def set_data(self, raw_model):
-        # Clear out previous model
-        self.classes = {class_name : UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
+    ######################################################################
+
+    def set_data(self, raw_model:dict) -> Tuple[bool, str]:
+        # grab classes
+        classes = {}
+        for class_name in raw_model:
+            # build class
+            newclass = None
+            try:
+                newclass = UMLClass.from_raw_data(raw_model[class_name])
+            except TypeError:
+                return (False, "File cannot be parsed")
+            except KeyError:
+                return (False, "File cannot be parsed")
+            # ensure class was created successfully 
+            if newclass == None:
+                return (False, "File cannot be parsed")
+            # add class
+            classes[newclass.name] = newclass
+
+        # parse was successful
+        # reassign this model to the parsed class data 
+        self.classes = classes
+        return (True, "Model data set successfully")
 
     ######################################################################
 
