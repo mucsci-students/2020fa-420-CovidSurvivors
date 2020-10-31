@@ -178,6 +178,20 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    def test_rename_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+        
+        #ensure parameter is renamed
+        model.rename_parameter("class1", "method1", "param_name", "new_param_name")
+        
+        # Ensure duplicate parameter is not created
+        self.assertEqual(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].parameters[0].name, "new_param_name")
+
+    ######################################################################
+
     def test_create_relationship(self):
         model = UMLModel()
         model.create_class("c1")

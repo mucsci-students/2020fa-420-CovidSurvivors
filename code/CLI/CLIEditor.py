@@ -564,7 +564,29 @@ class REPL(cmd.Cmd):
                     # add to the list of history
                     command_history.push(command)
             else:
-                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")            
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}") 
+
+    def do_rename_parameter(self, args):
+        words = args.split()
+        # grab the command
+        # this handles the case where there are no arguments
+        command = getCommand(model, "rename_parameter", words[0:])
+        # save backup
+        command.saveBackup()
+        # execute the command
+        response = command.execute()
+        # ensure there was a response
+        if response:
+            status, msg = response
+            # Ensure command was successful
+            if status:
+                print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+                # Undoable Commands 
+                if isinstance(command, UndoableCLICommand):
+                    # add to the list of history
+                    command_history.push(command)
+            else:
+                print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")                      
 
     def do_list_parameters(self, args):
         words = args.split()
