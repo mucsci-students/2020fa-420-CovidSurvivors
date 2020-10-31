@@ -807,3 +807,34 @@ class UMLModel:
         return (True, "\n".join(outputs))
 
     ##########################################################################
+    
+    def rename_parameter(self, class_name:str, method_name:str, old_parameter_name:str, new_parameter_name:str)-> Tuple[bool, str]:
+        """Rename parameters in a class for a given method
+            - class_name(string) - the name of the class
+            - method_name (string) - the name of the method
+            - old_parameter_name (string) - the name of the parameter
+            - new_parameter_name (string) - the name of the parameter
+        """
+
+        # ensure class exists
+        if class_name not in self.classes:
+            return (False, f"{class_name} does not exist")
+
+        
+        # ensure class has methods
+        if not self.classes[class_name].has_method(method_name):
+            return (False, f"{class_name} does not have method, {method_name}")   
+            
+        # ensure the parameter exist
+        if not self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(old_parameter_name):
+            return (False, " {} does not exists in {}".format(old_parameter_name, method_name)) 
+
+        # checks if the inputted new method name already exists in the class
+        if self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(new_parameter_name):
+            return (False, " {} already exists in {}".format(new_parameter_name, method_name))   
+
+        # renames the old_parameter_name to new_parameter_name
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].rename_parameter(old_parameter_name, new_parameter_name)
+        return (True, "parameter '{}' has been renamed to '{}'".format(old_parameter_name, new_parameter_name))
+        
+    ##########################################################################
