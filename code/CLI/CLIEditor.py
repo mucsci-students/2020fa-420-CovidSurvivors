@@ -566,7 +566,7 @@ class REPL(cmd.Cmd):
             else:
                 print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}") 
 
-     def do_rename_parameter(self, args):
+    def do_rename_parameter(self, args):
         words = args.split()
         # grab the command
         # this handles the case where there are no arguments
