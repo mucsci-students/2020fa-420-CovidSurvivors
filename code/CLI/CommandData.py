@@ -195,11 +195,11 @@ COMMANDS = {
     ],
     "rename_parameter" : [
         {
-            "usage" : "rename_parameter <method_name> <old_param_name> <new_param_name>",
+            "usage" : "rename_parameter <class_name> <method_name> <old_param_name> <new_param_name>",
             "desc" : "renames the parameter <old_param_name> with the <new_param_name> for the parameter within method, <method_name>",
             "command" : UndoableCLICommand,
             "function" : UMLModel.rename_parameter,
-            "num_arguments" : 3,
+            "num_arguments" : 4,
             "skip_line" : False
         }
     ],
