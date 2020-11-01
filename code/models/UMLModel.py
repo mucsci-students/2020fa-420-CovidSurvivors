@@ -866,3 +866,29 @@ class UMLModel:
         return (True, "parameter '{}' has been renamed to '{}'".format(old_parameter_name, new_parameter_name))
         
     ##########################################################################
+    
+    def delete_parameter(self, class_name:str, method_name:str, parameter_name:str)-> Tuple[bool, str]:
+        """Delete parameters in a class for a given method
+            - class_name(string) - the name of the class
+            - method_name (string) - the name of the method
+            - parameter_name (string) - the name of the parameter to delete
+        """
+
+        # ensure class exists
+        if class_name not in self.classes:
+            return (False, f"{class_name} does not exist")
+
+        # ensure class has the method_name
+        if not self.classes[class_name].has_method(method_name):
+            return (False, f"{class_name} does not have method, {method_name}")   
+            
+        # ensure the parameter exist
+        if not self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(parameter_name):
+            return (False, " {} does not exists in {}".format(parameter_name, method_name)) 
+
+        # delete the parameter
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].delete_parameter(method_name, parameter_name)
+        # gives user verification that the parameter was deleted
+        return (True, "parameter '{}' has been removed from '{}'".format(parameter_name, method_name))
+        
+    ##########################################################################

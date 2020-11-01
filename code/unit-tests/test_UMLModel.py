@@ -192,6 +192,19 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    def test_delete_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+        testClass = model.classes["class1"]
+        
+        #ensure parameter is deleted
+        model.delete_parameter("class1", "method1", "parameter_name")
+        self.assertFalse(testClass.methods[testClass.method_index("method1")].has_parameter("parameter_name"))
+
+    ######################################################################
+
     def test_create_relationship(self):
         model = UMLModel()
         model.create_class("c1")
