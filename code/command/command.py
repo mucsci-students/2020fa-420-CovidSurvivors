@@ -170,7 +170,7 @@ class CreateClassGUICommand(Command, Undoable):
 
         # add the parameters
         for i in range(len (self.payload["parameter_names"])): 
-            self.model.create_parameter(self.payload["class_name"], self.payload["method_names"][i], self.payload["parameter_types"][i], self.payload["parameter_names"][i])   
+            self.model.create_parameter(self.payload["class_name"], self.payload["method_names"][int(self.payload["parameter_method_index"][i])], self.payload["parameter_types"][i], self.payload["parameter_names"][i])   
 
         # add relationships
         for i in range(len(self.payload["relationship_types"])):
@@ -236,7 +236,7 @@ class EditClassGUICommand(Command, Undoable):
 
         # add the parameters
         for i in range(len(self.payload["parameter_names"])): 
-            self.model.create_parameter(self.payload["class_name"], self.payload["method_names"][i], self.payload["parameter_types"][i], self.payload["parameter_names"][i])   
+            self.model.create_parameter(self.payload["class_name"], self.payload["method_names"][int(self.payload["parameter_method_index"][i])], self.payload["parameter_types"][i], self.payload["parameter_names"][i])   
 
         # add relationships
         for i in range(len(self.payload["relationship_types"])):

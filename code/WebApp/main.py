@@ -83,6 +83,7 @@ def createClass():
         "method_visibilities" : list(request.form.getlist('method_visibility')),
         "method_types" : list(request.form.getlist('method_type')),
         "method_names" : list(request.form.getlist('method_name')),
+        "parameter_method_index" : list(request.form.getlist('parameter_method')),
         "parameter_types" : list(request.form.getlist('parameter_type')),
         "parameter_names" : list(request.form.getlist('parameter_name')),
         "relationship_types" : list(request.form.getlist('relationship_type')),
@@ -144,6 +145,7 @@ def editClass():
         "method_visibilities" : list(request.form.getlist('method_visibility')),
         "method_types" : list(request.form.getlist('method_type')),
         "method_names" : list(request.form.getlist('method_name')),
+        "parameter_method_index" : list(request.form.getlist('parameter_method')),
         "parameter_types" : list(request.form.getlist('parameter_type')),
         "parameter_names" : list(request.form.getlist('parameter_name')),
         "relationship_types" : list(request.form.getlist('relationship_type')),
@@ -204,6 +206,13 @@ def editForm():
 
     # grab class data
     data = model.classes[request.form.get('class_name')].get_raw_data()
+
+    # index methods for parameter matching
+    for class_name in data:
+        i = 0
+        for methodi in range(len(data["methods"])):
+            data["methods"][methodi]["index"] = i
+            i+=1
 
     # Build modal form inputs
     return render_template("modalForm.html", data=data)

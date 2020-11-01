@@ -135,7 +135,7 @@ function createEditClassModalBtns() {
     $('.form-group').on('click', '.addMethod', function() {
         var table = $(this).closest('.form-group');
         table.append(
-            `<div class="input-group mb-3">
+            `<div class="input-group mb-3" id="method0">
                 <select name="method_visibility" class="form-control">
                         <option selected>Public</option>
                         <option>Private</option>
@@ -157,8 +157,10 @@ function createEditClassModalBtns() {
     // Adds a text area for declaring a parameters name and type
     $('.form-group').on('click', '.addParameter', function() {
         var table = $(this).closest('.input-group');
+        var method_index = table.prevAll().length-2;
         table.append(
             `<div class="input-group mb-3">
+                <input type="text" name="parameter_method" value="${method_index}">
                 <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
                 <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">

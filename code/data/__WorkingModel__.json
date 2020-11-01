@@ -13,7 +13,8 @@
             {
                 "visibility": "public",
                 "name": "myMethod",
-                "type": "int"
+                "type": "int",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -45,12 +46,14 @@
             {
                 "visibility": "private",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "boolean"
+                "type": "boolean",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -75,7 +78,8 @@
             {
                 "visibility": "private",
                 "name": "hthsr",
-                "type": "tht"
+                "type": "tht",
+                "parameters": []
             }
         ],
         "relationships": [],
@@ -102,7 +106,8 @@
             {
                 "visibility": "private",
                 "name": "string",
-                "type": "method1()"
+                "type": "method1()",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -134,7 +139,8 @@
             {
                 "visibility": "private",
                 "name": "method1",
-                "type": "String"
+                "type": "String",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -147,6 +153,62 @@
                 "other": "class4"
             }
         ],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    },
+    "class7": {
+        "name": "class7",
+        "attributes": [],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "sum",
+                "type": "int",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "val1"
+                    },
+                    {
+                        "type": "int",
+                        "name": "val2"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "concat",
+                "type": "string",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "a"
+                    },
+                    {
+                        "type": "string",
+                        "name": "b"
+                    },
+                    {
+                        "type": "string",
+                        "name": "c"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "hasValue",
+                "type": "bool",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "value"
+                    }
+                ]
+            }
+        ],
+        "relationships": [],
         "x": 0,
         "y": 0,
         "zindex": 0

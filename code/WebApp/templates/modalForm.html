@@ -55,18 +55,19 @@
                 <button class="btn btn-outline-secondary btn-sm addParameter" type="button">Add Parameter</button>
                 <button class="btn btn-outline-secondary delTextArea" type="button"><i class="fas fa-minus"></i></button>
             </div>
-        </div>
-        {% for parameter in method.parameters %}
-            <div class="input-group mb-3">
-                <input type="text" name="parameter_type" value="{{parameter.type}}" class="form-control" aria-label="Type of parameter" aria-describedby="basic-addon2">
-                <input type="text" name="parameter_name" value="{{parameter.name}}" class="form-control" aria-label="Name of parameter" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary delTextArea" type="button">
-                        <i class="fas fa-minus"></i>
-                    </button>
+            {% for parameter in method.parameters %}
+                <div class="input-group mb-3">
+                    <input type="text" name="parameter_method" value="{{method.index}}">
+                    <input type="text" name="parameter_type" value="{{parameter.type}}" class="form-control" aria-label="Type of parameter" aria-describedby="basic-addon2">
+                    <input type="text" name="parameter_name" value="{{parameter.name}}" class="form-control" aria-label="Name of parameter" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary delTextArea" type="button">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% endfor %}
 </div>
 <!-- methods END -->
