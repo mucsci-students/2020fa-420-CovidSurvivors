@@ -144,6 +144,8 @@ def editClass():
         "method_visibilities" : list(request.form.getlist('method_visibility')),
         "method_types" : list(request.form.getlist('method_type')),
         "method_names" : list(request.form.getlist('method_name')),
+        "parameter_types" : list(request.form.getlist('parameter_type')),
+        "parameter_names" : list(request.form.getlist('parameter_name')),
         "relationship_types" : list(request.form.getlist('relationship_type')),
         "relationship_others" : list(request.form.getlist('relationship_other'))
     }
