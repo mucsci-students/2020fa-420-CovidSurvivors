@@ -154,9 +154,9 @@ function createEditClassModalBtns() {
     });
 
     // wip
-    // Adds a drop down menu and text area for declaring a parameters name and type
-    $('form-group').on('click', '.addParameter', function() {
-        var table = $(this).closest('.form-group');
+    // Adds a text area for declaring a parameters name and type
+    $('.form-group').on('click', '.addParameter', function() {
+        var table = $(this).closest('.input-group');
         table.append(
             `<div class="input-group mb-3">
                 <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
