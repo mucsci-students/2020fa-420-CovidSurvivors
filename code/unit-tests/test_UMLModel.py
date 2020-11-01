@@ -61,6 +61,13 @@ class UMLModelTest(unittest.TestCase):
         self.assertFalse(status)
         self.assertEqual(msg, "class1 already exists.")
 
+        # Ensure renamed class with relationship updates
+        # relationship in both classes
+        self.assertTrue(model.create_class("class2")[0])
+        self.assertTrue(model.create_relationship("inheritance", "class1", "class2")[0])
+        self.assertTrue(model.rename_class("class2", "class3")[0])
+        self.assertEqual(model.classes["class1"].relationships[0].other, "class3")
+
     ######################################################################
 
     def test_delete_class(self):
