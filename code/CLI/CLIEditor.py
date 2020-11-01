@@ -5,7 +5,7 @@
 #   This file is the entry point into the UML Editor 
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     October 16 2020
+# Date:     November 1 2020
 
 ##########################################################################
 # Imports
@@ -31,12 +31,7 @@ DESCRIPTION_COLOR = "\033[0;33m"
 # The number of commands that are saved for undo-ing
 HISTORY_LIMIT = 20
 
-
 ##########################################################################
-# Globals
-
-# Keeps track of the commands that were performed
-command_history = CommandHistory(HISTORY_LIMIT)
 
 class REPL(cmd.Cmd):
     """Read Eval Print Loop for the UMLEditor program
@@ -47,108 +42,111 @@ class REPL(cmd.Cmd):
     intro = "This is the command-line interface for UMLEditor. \nPush 'Tab' to: view commands / help with completion."
     prompt = f"{PROMPT_COLOR}UMLEditor> {NORMAL_COLOR}"
     file = None
-    # Keep a representation of the UML model 
-    global model
-    model = UMLModel()
+
+    def __init__(self):
+        cmd.Cmd.__init__(self)
+        self.model = UMLModel()
+        # Keeps track of the commands that were performed
+        self.command_history = CommandHistory(HISTORY_LIMIT)
     
     def do_create_class(self, args):
-        executeCMD("create_class", args)
+        executeCMD(self.model, self.command_history, "create_class", args.split())
 
     def do_rename_class(self, args):
-        executeCMD("rename_class", args)
+        executeCMD(self.model, self.command_history, "rename_class", args.split())
 
     def do_delete_class(self, args):
-        executeCMD("delete_class", args)
+        executeCMD(self.model, self.command_history, "delete_class", args.split())
 
     def do_list_class(self, args):
-        executeCMD("list_class", args)
+        executeCMD(self.model, self.command_history, "list_class", args.split())
 
     def do_list_classes(self, args):
-        executeCMD("list_classes", args)
+        executeCMD(self.model, self.command_history, "list_classes", args.split())
 
     def do_create_field(self, args):
-        executeCMD("create_field", args)
+        executeCMD(self.model, self.command_history, "create_field", args.split())
     
     def do_rename_field(self, args):
-        executeCMD("rename_field", args)
+        executeCMD(self.model, self.command_history, "rename_field", args.split())
 
     def do_delete_field(self, args):
-        executeCMD("delete_field", args)
+        executeCMD(self.model, self.command_history, "delete_field", args.split())
 
     def do_move_up_field(self, args):
-        executeCMD("move_up_field", args)
+        executeCMD(self.model, self.command_history, "move_up_field", args.split())
 
     def do_move_down_field(self, args):
-        executeCMD("move_down_field", args)
+        executeCMD(self.model, self.command_history, "move_down_field", args.split())
 
     def do_list_fields(self, args):
-        executeCMD("list_fields",args)
+        executeCMD(self.model, self.command_history, "list_fields", args.split())
 
     def do_create_method(self, args):
-        executeCMD("create_method", args)
+        executeCMD(self.model, self.command_history, "create_method", args.split())
 
     def do_rename_method(self, args):
-        executeCMD("rename_method", args)
+        executeCMD(self.model, self.command_history, "rename_method", args.split())
 
     def do_delete_method(self, args):
-        executeCMD("delete_method", args)
+        executeCMD(self.model, self.command_history, "delete_method", args.split())
 
     def do_move_up_method(self, args):
-        executeCMD("move_up_method" ,args)
+        executeCMD(self.model, self.command_history, "move_up_method", args.split())
 
     def do_move_down_method(self, args):
-        executeCMD("move_down_method", args)
+        executeCMD(self.model, self.command_history, "move_down_method", args.split())
 
     def do_list_methods(self, args):
-        executeCMD("list_methods", args)
+        executeCMD(self.model, self.command_history, "list_methods", args.split())
 
     def do_create_parameter(self, args):
-        executeCMD("create_parameter" ,args)
+        executeCMD(self.model, self.command_history, "create_parameter", args.split())
 
     def do_rename_parameter(self, args):
-        executeCMD("rename_parameter", args)
+        executeCMD(self.model, self.command_history, "rename_parameter", args.split())
 
     def do_delete_parameter(self, args):
-        executeCMD("delete_parameter", args)                         
+        executeCMD(self.model, self.command_history, "delete_parameter", args.split())                         
 
     def do_list_parameters(self, args):
-        executeCMD("list_parameters", args) 
+        executeCMD(self.model, self.command_history, "list_parameters", args.split()) 
 
     def do_create_relationship(self, args):
-        executeCMD("create_relationship", args)
+        executeCMD(self.model, self.command_history, "create_relationship", args.split())
     
     def do_delete_relationship(self, args):
-        executeCMD("delete_relationship", args)
+        executeCMD(self.model, self.command_history, "delete_relationship", args.split())
     
     def do_move_up_relationship(self, args):
-        executeCMD("move_up_relationship", args)
+        executeCMD(self.model, self.command_history, "move_up_relationship", args.split())
     
     def do_move_down_relationship(self, args):
-        executeCMD("move_down_relationship", args)
+        executeCMD(self.model, self.command_history, "move_down_relationship", args.split())
 
     def do_list_relationships(self, args):
-        executeCMD("list_relationships", args)
+        executeCMD(self.model, self.command_history, "list_relationships", args.split())
 
     def do_save_model(self, args):
-        executeCMD("save_model", args)
+        executeCMD(self.model, self.command_history, "save_model", args.split())
 
     def do_load_model(self, args):
-        executeCMD("load_model", args)
+        executeCMD(self.model, self.command_history, "load_model", args.split())
 
     def do_undo(self, args):
-        executeCMD("undo", args)
+        undo(self.command_history, args.split())
 
     def do_redo(self, args):
-        executeCMD("redo", args)
+        redo(self.command_history, args.split())
 
     def do_help(self, args):
         if args:
-            print_help_message(model, args)
+            print_help_message(self.model, args)
         else:
-            print_help_message(model, "")
+            print_help_message(self.model, "")
 
     def do_exit(self, args):
-        prompt_exit(model)
+        prompt_exit(self.model)
 
     def complete_help(self, text, line, begidx, endidx):
         commands = list(CommandData.COMMANDS.keys())
@@ -168,12 +166,16 @@ class REPL(cmd.Cmd):
         print()
         return True
 
+    def default(self, line):
+        """Outputs a message when the command prefix cannot be matched"""
+        print(f"{ERROR_COLOR}CommandError:{NORMAL_COLOR} Unknown command '{line.split()[0]}'")
+
 ##########################################################################
 
-# store repl so we can save it's state between runCMD() calls
-repl = REPL()
 def runCMD():
     """ Runs the REPL """
+    # store repl so we can save it's state between each loop
+    repl = REPL()
     while True:
         try:
             repl.cmdloop()
@@ -192,63 +194,60 @@ def runCMD():
 
 ##########################################################################
 
-def executeCMD(commandName, args):
+def executeCMD(model:UMLModel, command_history:CommandHistory, commandName:str, arguments:list) -> None:
     """Grabs the command and pushes it into the history if it is undoable
     Executes the command in the REPL, and prints out a success/error message
     depending on whether it was an appropriate command
     
     Params:
+    - model - the current model to execute commands on 
     - commandName - the name of the command
-    - args - the possible argument(s) that came with the command
+    - arguments - the possible argument(s) that came with the command
     """
+    
+    # Ensure valid command
+    if commandName not in CommandData.COMMANDS:
+        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
+            f"'{commandName}' is not a valid command\ntype 'help' for a list of valid commands")
+        return
+    
+    # Find command usage matching args
+    # and validate number of arguments
+    command = None
+    for usage in CommandData.COMMANDS[commandName]:
+        # found usage matching num args
+        if usage["num_arguments"] == len(arguments):
+            # if the command class was provided
+            if "command" in usage:
+                command = usage["command"](model, usage["function"], arguments)
+            # otherwise, assume it is not an undoable command
+            else:
+                command = CLICommand(model, usage["function"], arguments)
+            break
+    # matching usage not found
+    else:
+        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
+            f"Incorrect usage of {commandName}\ntype 'help {commandName}' to see valid usages of {commandName}")
+        return 
 
-    # split args into a container of strings.
-    words = args.split()
-    # grab the command
-    # this handles the case where there are no arguments
-    command = getCommand(model, commandName, words[0:])
-    # save backup
+    # save backup - for undoable commands
     if isinstance(command, UndoableCLICommand):
         command.saveBackup()
+
     # execute the command
-    response = command.execute()
-    # ensure there was a response
-    if response:
-        status, msg = response
-        # Ensure command was successful
-        if status:
-            print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
-            # Undoable Commands 
-            if isinstance(command, UndoableCLICommand):
-                # add to the list of history
-                command_history.push(command)
-        else:
-            print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+    status, msg = command.execute()
 
-##########################################################################
+    # Ensure command was successful
+    if not status:
+        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} {msg}")
+        return
 
-def getCommand(model:UMLModel, command:str, arguments:list = []) -> Command:
-    """Returns the matching command with any arguments
+    # push undoable commands to the history
+    if isinstance(command, UndoableCLICommand):
+        # add to the list of history
+        command_history.push(command)
 
-    Params:
-    - model (UMLModel) - the model to modify with commands
-    - command (string) - a valid command to change the state of the model
-    - arguments (list) - an optional list of arguments to supplement to 
-        the command
-    """
-    # Ensure command is valid
-    if command in CommandData.COMMANDS:
-        # figure out which usage
-        for usage in CommandData.COMMANDS[command]:
-            # if the usage matches the num of args
-            if usage["num_arguments"] == len(arguments):
-                # construct command
-                return usage["command"](model, usage["function"], arguments)
-        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
-            f"Incorrect usage of {command}\ntype 'help {command}' to see valid usages of {command}")
-    else: 
-        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
-            f"'{command}' is not a valid command\ntype 'help' for a list of valid commands")
+    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
 
 ##########################################################################
  
@@ -272,8 +271,10 @@ def print_help_message(model:UMLModel, command = "") -> None:
         # for each usage
         for usage in usages: 
             # print the usage
-            print (f"{DESCRIPTION_COLOR}",usage["usage"])
-            print ("\t", f"{NORMAL_COLOR}", usage["desc"])
+            print ("Usage:")
+            print (f"  {DESCRIPTION_COLOR}{usage['usage']}{NORMAL_COLOR}")
+            print ("Description:")
+            print (f"  {usage['desc']}")
     # Print all commands
     elif command == "":
         print ("Type help <command_name> to see the usage of a command")
@@ -333,38 +334,58 @@ def prompt_exit(model:UMLModel) -> Tuple[bool, str]:
         print("Goodbye!")
 
     exit()
-    
+
 ##########################################################################
 
-def undo(model:UMLModel) -> Tuple[bool, str]:
+def undo(command_history:CommandHistory, args:list):
+    """Undoes a command in the given command history and prints whether 
+    it was successful or not. the args parameter just checks to make sure
+    no arguments were provided
+    """
+    # Ensure no args 
+    if len(args) != 0:
+        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
+        f"Incorrect usage of undo\nundo does not take any arguments")
+        return 
 
     # get undoable command
     command = command_history.pop_undo()
 
     # ensure there was a command
     if command == None:
-        return (False, "No command to undo")
+        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} no command to undo")
+        return
     
     # undo the command
     command.undo()
 
-    return (True, "undid command")
+    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} command undone succesfully")
 
 ##########################################################################
 
-def redo(model:UMLModel) -> Tuple[bool, str]:
+def redo(command_history:CommandHistory, args:list):
+    """redoes a command in the given command history and prints whether 
+    it was successful or not. the args parameter just checks to make sure
+    no arguments were provided
+    """
+    # Ensure no args 
+    if len(args) != 0:
+        print (f"{ERROR_COLOR}CommandError:{NORMAL_COLOR}",
+        f"Incorrect usage of redo\nredo does not take any arguments")
+        return  
 
     # get undone command
     command = command_history.pop_redo()
 
     # ensure there was a command
     if command == None:
-        return (False, "No command to redo")
+        print(f"{ERROR_COLOR}ERROR:{NORMAL_COLOR} no command to redo")
+        return
     
     # redo the command
     command.execute()
 
-    return (True, "redid command")
+    print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} command redone succesfully")
 
 ##########################################################################
 
