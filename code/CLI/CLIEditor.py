@@ -106,7 +106,10 @@ class REPL(cmd.Cmd):
         executeCMD("create_parameter" ,args)
 
     def do_rename_parameter(self, args):
-        executeCMD("rename_parameter", args)                     
+        executeCMD("rename_parameter", args)
+
+    def do_delete_parameter(self, args):
+        executeCMD("delete_parameter", args)                         
 
     def do_list_parameters(self, args):
         executeCMD("list_parameters", args) 

@@ -203,6 +203,16 @@ COMMANDS = {
             "skip_line" : False
         }
     ],
+    "delete_parameter" : [
+        {
+            "usage" : "delete_parameter <class_name> <method_name> <param_name>",
+            "desc" : "delete the parameter <param_name> within the method, <method_name>",
+            "command" : UndoableCLICommand,
+            "function" : UMLModel.delete_parameter,
+            "num_arguments" : 3,
+            "skip_line" : False
+        }
+    ],
     "list_parameters" : [
         {
             "usage" : "list_parameters <class_name> <method_name>",
