@@ -183,6 +183,36 @@ COMMANDS = {
             "skip_line" : True
         }
     ],
+    "create_parameter" : [
+        {
+            "usage" : "create_parameter <class_name> <method_name> <parameter_type> <parameter_name>",
+            "desc" : "creates a parameter named <parameter_name> of type <parameter_type> and adds it to the given class and method\n ",
+            "command" : UndoableCLICommand,
+            "function" : UMLModel.create_parameter,
+            "num_arguments" : 4,
+            "skip_line" : False
+        }
+    ],
+    "rename_parameter" : [
+        {
+            "usage" : "rename_parameter <class_name> <method_name> <old_param_name> <new_param_name>",
+            "desc" : "renames the parameter <old_param_name> with the <new_param_name> for the parameter within method, <method_name>",
+            "command" : UndoableCLICommand,
+            "function" : UMLModel.rename_parameter,
+            "num_arguments" : 4,
+            "skip_line" : False
+        }
+    ],
+    "list_parameters" : [
+        {
+            "usage" : "list_parameters <class_name> <method_name>",
+            "desc" : "lists all the paramters for <method_name> in <class_name>\n ",
+            "command" : UndoableCLICommand,
+            "function" : UMLModel.list_parameters,
+            "num_arguments" : 2,
+            "skip_line" : True
+        }
+    ],
     "create_relationship" : [
         {
             "usage" : "create_relationship <relationship_type> <class1> <class2>",

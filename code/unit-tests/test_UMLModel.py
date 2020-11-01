@@ -1,5 +1,5 @@
 # Unit test for the UMLModel class
-# Description:     
+# Description:
 #   This file validates that each function belonging to the UMLModel class behaves as intended
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
@@ -15,7 +15,7 @@ sys.path.append('../')
 sys.path.append('code/')
 from models.UMLModel import UMLModel
 from models.UMLClass import UMLClass
-import io 
+import io
 
 ##########################################################################
 
@@ -31,7 +31,7 @@ class UMLModelTest(unittest.TestCase):
         model.create_class("class1")
         self.assertEqual(model.classes["class1"].name, "class1")
 
-        # Ensure duplicate class is not created 
+        # Ensure duplicate class is not created
         status, msg = model.create_class("class1")
         self.assertFalse(status)
         self.assertEqual(msg, "class1 already exists.")
@@ -42,11 +42,11 @@ class UMLModelTest(unittest.TestCase):
         model = UMLModel()
         model.create_class("class1")
 
-        # Ensure name is changed 
+        # Ensure name is changed
         model.rename_class("class1", "classA")
         # assert dictionary key was changed
         self.assertTrue("classA" in model.classes)
-        #assert class object name was changed  
+        #assert class object name was changed
         self.assertEqual(model.classes["classA"].name, "classA")
 
         # Ensure unknown class is rejected
@@ -68,7 +68,7 @@ class UMLModelTest(unittest.TestCase):
         model = UMLModel()
         model.create_class("class1")
 
-        # Ensure deleted 
+        # Ensure deleted
         model.delete_class("class1")
         # assert dictionary key was removed
         self.assertTrue("class1" not in model.classes)
@@ -80,7 +80,7 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(msg, "class1 does not exist.")
 
     ######################################################################
-    
+
     def test_create_field(self):
         model = UMLModel()
         model.create_class("class1")
@@ -90,7 +90,7 @@ class UMLModelTest(unittest.TestCase):
         model.create_field("class1", "public", "void", "a1")
         self.assertTrue(testClass.has_field("a1"))
 
-        # Ensure duplicate field is not created 
+        # Ensure duplicate field is not created
         status, msg = model.create_field("class1", "public", "void", "a1")
         # ensure it failed
         self.assertFalse(status)
@@ -120,7 +120,7 @@ class UMLModelTest(unittest.TestCase):
         self.assertFalse(testClass.has_field("a1"))
 
     ######################################################################
-    
+
     def test_create_method(self):
         model = UMLModel()
         model.create_class("class1")
@@ -130,7 +130,7 @@ class UMLModelTest(unittest.TestCase):
         model.create_method("class1", "public", "void", "add")
         self.assertTrue(testClass.has_method("add"))
 
-        # Ensure duplicate method is not created 
+        # Ensure duplicate method is not created
         status, msg = model.create_method("class1", "public", "void", "add")
         # ensure it failed
         self.assertFalse(status)
@@ -159,6 +159,37 @@ class UMLModelTest(unittest.TestCase):
         model.delete_method("class1", "add")
         self.assertFalse(testClass.has_method("add"))
 
+    ##########################################################################
+
+    def test_create_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+
+        self.assertTrue(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].has_parameter("param_name"))
+
+
+        # Ensure duplicate parameter is not created
+        status, msg = model.create_parameter("class1", "method1", "param_type", "param_name")
+
+        # ensure it failed
+        self.assertFalse(status)
+
+    ######################################################################
+
+    def test_rename_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+        
+        #ensure parameter is renamed
+        model.rename_parameter("class1", "method1", "param_name", "new_param_name")
+        
+        # Ensure duplicate parameter is not created
+        self.assertEqual(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].parameters[0].name, "new_param_name")
+
     ######################################################################
 
     def test_create_relationship(self):
@@ -171,7 +202,7 @@ class UMLModelTest(unittest.TestCase):
         self.assertTrue(model.classes["c1"].has_relationship("c2"))
         self.assertTrue(model.classes["c2"].has_relationship("c1"))
 
-        # Ensure already existing rel 
+        # Ensure already existing rel
         status, msg = model.create_relationship("composition","c2","c1")
         # ensure it failed
         self.assertFalse(status)
@@ -189,10 +220,10 @@ class UMLModelTest(unittest.TestCase):
         model.delete_relationship("c1","c2")
         self.assertEqual(len(model.classes["c1"].relationships), 0)
         self.assertEqual(len(model.classes["c2"].relationships), 0)
-        
-##########################################################################
 
-# runs all of our tests 
+    ######################################################################
+
+# runs all of our tests
 # allows us to run this file using the typical 'python3 test_UMLModel.py' command
 # without it, we would have to use the 'python3 -m unittest test_UMLModel.py' command
 if __name__ == '__main__':

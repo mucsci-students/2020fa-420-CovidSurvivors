@@ -20,12 +20,14 @@
             {
                 "visibility": "public",
                 "name": "m1",
-                "type": "t3"
+                "type": "t3",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "m2",
-                "type": "t4"
+                "type": "t4",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -33,7 +35,10 @@
                 "type": "inheritance",
                 "other": "c2"
             }
-        ]
+        ],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
     },
     "c2": {
         "name": "c2",
@@ -45,12 +50,14 @@
             {
                 "visibility": "public",
                 "name": "m1",
-                "type": "t3"
+                "type": "t3",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "m2",
-                "type": "t4"
+                "type": "t4",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -58,13 +65,19 @@
                 "type": "inheritance",
                 "other": "c1"
             }
-        ]
+        ],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
     },
     "c3": {
         "name": "c3",
         "attributes": [],
         "fields": [],
         "methods": [],
-        "relationships": []
+        "relationships": [],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
     }
 }
