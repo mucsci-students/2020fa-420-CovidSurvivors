@@ -2,6 +2,29 @@
 
 <!-- body START -->
 {% block body %}
+
+        <!-- Flash error/success messages START -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-modal-container">
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div id="flash{{ loop.index0 }}" class="flash-modal flash-error">
+                    <button class="flash-exit-button" onclick="closeFlashMessage('#flash{{ loop.index0 }}')">X</button>
+                    <p>{{ message }}</p>
+                </div>
+            {% elif category == "success" %}
+                <div id="flash{{ loop.index0 }}" class="flash-modal flash-success">
+                    <button class="flash-exit-button" onclick="closeFlashMessage('#flash{{ loop.index0 }}')">X</button>
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <!-- Flash msgs END -->
+
         <!-- sidebar wrapper START -->
         <div class="wrapper">
             <!-- sidebar START -->
@@ -11,6 +34,8 @@
                     <li><button type="button" class="btn" data-toggle="modal" data-target="#loadFileModal"><i class="fas fa-file-upload"></i>Load File</button></li>
                     <li><a href="{{url_for('download')}}" download><button type="button" class="btn"><i class="fas fa-save"></i>Save Project</button></a></li>
                     <li><button type="button" class="btn" data-toggle="modal" data-target="#createClassModal"><i class="fas fa-pencil-ruler"></i>Create Class</button></li>
+                    <li><a href="{{url_for('undo')}}"><button type="button" class="btn"><i class="fas fa-undo"></i>Undo</button></a></li>
+                    <li><a href="{{url_for('redo')}}"><button type="button" class="btn"><i class="fas fa-redo"></i>Redo</button></a></li>
                 </ul>            
             </div>
             <!-- sidebar END -->
@@ -28,7 +53,7 @@
         <!-- display START -->
         <div class="flex-container" id="display">
         <!-- Generate each class card -->
-        {% for class in data %}
+        {% for class in data.classes %}
             <!-- Generate card -->
             {% include "card.html" %}
         {% endfor %}    

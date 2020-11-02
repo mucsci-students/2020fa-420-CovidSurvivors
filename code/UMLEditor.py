@@ -8,6 +8,7 @@
 ##########################################################################
 # Imports
 
+import cmd
 import sys
 import webbrowser
 import subprocess
@@ -46,8 +47,7 @@ def main():
             print ("Server shutting down")
     # Argument is -cli for command line interface
     elif len(sys.argv) == 2 and sys.argv[1] == '-cli':
-        print ("This is the command-line interface for UMLEditor")
-        CLIEditor.REPL()
+        CLIEditor.runCMD()
     # Too many arguments or invalid argument
     else:
         print ("Usages:")

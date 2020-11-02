@@ -9,8 +9,10 @@
 # Imports
 
 import unittest
+import pytest
 import sys
 sys.path.append('../')
+sys.path.append('code/')
 from models.UMLMethod import UMLMethod
 
 ##########################################################################

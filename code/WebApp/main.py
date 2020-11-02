@@ -11,11 +11,13 @@
 import os
 import sys
 from flask import Flask, render_template, send_file, request
-from flask import url_for, redirect
+from flask import url_for, redirect, flash
 from werkzeug.utils import secure_filename
 
 # Include parent directory
 sys.path.append(os.getcwd())
+from command.command import CommandHistory, CreateClassGUICommand
+from command.command import EditClassGUICommand, DeleteClassGUICommand, SetClassPositonGUICommand
 from models.UMLModel import UMLModel
 
 ##########################################################################
@@ -30,6 +32,10 @@ DATA_FOLDER = os.path.join(os.getcwd(), 'data/')
 # The name of the server's current working model file
 WORKING_FILENAME = '__WorkingModel__.json'
 TEMP_FILENAME = '__temp__.json'
+HISTORY_LIMIT = 20
+
+# keeps track of prior commands 
+command_history = CommandHistory(HISTORY_LIMIT)
 
 ##########################################################################
 
@@ -41,14 +47,16 @@ def dashboard():
     model.load_model(WORKING_FILENAME)
 
     # Setup template data
-    data = []
+    data = {
+        "classes" : []
+    }
 
     # add each class
     i = 0 
     for class_name in model.classes:
-        data += [model.classes[class_name].get_raw_data()]
+        data["classes"] += [model.classes[class_name].get_raw_data()]
         # Give class its index 
-        data[i]["index"] = i+1
+        data["classes"][i]["index"] = i+1
         i += 1
 
     return render_template("dashboard.html", data=data)
@@ -60,44 +68,58 @@ def dashboard():
 def createClass():
     # Ensure there was a POST request
     if request.method != "POST":
-        return "Nothing in POST"
-
-    # Build new class
-    model = UMLModel()
-    model.load_model(WORKING_FILENAME)
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Grab the data from the POST request 
-    class_name = request.form.get('class_name')
-    field_names = list(request.form.getlist('field_name'))
-    method_names = list(request.form.getlist('method_name'))
-    relationship_types = list(request.form.getlist('relationship_type'))
-    relationship_others = list(request.form.getlist('relationship_other'))
-    
-    # create the class
-    # Ensure it does not already exist
-    if class_name in model.classes:
-        return "Class already exists"
+    # and structure it for the command
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "class_name" : request.form.get('class_name'),
+        "field_visibilities" : list(request.form.getlist('field_visibility')),
+        "field_types" : list(request.form.getlist('field_type')),
+        "field_names" : list(request.form.getlist('field_name')),
+        "method_visibilities" : list(request.form.getlist('method_visibility')),
+        "method_types" : list(request.form.getlist('method_type')),
+        "method_names" : list(request.form.getlist('method_name')),
+        "parameter_method_index" : list(request.form.getlist('parameter_method')),
+        "parameter_types" : list(request.form.getlist('parameter_type')),
+        "parameter_names" : list(request.form.getlist('parameter_name')),
+        "relationship_types" : list(request.form.getlist('relationship_type')),
+        "relationship_others" : list(request.form.getlist('relationship_other'))
+    }
 
-    model.create_class(class_name)
+    # create command 
+    command = CreateClassGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
 
-    # add the fields
-    for i in range(len(field_names)):
-        model.create_field(class_name, "private", "int", field_names[i])
+    # ensure response
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
 
-    # add the methods
-    for i in range(len(method_names)):
-        model.create_method(class_name, "public", "int", method_names[i])
+    status, msg = response
 
-    # add relationships
-    for i in range(len(relationship_types)):
-        model.create_relationship(relationship_types[i].lower(), class_name, relationship_others[i])
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
 
-    model.list_class(class_name)
+    # add to history
+    command_history.push(command)
 
-    # No errors 
-    # Save the model with the new class
-    model.save_model(WORKING_FILENAME)
-
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
     return redirect(url_for('dashboard'))
 
 ##########################################################################
@@ -107,54 +129,59 @@ def createClass():
 def editClass():
     # Ensure there was a POST request
     if request.method != "POST":
-        return "Nothing in POST"
-
-    # load model
-    model = UMLModel()
-    model.load_model(WORKING_FILENAME)
-
-    # Ensure it was an existing class
-    if request.form.get("original_name") not in model.classes:
-        return f"{request.form.get('original_name')} is not a valid class"
-
-    # removing class to replace with new class data
-    model.delete_class(request.form.get('original_name'))
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Create new class with new data
     # Grab the data from the POST request 
-    class_name = request.form.get('class_name')
-    field_visibilities = list(request.form.getlist('field_visibility'))
-    field_types = list(request.form.getlist('field_type'))
-    field_names = list(request.form.getlist('field_name'))
-    method_visibilities = list(request.form.getlist('method_visibility'))
-    method_types = list(request.form.getlist('method_type'))
-    method_names = list(request.form.getlist('method_name'))
-    relationship_types = list(request.form.getlist('relationship_type'))
-    relationship_others = list(request.form.getlist('relationship_other'))
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "original_name" : request.form.get('original_name'),
+        "class_name" : request.form.get('class_name'),
+        "field_visibilities" : list(request.form.getlist('field_visibility')),
+        "field_types" : list(request.form.getlist('field_type')),
+        "field_names" : list(request.form.getlist('field_name')),
+        "method_visibilities" : list(request.form.getlist('method_visibility')),
+        "method_types" : list(request.form.getlist('method_type')),
+        "method_names" : list(request.form.getlist('method_name')),
+        "parameter_method_index" : list(request.form.getlist('parameter_method')),
+        "parameter_types" : list(request.form.getlist('parameter_type')),
+        "parameter_names" : list(request.form.getlist('parameter_name')),
+        "relationship_types" : list(request.form.getlist('relationship_type')),
+        "relationship_others" : list(request.form.getlist('relationship_other'))
+    }
 
-    model.create_class(class_name)
+    # create command 
+    command = EditClassGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
 
-    # add the fields
-    for i in range(len(field_names)):
-        model.create_field(class_name, field_visibilities[i].lower(), field_types[i], field_names[i])
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
 
-    # add the methods
-    for i in range(len(method_names)):
-        model.create_method(class_name, method_visibilities[i].lower(), method_types[i], method_names[i])
+    status, msg = response
 
-    # add relationships
-    for i in range(len(relationship_types)):
-        model.create_relationship(relationship_types[i].lower(), class_name, relationship_others[i])
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
 
-    model.list_class(class_name)
-    
-    # No errors 
-    # Save the model with the new class
-    model.save_model(WORKING_FILENAME)
+    # add to history
+    command_history.push(command)
 
-    # Print success status 
-    print("SUCCESS")
-
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
     return redirect(url_for('dashboard'))
 
 ##########################################################################
@@ -165,7 +192,9 @@ def editClass():
 def editForm():
     # Ensure there was a POST request
     if request.method != "POST":
-        return "Nothing in POST"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
     
     # load model
     model = UMLModel()
@@ -178,8 +207,72 @@ def editForm():
     # grab class data
     data = model.classes[request.form.get('class_name')].get_raw_data()
 
+    # index methods for parameter matching
+    for class_name in data:
+        i = 0
+        for methodi in range(len(data["methods"])):
+            data["methods"][methodi]["index"] = i
+            i+=1
+
     # Build modal form inputs
     return render_template("modalForm.html", data=data)
+
+##########################################################################
+
+# Saves the position of a class card based on its location on the dashboard
+@app.route("/saveCardPosition", methods=['POST'])
+def saveCardPosition():
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
+
+    # load model
+    model = UMLModel()
+    model.load_model(WORKING_FILENAME)
+
+    # Grab the position data from the POST request 
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "class_name" : request.form['class_name'],
+        "x" : request.form['x'],
+        "y": request.form['y'],
+        "zindex": request.form['zindex']
+    }
+
+    # create command 
+    command = SetClassPositonGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
+
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
+
+    status, msg = response
+
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard'))
+
 
 ##########################################################################
 
@@ -189,18 +282,94 @@ def deleteClass():
 
     # Ensure method was post
     if request.method != 'POST':
-        return "<h1 style='text-align:center'>Nothing sent in POST</h1>"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Print out what is being deleted
     print (f"Deleting class '{request.form.get('class_name')}' from the model")
     
-    # Delete from the model
-    model = UMLModel()
-    model.load_model(WORKING_FILENAME)
-    model.delete_class(request.form.get('class_name'))
-    model.save_model(WORKING_FILENAME)
+    # Grab the data from the POST request 
+    class_data = {
+        "filename" : WORKING_FILENAME,
+        "class_name" : request.form.get('class_name')
+    }
+    
+    # create command 
+    command = DeleteClassGUICommand(UMLModel(), class_data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
 
-    # Redirect user back to main page 
+    # ensure response
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard'))
+
+    status, msg = response
+
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard'))
+
+
+##########################################################################
+
+# Undoes a previously executed command
+@app.route("/undo")
+def undo():
+    # get undoable command
+    command = command_history.pop_undo()
+
+    # ensure there was a command
+    if command == None:
+        # send error message as a flash message
+        flash("Nothing to undo", "error")
+        return redirect(url_for('dashboard'))
+    
+    # undo the command
+    command.undo()
+
+    # send success message as a flash message
+    print(f"SUCCESS: Successfully undid last command")
+    flash("Undo successful", "success")
+    return redirect(url_for('dashboard'))
+
+##########################################################################
+
+# redo a previously undone command
+@app.route("/redo")
+def redo():
+    # get undone command
+    command = command_history.pop_redo()
+
+    # ensure there was a command
+    if command == None:
+        # send error message as a flash message
+        flash("Nothing to redo", "error")
+        return redirect(url_for('dashboard'))
+    
+    # redo the command
+    command.execute()
+
+    # send success message as a flash message
+    print(f"SUCCESS: Redo successful")
+    flash("Redo successful", "success")
     return redirect(url_for('dashboard'))
 
 ##########################################################################
@@ -227,22 +396,30 @@ def is_json(filename):
 def upload():
     # Ensure there was a POST request
     if request.method != 'POST':
-        return "<h1 style='text-align:center'>Nothing sent in POST</h1>"
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard'))
 
     # Ensure POST has a 'file' 
     if 'file' not in request.files:
-        return "<h1 style='text-align:center'>No file</h1>"
+        # send error message as a flash message
+        flash("No file provided", "error")
+        return redirect(url_for('dashboard'))
     
     # Grab file
     file = request.files['file']
 
     # Ensure there was a file submitted
     if file.filename == '':
-        return "<h1 style='text-align:center'>No file submitted</h1>"
+        # send error message as a flash message
+        flash("No file provided", "error")
+        return redirect(url_for('dashboard'))
     
     # Ensure file is a json file
     if not is_json(file.filename):
-        return "<h1 style='text-align:center'>Bad File Extension</h1>"
+        # send error message as a flash message
+        flash("File must be a JSON file", "error")
+        return redirect(url_for('dashboard'))
     
     # Save the file to the server as a temp file
     # User's filename is not used which avoids 
@@ -253,9 +430,16 @@ def upload():
     # To ensure the file will work as the model
     model = UMLModel()
     try:
-        model.load_model(TEMP_FILENAME)
+        status, msg = model.load_model(TEMP_FILENAME)
     except:
-        return "<h1 style='text-align:center'>Model File Not Parse-able</h1>"
+        # send error message as a flash message
+        flash("File cannot be interpretted as a UMLModel", "error")
+        return redirect(url_for('dashboard'))
+
+    # load model failed
+    if not status:
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
 
     # Save file as the new working model 
     with open(DATA_FOLDER + TEMP_FILENAME, "r") as src:
@@ -264,6 +448,7 @@ def upload():
 
     # Redirect to the homepage to display 
     # the newly loaded model
+    flash("File was successfully loaded", "success")
     return redirect(url_for('dashboard'))
         
 ##########################################################################

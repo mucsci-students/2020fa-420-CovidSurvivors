@@ -1,7 +1,22 @@
+// Javascript/JQuery for the GUI UML Editor
+// Course:   CSCI 420 - Software Engineering
+// Authors:  Adisa, Amy, Carli, David, Joan
+// Date:     October 21 2020
+// =======================================================================
+
+// Closes the popup status message box with the given ID
+function closeFlashMessage(id) {
+    $(id).remove();
+}
+
+// =======================================================================
+
 // Saves the name to the delete class modal  
 function setDeleteData(classname) {
     $('#deleteClassInputName').val(classname);
 } 
+
+// =======================================================================
 
 // Loads the create class modal form 
 // at the moment, the only loaded data is 
@@ -17,8 +32,9 @@ function loadCreateClassModal() {
             createEditClassModalBtns();
         });
     
-
 }
+
+// =======================================================================
 
 // Loads the edit class modal form 
 function loadEditClassModal(classname) {
@@ -31,15 +47,18 @@ function loadEditClassModal(classname) {
             // Re-attach modal buttons
             createEditClassModalBtns();
         });
-    
 
 }
+
+// =======================================================================
 
 // Runs automatically when web application is executed
 $(function() {
     classCardBtns();
     createEditClassModalBtns();
 });
+
+// =======================================================================
 
 // Gives class card the ability to be draggable and calculates
 // the coordinates of the class card on the display  
@@ -49,9 +68,25 @@ function draggable(card) {
         cursor: "crosshair",
         opacity: 0.5,
         containment: "parent",
-        snap: true
+        snap: true,
+        // sends x and y position of class card, along with its z-index, after the class card has been moved
+        stop: function() {
+            // name of class associated with the class card
+            var classname = $($(this)).attr('name');
+            // x coordinate representing the horizontal position of card on dashboard
+            var x = $(card).css("left");
+            // y coordinate representing the vertical position of card on dashboard
+            var y = $(card).css("top");
+            // the z-index specifing the stack order of the class cards on the dashboard
+            var zindex = $(card).css("z-index");
+
+            // sends class name and the appropriate position data of a class card to the server 
+            $.post("/saveCardPosition", {class_name:classname, x:x, y:y, zindex:zindex}) 
+        }
     });
 }
+
+// =======================================================================
 
 // Functionality for the class card buttons
 function classCardBtns() {
@@ -70,17 +105,9 @@ function classCardBtns() {
         // displays a confirmation modal informing user the class card has been deleted
         $("#confirmModal").modal('show');
     });
-
-    // Allows us to edit a specific class card on click of its edit button
-    $('.card-footer').on('click', '.editCard', function () {
-        // Get all the information pertaining to the class we wish to edit using the unique class ID
-
-        // Preload the information we got into the appropriate textboxes of the edit Class Modal
-
-        //alert("Edit class: #" + getId);
-
-    });
 }
+
+// =======================================================================
 
 // Functionality for the create class and edit class modal buttons
 function createEditClassModalBtns() {
@@ -108,13 +135,34 @@ function createEditClassModalBtns() {
     $('.form-group').on('click', '.addMethod', function() {
         var table = $(this).closest('.form-group');
         table.append(
-            `<div class="input-group mb-3">
+            `<div class="input-group mb-3" id="method0">
                 <select name="method_visibility" class="form-control">
                         <option selected>Public</option>
                         <option>Private</option>
                 </select>
                 <input type="text" name="method_type" class="form-control" placeholder="Enter method return type" aria-label="Type of method" aria-describedby="basic-addon2">
-                <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of field" aria-describedby="basic-addon2">
+                <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm addParameter" type="button">
+                        Add Parameter
+                    </button>
+                    <button class="btn btn-outline-secondary delTextArea" type="button">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>`);
+    });
+
+    // wip
+    // Adds a text area for declaring a parameters name and type
+    $('.form-group').on('click', '.addParameter', function() {
+        var table = $(this).closest('.input-group');
+        var method_index = table.prevAll().length-2;
+        table.append(
+            `<div class="input-group mb-3">
+                <input hidden type="text" name="parameter_method" value="${method_index}">
+                <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
+                <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary delTextArea" type="button">
                         <i class="fas fa-minus"></i>
@@ -149,3 +197,5 @@ function createEditClassModalBtns() {
         $(this).closest('.input-group').remove();
     });
 }
+
+// =======================================================================

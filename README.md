@@ -5,7 +5,9 @@ UMLEditor is an editor program for a [Unified Modeling Language](https://en.wiki
 
 Currently, there are two editors for editing models. One is a web-based GUI editor and the other is a CLI editor. Both allow you to achieve the same tasks. 
 
-The program currently supports creating and deleting classes, fields, methods (method parameters not yet supported), and relationships.
+The program currently supports creating and deleting classes, fields, methods (with parameters), and relationships. You can also undo and redo commands. 
+
+The GUI application supports the same operations plus the ability to move class cards around and have the position saved. 
 
 Installing
 ----------
@@ -68,6 +70,8 @@ UMLEditor> create_field myClass1 private int myField1
 UMLEditor> create_field myClass1 public string myField2
 UMLEditor> create_field myClass2 private string myField3
 UMLEditor> create_method myClass2 public string myMethod1
+UMLEditor> create_parameter myClass2 myMethod1 int a
+UMLEditor> create_parameter myClass2 myMethod1 int b
 UMLEditor> create_relationship inheritance myClass1 myClass2
 ```
 You can list the names of all of the classes with `list_classes`
@@ -79,24 +83,24 @@ myClass2
 You can list all of the components of a class with `list_class <classname>`
 ```
 UMLEditor> list_class myClass1
-Class: myClass1
+SUCCESS: Class: myClass1
 === Fields ======================
 private myField1: int
 public myField2: string
 === Methods =====================
 === Relationships ===============
-inheritance myClass2
+myClass1 ---------> myClass2
 =================================
 ```
 ```
 UMLEditor> list_class myClass2
-Class: myClass2
+SUCCESS: Class: myClass2
 === Fields ======================
 private myField3: string
 === Methods =====================
-public myMethod1(): string
+public myMethod1(int a, int b): string
 === Relationships ===============
-inheritance myClass1
+myClass2 <--------- myClass1
 =================================
 ```
 
