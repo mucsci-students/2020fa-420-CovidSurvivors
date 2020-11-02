@@ -16,6 +16,9 @@
             <ul class="list-group list-group-flush">
                 {% for method in class.methods %}
                     <li>{{method.visibility}} {{ method.name }}(): {{method.type}}</li>
+                    {% for parameter in method.parameters %}
+                        <li>{{parameter.type}} {{parameter.name}}</li>
+                    {% endfor %}
                 {% endfor %}
             </ul>
         </div>

@@ -1,4 +1,32 @@
 {
+    "class3": {
+        "name": "class3",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "myField",
+                "type": "int"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "myMethod",
+                "type": "int",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "class2"
+            }
+        ],
+        "x": "181px",
+        "y": "-759.4px",
+        "zindex": "29"
+    },
     "class2": {
         "name": "class2",
         "attributes": [],
@@ -16,97 +44,48 @@
         ],
         "methods": [
             {
-                "visibility": "public",
+                "visibility": "private",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "boolean"
+                "type": "boolean",
+                "parameters": []
             }
         ],
         "relationships": [
             {
-                "type": "inheritance",
+                "type": "composition",
+                "other": "class3"
+            },
+            {
+                "type": "reverse realization",
                 "other": "class1"
-            },
-            {
-                "type": "composition",
-                "other": "class3"
             }
         ],
-        "x": "14px",
-        "y": "95px",
-        "zindex": "34"
+        "x": "539px",
+        "y": "-203px",
+        "zindex": "5"
     },
-    "class1": {
-        "name": "class1",
+    "": {
+        "name": "",
         "attributes": [],
-        "fields": [
-            {
-                "visibility": "private",
-                "name": "field1",
-                "type": "string"
-            },
-            {
-                "visibility": "private",
-                "name": "field2",
-                "type": "int"
-            }
-        ],
+        "fields": [],
         "methods": [
             {
                 "visibility": "private",
-                "name": "method1",
-                "type": "String"
-            },
-            {
-                "visibility": "private",
-                "name": "method2",
-                "type": "int"
+                "name": "hthsr",
+                "type": "tht",
+                "parameters": []
             }
         ],
-        "relationships": [
-            {
-                "type": "inheritance",
-                "other": "class2"
-            },
-            {
-                "type": "reverse composition",
-                "other": "class4"
-            }
-        ],
-        "x": "129px",
-        "y": "-185px",
-        "zindex": "33"
-    },
-    "class3": {
-        "name": "class3",
-        "attributes": [],
-        "fields": [
-            {
-                "visibility": "private",
-                "name": "myField",
-                "type": "int"
-            }
-        ],
-        "methods": [
-            {
-                "visibility": "public",
-                "name": "myMethod",
-                "type": "int"
-            }
-        ],
-        "relationships": [
-            {
-                "type": "composition",
-                "other": "class2"
-            }
-        ],
-        "x": "181px",
-        "y": "-759.4px",
-        "zindex": "29"
+        "relationships": [],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
     },
     "class4": {
         "name": "class4",
@@ -127,7 +106,8 @@
             {
                 "visibility": "private",
                 "name": "string",
-                "type": "method1()"
+                "type": "method1()",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -136,8 +116,101 @@
                 "other": "class1"
             }
         ],
-        "x": "231px",
-        "y": "-1006.4px",
-        "zindex": "33"
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    },
+    "class1": {
+        "name": "class1",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "field1",
+                "type": "string"
+            },
+            {
+                "visibility": "private",
+                "name": "field2",
+                "type": "int"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "method1",
+                "type": "String",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "realization",
+                "other": "class2"
+            },
+            {
+                "type": "realization",
+                "other": "class4"
+            }
+        ],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    },
+    "class7": {
+        "name": "class7",
+        "attributes": [],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "sum",
+                "type": "int",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "val1"
+                    },
+                    {
+                        "type": "int",
+                        "name": "val2"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "concat",
+                "type": "string",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "a"
+                    },
+                    {
+                        "type": "string",
+                        "name": "b"
+                    },
+                    {
+                        "type": "string",
+                        "name": "c"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "hasValue",
+                "type": "bool",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "value"
+                    }
+                ]
+            }
+        ],
+        "relationships": [],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
     }
 }
