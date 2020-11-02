@@ -79,9 +79,14 @@ class UMLModel:
             return (False, "{} already exists.".format(newClassName))
 
         # Renames existing class object
-        (self.classes[oldClassName]).name = newClassName
+        self.classes[oldClassName].name = newClassName
         # Assigns the renamed class object to a key with the new class name
         self.classes[newClassName] = self.classes.pop(oldClassName)
+
+        # reassign this class' name in other classes relationships
+        for relationship in self.classes[newClassName].relationships:
+            # rename
+            self.classes[relationship.other].relationships[self.classes[relationship.other].relationship_index(oldClassName)].other = newClassName
 
         # return success
         return (True, f"Class '{oldClassName}' was renamed to '{newClassName}'.")
