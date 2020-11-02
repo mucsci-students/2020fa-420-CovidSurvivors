@@ -57,7 +57,7 @@
             </div>
             {% for parameter in method.parameters %}
                 <div class="input-group mb-3">
-                    <input type="text" name="parameter_method" value="{{method.index}}">
+                    <input hidden type="text" name="parameter_method" value="{{method.index}}">
                     <input type="text" name="parameter_type" value="{{parameter.type}}" class="form-control" aria-label="Type of parameter" aria-describedby="basic-addon2">
                     <input type="text" name="parameter_name" value="{{parameter.name}}" class="form-control" aria-label="Name of parameter" aria-describedby="basic-addon2">
                     <div class="input-group-append">

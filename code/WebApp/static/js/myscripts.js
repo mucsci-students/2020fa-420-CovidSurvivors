@@ -160,7 +160,7 @@ function createEditClassModalBtns() {
         var method_index = table.prevAll().length-2;
         table.append(
             `<div class="input-group mb-3">
-                <input type="text" name="parameter_method" value="${method_index}">
+                <input hidden type="text" name="parameter_method" value="${method_index}">
                 <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
                 <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">
