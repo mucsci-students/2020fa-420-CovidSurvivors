@@ -55,11 +55,41 @@ class REPL(cmd.Cmd):
     def do_rename_class(self, args):
         executeCMD(self.model, self.command_history, "rename_class", args.split())
 
+    def complete_rename_class(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        if text:
+            return [
+                model_class for model_class in classes
+                if model_class.startswith(text)
+            ]
+        else:
+            return classes    
+
     def do_delete_class(self, args):
         executeCMD(self.model, self.command_history, "delete_class", args.split())
 
+    def complete_delete_class(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        if text:
+            return [
+                model_class for model_class in classes
+                if model_class.startswith(text)
+            ]
+        else:
+            return classes
+
     def do_list_class(self, args):
         executeCMD(self.model, self.command_history, "list_class", args.split())
+
+    def complete_list_class(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        if text:
+            return [
+                model_class for model_class in classes
+                if model_class.startswith(text)
+            ]
+        else:
+            return classes
 
     def do_list_classes(self, args):
         executeCMD(self.model, self.command_history, "list_classes", args.split())
@@ -145,9 +175,6 @@ class REPL(cmd.Cmd):
         else:
             print_help_message(self.model, "")
 
-    def do_exit(self, args):
-        prompt_exit(self.model)
-
     def complete_help(self, text, line, begidx, endidx):
         commands = list(CommandData.COMMANDS.keys())
         if text:
@@ -157,6 +184,9 @@ class REPL(cmd.Cmd):
             ]
         else:
             return commands
+
+    def do_exit(self, args):
+        prompt_exit(self.model)
 
     # when user enters an empty command (pushes enter)
     def emptyline(self):
@@ -248,6 +278,50 @@ def executeCMD(model:UMLModel, command_history:CommandHistory, commandName:str, 
         command_history.push(command)
 
     print(f"{SUCCESS_COLOR}SUCCESS:{NORMAL_COLOR} {msg}")
+
+##########################################################################
+
+def fetch_classes(model:UMLModel):
+    """Fetches the classes from the model
+
+    Casts the container as a list to be used by the CMD complete_x functions
+
+    Params:
+    - model (UMLModel) - the model being used
+    """
+    return  list(model.classes)
+
+##########################################################################
+
+def fetch_from_class(model:UMLModel, class_name:str, data:str):
+    """Fetches the specified data from the specified class in the model
+
+    Params:
+    - model (UMLModel) - the model being used
+    - class_name (str) - name of the class
+    - data (str) - name of the container
+    Usage note: data (str) should be one of these 4 at the calling instance:
+        "fields"
+        "methods"
+        "relationships"
+        "visibility"
+    """
+    # initialize an empty list
+    conatiner = list()
+
+    if(data == "fields"):
+        container = model.classes[class_name].fields
+
+    elif(data == "methods"):
+        container = model.classes[class_name].methods
+
+    elif(data == "relationships"):
+        container = model.classes[class_name].relationships
+
+    elif(data == "visibility"):
+        container = ("public", "private", "protected")
+
+    return  container
 
 ##########################################################################
  
