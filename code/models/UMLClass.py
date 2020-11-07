@@ -174,12 +174,12 @@ class UMLClass:
 
         Params:
         - visibility (string) - the visibility of a method, should be 
-        'public' or 'private'
+        'public', 'private' or 'protected'
         - method_name (string) - the name for a method to add
         - _type (string) - the type of the method
 
         Preconditions:
-        - visibility should be 'public' or 'private'
+        - visibility should be 'public', 'private' or 'protected'
         - method_name should not already exist
 
         Postconditions:
