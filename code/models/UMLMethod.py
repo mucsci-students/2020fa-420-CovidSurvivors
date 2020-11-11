@@ -21,7 +21,7 @@ class UMLMethod(Variable):
 
         Params:
         - visibility (Visibility) - the visibility of the method,
-         either Public or Private
+         either Public, Private or Protected
         - name (str) - the name of the method
         - _type (str) - the return type of the method
         - isstatic (bool) - whether the method is static or not
