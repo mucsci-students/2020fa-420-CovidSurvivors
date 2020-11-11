@@ -11,9 +11,10 @@
 # Imports
 
 import cmd
+import os
 from typing import Tuple 
 
-from models.UMLModel import UMLModel
+from models.UMLModel import UMLModel, MODEL_DIRECTORY
 from . import CommandData
 from command.command import CLICommand, Command, UndoableCLICommand
 from command.command import CommandHistory
@@ -160,8 +161,20 @@ class REPL(cmd.Cmd):
     def do_save_model(self, args):
         executeCMD(self.model, self.command_history, "save_model", args.split())
 
+    def complete_save_model(self, tokenSoFar, line, beginidx, endidx):
+        files = os.listdir(MODEL_DIRECTORY)
+        if tokenSoFar:
+            return [filename for filename in files if filename.startswith(tokenSoFar)]
+        return files
+
     def do_load_model(self, args):
         executeCMD(self.model, self.command_history, "load_model", args.split())
+
+    def complete_load_model(self, tokenSoFar, line, beginidx, endidx):
+        files = os.listdir(MODEL_DIRECTORY)
+        if tokenSoFar:
+            return [filename for filename in files if filename.startswith(tokenSoFar)]
+        return files
 
     def do_undo(self, args):
         undo(self.command_history, args.split())
