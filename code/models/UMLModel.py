@@ -613,7 +613,7 @@ class UMLModel:
     def create_method(self, class_name:str, visibility:str, method_type:str, method_name:str) -> Tuple[bool, str]:
         """Creates a method for a given class
             - class_name (string) - the name of the class
-            - visibility (string) - the visibility of a method, should be 'public' or 'private'
+            - visibility (string) - the visibility of a method, should be 'public', 'private', or 'protected'
             - method_name (string) - the name of the method
             - method_type (string) - the type of the method
         """
