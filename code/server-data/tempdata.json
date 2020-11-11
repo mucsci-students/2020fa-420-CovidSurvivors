@@ -59,5 +59,12 @@
                 "other": "c1"
             }
         ]
+    },
+    "c3": {
+        "name": "c3",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": []
     }
 }

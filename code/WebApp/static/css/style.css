@@ -27,26 +27,47 @@ body {
 
 /*** MODEL PAGE *********************************************************/
 
-.model_view_container {
-    float: left;
-    background-color: yellow;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    margin: auto;
+.modelContainer {
+    /* background-color: cyan; */
+    margin-left: 200px;
+    padding: 10px;
 }
 
-.model_table {
+.modelContainerHeader {
+    background-color: #eee;
+    margin-bottom: 10px;
+    padding: 7px;
+    text-align: center;
+    height:50px;
+}
+
+.modelTable {
+    width: 100%;
+}
+
+.modelEntry {
     background-color: #eeeeee;
-    height: 100%;
+    border-bottom: 1px solid #555;
     width: 100%;
 }
 
-.model_table th, .model_table td {
-    width: 33%;
-    padding:5px;
-    padding-left: 20px;
+.modelEntry td, .modelEntry th {
+    padding: 7px;
 }
+
+.modelButtonCol {
+    width: 10%;
+}
+
+.modelButton {
+    padding: 5px;
+    float:right;
+}
+
+.modelButtonHead {
+    text-align: right;
+}
+
 
 /*** FLASH MESSAGES *****************************************************/
 

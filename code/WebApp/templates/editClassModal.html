@@ -6,7 +6,7 @@
                         <h4 class="modal-title w-100" id="myModalLabel">Edit class</h4>
                     </div>
                     <div class="modal-body">
-                        <form id="editClassForm" action="{{url_for('editClass')}}" method="POST">
+                        <form id="editClassForm" action="{{url_for('editClass', model_name=data.model_name)}}" method="POST">
                             <!-- form inputs get loaded here -->
                         </form>
                     </div>

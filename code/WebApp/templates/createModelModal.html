@@ -1,0 +1,27 @@
+<!-- create class modal START -->
+<div class="modal fade" id="createModelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Create a new Model</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createModelModalForm" action="{{url_for('createModel')}}" method="POST">
+                    <!-- Model name START -->
+                    <div class="form-group">
+                        <label for="classname">Model Name</label>
+                        <div class="input-group mb-3">
+                            <input type="text" name="model_name" class="form-control" placeholder="Enter model name" aria-label="Name of Model" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                    <!-- Model name END -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="createModelModalForm" class="btn btn-primary btn-sm">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--create class modal END -->
