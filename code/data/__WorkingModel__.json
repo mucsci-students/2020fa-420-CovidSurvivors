@@ -1,0 +1,216 @@
+{
+    "class3": {
+        "name": "class3",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "myField",
+                "type": "int"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "myMethod",
+                "type": "int",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "class2"
+            }
+        ],
+        "x": "181px",
+        "y": "-759.4px",
+        "zindex": "29"
+    },
+    "class2": {
+        "name": "class2",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "public",
+                "name": "field1",
+                "type": "string"
+            },
+            {
+                "visibility": "public",
+                "name": "field2",
+                "type": "Object"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "method1",
+                "type": "string",
+                "parameters": []
+            },
+            {
+                "visibility": "public",
+                "name": "method2",
+                "type": "boolean",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "class3"
+            },
+            {
+                "type": "reverse realization",
+                "other": "class1"
+            }
+        ],
+        "x": "539px",
+        "y": "-203px",
+        "zindex": "5"
+    },
+    "": {
+        "name": "",
+        "attributes": [],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "hthsr",
+                "type": "tht",
+                "parameters": []
+            }
+        ],
+        "relationships": [],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    },
+    "class4": {
+        "name": "class4",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "int",
+                "type": "field1"
+            },
+            {
+                "visibility": "private",
+                "name": "float",
+                "type": "field2"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "string",
+                "type": "method1()",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "class1"
+            }
+        ],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    },
+    "class1": {
+        "name": "class1",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "field1",
+                "type": "string"
+            },
+            {
+                "visibility": "private",
+                "name": "field2",
+                "type": "int"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "private",
+                "name": "method1",
+                "type": "String",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "realization",
+                "other": "class2"
+            },
+            {
+                "type": "realization",
+                "other": "class4"
+            }
+        ],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    },
+    "class7": {
+        "name": "class7",
+        "attributes": [],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "sum",
+                "type": "int",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "val1"
+                    },
+                    {
+                        "type": "int",
+                        "name": "val2"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "concat",
+                "type": "string",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "a"
+                    },
+                    {
+                        "type": "string",
+                        "name": "b"
+                    },
+                    {
+                        "type": "string",
+                        "name": "c"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "hasValue",
+                "type": "bool",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "value"
+                    }
+                ]
+            }
+        ],
+        "relationships": [],
+        "x": 0,
+        "y": 0,
+        "zindex": 0
+    }
+}

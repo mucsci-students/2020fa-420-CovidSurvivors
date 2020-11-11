@@ -13,7 +13,8 @@ from enum import Enum
 class Visibility(Enum):
     PUBLIC = 1
     PRIVATE = 2
-    INVALID = 3
+    PROTECTED = 3
+    INVALID = 4
     
 ##########################################################################
 
@@ -25,12 +26,16 @@ class Visibility(Enum):
 
         if 'private' -> Visibility.PRIVATE
 
+        if 'protected' -> Visibility.PROTECTED
+
         otherwise Visibility.INVALID is returned
         """
         if vis == "public":
             return Visibility.PUBLIC
         elif vis == "private":
             return Visibility.PRIVATE
+        elif vis == "protected":
+            return Visibility.PROTECTED    
         return Visibility.INVALID
 
 ##########################################################################
@@ -42,6 +47,8 @@ class Visibility(Enum):
             return "public"
         elif vis == Visibility.PRIVATE:
             return "private"
+        elif vis == Visibility.PROTECTED:
+            return "protected"      
         return "invalid"
 
 ##########################################################################

@@ -79,9 +79,14 @@ class UMLModel:
             return (False, "{} already exists.".format(newClassName))
 
         # Renames existing class object
-        (self.classes[oldClassName]).name = newClassName
+        self.classes[oldClassName].name = newClassName
         # Assigns the renamed class object to a key with the new class name
         self.classes[newClassName] = self.classes.pop(oldClassName)
+
+        # reassign this class' name in other classes relationships
+        for relationship in self.classes[newClassName].relationships:
+            # rename
+            self.classes[relationship.other].relationships[self.classes[relationship.other].relationship_index(oldClassName)].other = newClassName
 
         # return success
         return (True, f"Class '{oldClassName}' was renamed to '{newClassName}'.")
@@ -434,18 +439,46 @@ class UMLModel:
         raw_model = {}
 
         # read json from file
-        file = open(directory+filename, "r")
-        raw_model = json.loads(file.read())
+        file = open(MODEL_DIRECTORY+filename, "r")
+        try:
+            raw_model = json.loads(file.read())
+        except json.decoder.JSONDecodeError:
+            return (False, "File cannot be parsed. Invalid JSON")
         file.close()
 
-        self.set_data(raw_model)
+        status, msg = self.set_data(raw_model)
+
+        # parse failed
+        if not status:
+            return status, msg
 
         # Tell user load was successful
         return (True, f"Loaded model from {filename}")
 
-    def set_data(self, raw_model):
-        # Clear out previous model
-        self.classes = {class_name : UMLClass.from_raw_data(raw_model[class_name]) for class_name in raw_model}
+    ######################################################################
+
+    def set_data(self, raw_model:dict) -> Tuple[bool, str]:
+        # grab classes
+        classes = {}
+        for class_name in raw_model:
+            # build class
+            newclass = None
+            try:
+                newclass = UMLClass.from_raw_data(raw_model[class_name])
+            except TypeError:
+                return (False, "File cannot be parsed")
+            except KeyError:
+                return (False, "File cannot be parsed")
+            # ensure class was created successfully 
+            if newclass == None:
+                return (False, "File cannot be parsed")
+            # add class
+            classes[newclass.name] = newclass
+
+        # parse was successful
+        # reassign this model to the parsed class data 
+        self.classes = classes
+        return (True, "Model data set successfully")
 
     ######################################################################
 
@@ -581,7 +614,7 @@ class UMLModel:
     def create_method(self, class_name:str, visibility:str, method_type:str, method_name:str) -> Tuple[bool, str]:
         """Creates a method for a given class
             - class_name (string) - the name of the class
-            - visibility (string) - the visibility of a method, should be 'public' or 'private'
+            - visibility (string) - the visibility of a method, should be 'public', 'private', or 'protected'
             - method_name (string) - the name of the method
             - method_type (string) - the type of the method
         """
@@ -807,4 +840,61 @@ class UMLModel:
 
         return (True, "\n".join(outputs))
 
+    ##########################################################################
+    
+    def rename_parameter(self, class_name:str, method_name:str, old_parameter_name:str, new_parameter_name:str)-> Tuple[bool, str]:
+        """Rename parameters in a class for a given method
+            - class_name(string) - the name of the class
+            - method_name (string) - the name of the method
+            - old_parameter_name (string) - the name of the parameter
+            - new_parameter_name (string) - the name of the parameter
+        """
+
+        # ensure class exists
+        if class_name not in self.classes:
+            return (False, f"{class_name} does not exist")
+
+        
+        # ensure class has methods
+        if not self.classes[class_name].has_method(method_name):
+            return (False, f"{class_name} does not have method, {method_name}")   
+            
+        # ensure the parameter exist
+        if not self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(old_parameter_name):
+            return (False, " {} does not exists in {}".format(old_parameter_name, method_name)) 
+
+        # checks if the inputted new method name already exists in the class
+        if self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(new_parameter_name):
+            return (False, " {} already exists in {}".format(new_parameter_name, method_name))   
+
+        # renames the old_parameter_name to new_parameter_name
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].rename_parameter(old_parameter_name, new_parameter_name)
+        return (True, "parameter '{}' has been renamed to '{}'".format(old_parameter_name, new_parameter_name))
+        
+    ##########################################################################
+    
+    def delete_parameter(self, class_name:str, method_name:str, parameter_name:str)-> Tuple[bool, str]:
+        """Delete parameters in a class for a given method
+            - class_name(string) - the name of the class
+            - method_name (string) - the name of the method
+            - parameter_name (string) - the name of the parameter to delete
+        """
+
+        # ensure class exists
+        if class_name not in self.classes:
+            return (False, f"{class_name} does not exist")
+
+        # ensure class has the method_name
+        if not self.classes[class_name].has_method(method_name):
+            return (False, f"{class_name} does not have method, {method_name}")   
+            
+        # ensure the parameter exist
+        if not self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].has_parameter(parameter_name):
+            return (False, " {} does not exists in {}".format(parameter_name, method_name)) 
+
+        # delete the parameter
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].delete_parameter(method_name, parameter_name)
+        # gives user verification that the parameter was deleted
+        return (True, "parameter '{}' has been removed from '{}'".format(parameter_name, method_name))
+        
     ##########################################################################

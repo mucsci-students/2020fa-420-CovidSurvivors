@@ -61,6 +61,13 @@ class UMLModelTest(unittest.TestCase):
         self.assertFalse(status)
         self.assertEqual(msg, "class1 already exists.")
 
+        # Ensure renamed class with relationship updates
+        # relationship in both classes
+        self.assertTrue(model.create_class("class2")[0])
+        self.assertTrue(model.create_relationship("inheritance", "class1", "class2")[0])
+        self.assertTrue(model.rename_class("class2", "class3")[0])
+        self.assertEqual(model.classes["class1"].relationships[0].other, "class3")
+
     ######################################################################
 
     def test_delete_class(self):
@@ -175,6 +182,33 @@ class UMLModelTest(unittest.TestCase):
 
         # ensure it failed
         self.assertFalse(status)
+
+    ######################################################################
+
+    def test_rename_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+        
+        #ensure parameter is renamed
+        model.rename_parameter("class1", "method1", "param_name", "new_param_name")
+        
+        # Ensure duplicate parameter is not created
+        self.assertEqual(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].parameters[0].name, "new_param_name")
+
+    ######################################################################
+
+    def test_delete_parameter(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_parameter("class1", "method1", "param_type", "param_name")
+        testClass = model.classes["class1"]
+        
+        #ensure parameter is deleted
+        model.delete_parameter("class1", "method1", "parameter_name")
+        self.assertFalse(testClass.methods[testClass.method_index("method1")].has_parameter("parameter_name"))
 
     ######################################################################
 

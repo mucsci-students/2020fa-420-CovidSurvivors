@@ -135,13 +135,34 @@ function createEditClassModalBtns() {
     $('.form-group').on('click', '.addMethod', function() {
         var table = $(this).closest('.form-group');
         table.append(
-            `<div class="input-group mb-3">
+            `<div class="input-group mb-3" id="method0">
                 <select name="method_visibility" class="form-control">
                         <option selected>Public</option>
                         <option>Private</option>
                 </select>
                 <input type="text" name="method_type" class="form-control" placeholder="Enter method return type" aria-label="Type of method" aria-describedby="basic-addon2">
-                <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of field" aria-describedby="basic-addon2">
+                <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm addParameter" type="button">
+                        Add Parameter
+                    </button>
+                    <button class="btn btn-outline-secondary delTextArea" type="button">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>`);
+    });
+
+    // wip
+    // Adds a text area for declaring a parameters name and type
+    $('.form-group').on('click', '.addParameter', function() {
+        var table = $(this).closest('.input-group');
+        var method_index = table.prevAll().length-2;
+        table.append(
+            `<div class="input-group mb-3">
+                <input hidden type="text" name="parameter_method" value="${method_index}">
+                <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
+                <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary delTextArea" type="button">
                         <i class="fas fa-minus"></i>

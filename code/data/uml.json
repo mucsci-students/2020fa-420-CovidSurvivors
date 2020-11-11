@@ -1,0 +1,80 @@
+{
+    "Class": {
+        "name": "Class",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "fields",
+                "type": "Field[]"
+            },
+            {
+                "visibility": "private",
+                "name": "methods",
+                "type": "Method[]"
+            },
+            {
+                "visibility": "private",
+                "name": "relationships",
+                "type": "Relationship[]"
+            },
+            {
+                "visibility": "private",
+                "name": "x",
+                "type": "int"
+            },
+            {
+                "visibility": "private",
+                "name": "y",
+                "type": "int"
+            },
+            {
+                "visibility": "private",
+                "name": "zindex",
+                "type": "int"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "addField",
+                "type": "[bool,str]",
+                "parameters": [
+                    {
+                        "type": "str",
+                        "name": "type"
+                    },
+                    {
+                        "type": "str",
+                        "name": "name"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "renameField",
+                "type": "[bool,str]",
+                "parameters": [
+                    {
+                        "type": "str",
+                        "name": "oldName"
+                    },
+                    {
+                        "type": "str",
+                        "name": "newName"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "removeField",
+                "type": "[bool,str]",
+                "parameters": []
+            }
+        ],
+        "relationships": [],
+        "x": "322px",
+        "y": "100px",
+        "zindex": "3"
+    }
+}

@@ -151,6 +151,9 @@ def createClass(model_name):
         "method_visibilities" : list(request.form.getlist('method_visibility')),
         "method_types" : list(request.form.getlist('method_type')),
         "method_names" : list(request.form.getlist('method_name')),
+        "parameter_method_index" : list(request.form.getlist('parameter_method')),
+        "parameter_types" : list(request.form.getlist('parameter_type')),
+        "parameter_names" : list(request.form.getlist('parameter_name')),
         "relationship_types" : list(request.form.getlist('relationship_type')),
         "relationship_others" : list(request.form.getlist('relationship_other'))
     }
@@ -217,6 +220,9 @@ def editClass(model_name):
         "method_visibilities" : list(request.form.getlist('method_visibility')),
         "method_types" : list(request.form.getlist('method_type')),
         "method_names" : list(request.form.getlist('method_name')),
+        "parameter_method_index" : list(request.form.getlist('parameter_method')),
+        "parameter_types" : list(request.form.getlist('parameter_type')),
+        "parameter_names" : list(request.form.getlist('parameter_name')),
         "relationship_types" : list(request.form.getlist('relationship_type')),
         "relationship_others" : list(request.form.getlist('relationship_other'))
     }
@@ -281,6 +287,13 @@ def editForm(model_name):
 
     # grab class data
     data = model.classes[request.form.get('class_name')].get_raw_data()
+
+    # index methods for parameter matching
+    for class_name in data:
+        i = 0
+        for methodi in range(len(data["methods"])):
+            data["methods"][methodi]["index"] = i
+            i+=1
 
     # Build modal form inputs
     return render_template("modalForm.html", data=data)
@@ -534,13 +547,18 @@ def upload():
     # To ensure the file will work as the model
     model = UMLModel()
     try:
-        model.load_model(TEMP_FILENAME, directory=DATA_FOLDER)
+        status, msg = model.load_model(TEMP_FILENAME)
     except:
         # send error message as a flash message
         flash("File cannot be interpretted as a UMLModel", "error")
         return redirect(url_for('models'))
 
-    # Save file to the server
+    # load model failed
+    if not status:
+        flash(msg, "error")
+        return redirect(url_for('dashboard'))
+
+    # Save file as the new working model 
     with open(DATA_FOLDER + TEMP_FILENAME, "r") as src:
         with open(DATA_FOLDER + request.form.get("model_name") + ".json", "w") as dest:
             dest.writelines(src.readlines())

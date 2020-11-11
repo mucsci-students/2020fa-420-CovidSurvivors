@@ -112,7 +112,7 @@ body {
 
 .wrapper {
     display: flex;
-    position: relative;
+    position: absolue;
 }
 
 .wrapper .sidebar {
@@ -213,42 +213,47 @@ body {
 /*** DISPLAY AREA *******************************************************/
 
 .flex-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding-left: 202px;
+    display: inherit;
+    position: inherit;
+    margin-left: 200px;
+    min-height: 979px;
 }
 
 /*** MOVABLE CLASS CARDS ************************************************/
-
-.card-body {
-    border: #212121;
-    border-style: dotted solid;
-}
 
 .ul {
     list-style-type: none;
 }
 
 .card {
-    width: 20rem;
-    border: none;
+    position: absolute;
+    min-width: 10rem;
+    min-height: 5px;
+    width: auto;
+    border-color: #212121;
     margin: 7px;
+    border-radius: 5px;
 }
 
 .card-header {
     background-color: #212121;
     font-weight: bold;
-    font-size: larger;
     color: #32e0c4;
+    padding: 10px;
 }
 
 .card-body {
     background-color: #eeeeee;
+    font-size: small;
+    border: #212121;
+    border-top: dotted #212121 2px;
+    padding: 10px;
 }
 
 .card-footer {
     background-color: #212121;
+    border-top: dotted #eeeeee 2px;
+    padding: 7px;
 }
 
 .card-footer button {
@@ -270,4 +275,3 @@ body {
     background-color: #32e0c4;
 }
 
-/************************************************************************/
