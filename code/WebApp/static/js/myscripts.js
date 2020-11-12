@@ -139,6 +139,7 @@ function createEditClassModalBtns() {
                 <select name="method_visibility" class="form-control">
                         <option selected>Public</option>
                         <option>Private</option>
+                        <option>Protected</option>
                 </select>
                 <input type="text" name="method_type" class="form-control" placeholder="Enter method return type" aria-label="Type of method" aria-describedby="basic-addon2">
                 <input type="text" name="method_name" class="form-control" placeholder="Enter method name" aria-label="Name of method" aria-describedby="basic-addon2">
