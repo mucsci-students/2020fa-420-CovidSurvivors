@@ -147,7 +147,7 @@ class UMLModel:
         """
         for i in range(len(self.classes[class_name].fields)):
             # Finds the attribute
-            if self.classes[class_name].fields[i] == field_name:
+            if self.classes[class_name].fields[i].name == field_name:
                 return i
         return -1
 
