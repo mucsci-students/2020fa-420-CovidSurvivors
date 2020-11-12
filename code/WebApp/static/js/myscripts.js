@@ -24,7 +24,7 @@ function setDeleteData(classname) {
 function loadCreateClassModal() {
 
     // Grab form from server
-    $.post("/createForm")
+    $.post(`${MODEL_NAME}/createForm`)
         // load form inputs into class form
         .done(function (data) {
             $('#createClassForm').html(data);
@@ -40,7 +40,7 @@ function loadCreateClassModal() {
 function loadEditClassModal(classname) {
 
     // Grab form from server
-    $.post("/editForm", {class_name:classname})
+    $.post(`${MODEL_NAME}/editForm`, {class_name:classname})
         // load form inputs into class form
         .done(function (data) {
             $('#editClassForm').html(data);
@@ -81,7 +81,7 @@ function draggable(card) {
             var zindex = $(card).css("z-index");
 
             // sends class name and the appropriate position data of a class card to the server 
-            $.post("/saveCardPosition", {class_name:classname, x:x, y:y, zindex:zindex}) 
+            $.post(`${MODEL_NAME}/saveCardPosition`, {class_name:classname, x:x, y:y, zindex:zindex}) 
         }
     });
 }
