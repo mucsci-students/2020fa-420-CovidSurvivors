@@ -84,7 +84,7 @@ class REPL(cmd.Cmd):
 
     def complete_list_class(self, text, line, begidx, endidx):
         classes = fetch_classes(self.model)
-        if text:
+        if len(text) > 0:
             return [
                 model_class for model_class in classes
                 if model_class.startswith(text)
@@ -97,21 +97,181 @@ class REPL(cmd.Cmd):
 
     def do_create_field(self, args):
         executeCMD(self.model, self.command_history, "create_field", args.split())
+
+    def complete_create_field(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
+        # if command has 1 word
+        if len(args) == 1:
+            return classes
+        # if command has 2 words
+        elif len(args) == 2:
+            # if second word is not a part of the class list, complete it into one if possible
+            if args[1] not in classes:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+            # if second word is a part of the class list, show a list of visibilities
+            else:
+                visibilities = fetch_from_class(self.model, args[1], "visibility")
+                return visibilities
+        # if command has 3 words, complete visibility if possible
+        elif len(args) == 3:
+            visibilities = fetch_from_class(self.model, args[1], "visibility")
+            return [
+                    visibility for visibility in visibilities
+                    if visibility.startswith(text)
+                ]
+        # if there are already 4 words, don't complete
+        elif len(args) == 4:
+            return []
     
     def do_rename_field(self, args):
         executeCMD(self.model, self.command_history, "rename_field", args.split())
 
+    def complete_rename_field(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
+        # if command has 1 word
+        if len(args) == 1:
+            return classes
+        # if command has 2 words
+        elif len(args) == 2:
+            # if second word is not a part of the class list, complete it into one if possible
+            if args[1] not in classes:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+            # if second word is a part of the class list, show a list of fields
+            else:
+                fields = fetch_from_class(self.model, args[1], "fields")
+                return fields
+        # if command has 3 words, complete field if possible
+        elif len(args) == 3:
+            fields = fetch_from_class(self.model, args[1], "fields")
+            return [
+                    field for field in fields
+                    if field.startswith(text)
+                ]
+        # if there are already 4 words, don't complete
+        elif len(args) == 4:
+            return []
+
     def do_delete_field(self, args):
         executeCMD(self.model, self.command_history, "delete_field", args.split())
+
+    def complete_delete_field(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
+        # if command has 1 word
+        if len(args) == 1:
+            return classes
+        # if command has 2 words
+        elif len(args) == 2:
+            # if second word is not a part of the class list, complete it into one if possible
+            if args[1] not in classes:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+            # if second word is a part of the class list, show a list of fields
+            else:
+                fields = fetch_from_class(self.model, args[1], "fields")
+                return fields
+        # if command has 3 words, complete field if possible
+        elif len(args) == 3:
+            fields = fetch_from_class(self.model, args[1], "fields")
+            return [
+                    field for field in fields
+                    if field.startswith(text)
+                ]
+        # if there are already 4 words, don't complete
+        elif len(args) == 4:
+            return []
 
     def do_move_up_field(self, args):
         executeCMD(self.model, self.command_history, "move_up_field", args.split())
 
+    def complete_move_up_field(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
+        # if command has 1 word
+        if len(args) == 1:
+            return classes
+        # if command has 2 words
+        elif len(args) == 2:
+            # if second word is not a part of the class list, complete it into one if possible
+            if args[1] not in classes:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+            # if second word is a part of the class list, show a list of fields
+            else:
+                fields = fetch_from_class(self.model, args[1], "fields")
+                return fields
+        # if command has 3 words, complete field if possible
+        elif len(args) == 3:
+            fields = fetch_from_class(self.model, args[1], "fields")
+            return [
+                    field for field in fields
+                    if field.startswith(text)
+                ]
+        # if there are already 4 words, don't complete
+        elif len(args) == 4:
+            return []
+
     def do_move_down_field(self, args):
         executeCMD(self.model, self.command_history, "move_down_field", args.split())
 
+    def complete_mode_down_field(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
+        # if command has 1 word
+        if len(args) == 1:
+            return classes
+        # if command has 2 words
+        elif len(args) == 2:
+            # if second word is not a part of the class list, complete it into one if possible
+            if args[1] not in classes:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+            # if second word is a part of the class list, show a list of fields
+            else:
+                fields = fetch_from_class(self.model, args[1], "fields")
+                return fields
+        # if command has 3 words, complete field if possible
+        elif len(args) == 3:
+            fields = fetch_from_class(self.model, args[1], "fields")
+            return [
+                    field for field in fields
+                    if field.startswith(text)
+                ]
+        # if there are already 4 words, don't complete
+        elif len(args) == 4:
+            return []
+
     def do_list_fields(self, args):
         executeCMD(self.model, self.command_history, "list_fields", args.split())
+
+    def complete_list_fields(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        if text:
+            return [
+                model_class for model_class in classes
+                if model_class.startswith(text)
+            ]
+        else:
+            return classes 
 
     def do_create_method(self, args):
         executeCMD(self.model, self.command_history, "create_method", args.split())
@@ -213,6 +373,7 @@ class REPL(cmd.Cmd):
         """Outputs a message when the command prefix cannot be matched"""
         print(f"{ERROR_COLOR}CommandError:{NORMAL_COLOR} Unknown command '{line.split()[0]}'")
 
+
 ##########################################################################
 
 def runCMD():
@@ -302,7 +463,7 @@ def fetch_classes(model:UMLModel):
     Params:
     - model (UMLModel) - the model being used
     """
-    return  list(model.classes)
+    return list(model.classes)
 
 ##########################################################################
 
@@ -314,27 +475,29 @@ def fetch_from_class(model:UMLModel, class_name:str, data:str):
     - class_name (str) - name of the class
     - data (str) - name of the container
     Usage note: data (str) should be one of these 4 at the calling instance:
-        "fields"
-        "methods"
-        "relationships"
+        "fields" (field names)
+        "methods" (method names)
+        "relationships" (relationship types)
         "visibility"
     """
     # initialize an empty list
-    conatiner = list()
+    container = list()
 
     if(data == "fields"):
-        container = model.classes[class_name].fields
+        for field in model.classes[class_name].fields:
+            container.append(field.name)
 
     elif(data == "methods"):
-        container = model.classes[class_name].methods
+        for method in model.classes[class_name].methods:
+            container.append(method.name)
 
     elif(data == "relationships"):
-        container = model.classes[class_name].relationships
+        container = ["inheritance", "relaization", "composition", "aggregation"]
 
     elif(data == "visibility"):
-        container = ("public", "private", "protected")
+        container = ["public", "private", "protected"]
 
-    return  container
+    return container
 
 ##########################################################################
  
@@ -399,7 +562,7 @@ def prompt_exit(model:UMLModel) -> Tuple[bool, str]:
     - returns from this function
 
     Params:
-    - model (UMLModel) - the model to optionally save 
+    - model (UMLModel) - the model to visibilityally save 
     """
 
     response = ""
