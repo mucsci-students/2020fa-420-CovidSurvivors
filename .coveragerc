@@ -1,6 +1,9 @@
 [run]
+include =
+    code/UMLEditor.py
+    code/CLI/*
+    code/command/*
+    code/models/*
 omit =
-    tests/*
-[report]
-exclude_lines = 
-    pragma: no cover 
+    code/unit-tests/*
+
