@@ -6,7 +6,7 @@
                 <h4 class="modal-title w-100" id="myModalLabel">Create a new class</h4>
             </div>
             <div class="modal-body">
-                <form id="createClassModalForm" action="{{url_for('createClass')}}" method="POST">
+                <form id="createClassModalForm" action="{{url_for('createClass', model_name=data.model_name)}}" method="POST">
                     <!-- class name START -->
                     <div class="form-group">
                         <label for="classname">Class Name</label>

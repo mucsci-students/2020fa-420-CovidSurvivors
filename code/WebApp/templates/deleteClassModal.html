@@ -10,7 +10,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <form action="{{url_for('deleteClass')}}" method="POST">
+                        <form action="{{url_for('deleteClass', model_name=data.model_name)}}" method="POST">
                             <!-- This stores the class name  -->
                             <input type="text" id="deleteClassInputName" value="" name="class_name" hidden>
                             <button type="submit" class="btn btn-primary btn-sm">Delete</button>

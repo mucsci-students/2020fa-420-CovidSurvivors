@@ -23,8 +23,8 @@ import io
 
 class UMLModelTest(unittest.TestCase):
 
+    # validates intended behavior of create_class method
     def test_create_class(self):
-
         model = UMLModel()
 
         # Ensure class is created
@@ -38,6 +38,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of rename_class method
     def test_rename_class(self):
         model = UMLModel()
         model.create_class("class1")
@@ -70,8 +71,8 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of delete_class method
     def test_delete_class(self):
-
         model = UMLModel()
         model.create_class("class1")
 
@@ -88,6 +89,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of create_field method
     def test_create_field(self):
         model = UMLModel()
         model.create_class("class1")
@@ -105,6 +107,23 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of find_field method
+    def test_find_field(self):
+        model = UMLModel()
+        model.create_class("class1")
+        testClass = model.classes["class1"]
+
+        # create some fields
+        model.create_field("class1", "public", "void", "a1")
+        model.create_field("class1", "private", "int", "num")
+
+        # ensure fields are found in the right indices
+        self.assertEqual(model.find_field("class1", "a1"), 0)
+        self.assertEqual(model.find_field("class1", "num"), 1)
+
+    ######################################################################
+
+    # validates intended behavior of rename_field method
     def test_rename_field(self):
         model = UMLModel()
         model.create_class("class1")
@@ -116,6 +135,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of delete_field method
     def test_delete_field(self):
         model = UMLModel()
         model.create_class("class1")
@@ -128,6 +148,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of create_method method
     def test_create_method(self):
         model = UMLModel()
         model.create_class("class1")
@@ -145,6 +166,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of rename_mehod method
     def test_rename_method(self):
         model = UMLModel()
         model.create_class("class1")
@@ -156,6 +178,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of delete_method method
     def test_delete_method(self):
         model = UMLModel()
         model.create_class("class1")
@@ -168,6 +191,7 @@ class UMLModelTest(unittest.TestCase):
 
     ##########################################################################
 
+    # validates intended behavior of create_parameter method
     def test_create_parameter(self):
         model = UMLModel()
         model.create_class("class1")
@@ -185,6 +209,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of rename_parameter method
     def test_rename_parameter(self):
         model = UMLModel()
         model.create_class("class1")
@@ -199,6 +224,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of delete_parameter method
     def test_delete_parameter(self):
         model = UMLModel()
         model.create_class("class1")
@@ -212,6 +238,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of create_relationship method
     def test_create_relationship(self):
         model = UMLModel()
         model.create_class("c1")
@@ -230,6 +257,7 @@ class UMLModelTest(unittest.TestCase):
 
     ######################################################################
 
+    # validates intended behavior of delete_relationship method
     def test_delete_relationship(self):
         model = UMLModel()
         model.create_class("c1")

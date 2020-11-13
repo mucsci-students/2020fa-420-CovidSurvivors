@@ -137,21 +137,21 @@ class CreateClassGUICommand(Command, Undoable):
     
     def saveBackup(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # save state
         self.backup = self.model.get_data()
 
     def undo(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # restore state
         self.model.set_data(self.backup)
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
     def execute(self) -> bool:
         # Load model to
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         
         # Ensure class does not already exist
         if self.payload["class_name"] in self.model.classes:
@@ -179,7 +179,7 @@ class CreateClassGUICommand(Command, Undoable):
         self.model.list_class(self.payload["class_name"])
 
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
         return True, f"{self.payload['class_name']} was created successfully"
 
@@ -195,21 +195,21 @@ class EditClassGUICommand(Command, Undoable):
     
     def saveBackup(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # save state
         self.backup = self.model.get_data()
 
     def undo(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # restore state
         self.model.set_data(self.backup)
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
     def execute(self) -> bool:
         # Load model 
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         
         # Ensure it was an existing class
         if self.payload["original_name"] not in self.model.classes:
@@ -245,7 +245,7 @@ class EditClassGUICommand(Command, Undoable):
         self.model.list_class(self.payload["class_name"])
 
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
         return True, "Class was updated successfully"
 
@@ -261,21 +261,21 @@ class DeleteClassGUICommand(Command, Undoable):
     
     def saveBackup(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # save state
         self.backup = self.model.get_data()
 
     def undo(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # restore state
         self.model.set_data(self.backup)
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
     def execute(self) -> bool:
         # Load model to delete class
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # delete class
         status, msg = self.model.delete_class(self.payload["class_name"])
         
@@ -284,7 +284,7 @@ class DeleteClassGUICommand(Command, Undoable):
             return status, msg
         
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
         return True, f"{self.payload['class_name']} was deleted"
 
@@ -300,25 +300,25 @@ class SetClassPositonGUICommand(Command, Undoable):
     
     def saveBackup(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # save state
         self.backup = self.model.get_data()
 
     def undo(self) -> None:
         # Load model
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # restore state
         self.model.set_data(self.backup)
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
     def execute(self) -> bool:
         # Load model to set class position
-        self.model.load_model(self.payload["filename"])
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
         # set position of class
         status, msg = self.model.set_class_position(self.payload["class_name"], self.payload["x"], self.payload["y"], self.payload["zindex"])
 
         # save model
-        self.model.save_model(self.payload["filename"])
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
 
         return True, f"The position of {self.payload['class_name']} has been set to ({self.payload['x']}, {self.payload['y']}) with a z-index of {self.payload['zindex']}."
