@@ -1,0 +1,63 @@
+{
+    "c1": {
+        "name": "c1",
+        "attributes": [
+            "a1"
+        ],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "f1",
+                "type": "t1"
+            },
+            {
+                "visibility": "private",
+                "name": "f2",
+                "type": "t2"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "m1",
+                "type": "t3"
+            },
+            {
+                "visibility": "public",
+                "name": "m2",
+                "type": "t4"
+            }
+        ],
+        "relationships": [
+            {
+                "type": "inheritance",
+                "other": "c2"
+            }
+        ]
+    },
+    "c2": {
+        "name": "c2",
+        "attributes": [
+            "a2"
+        ],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "m1",
+                "type": "t3"
+            },
+            {
+                "visibility": "public",
+                "name": "m2",
+                "type": "t4"
+            }
+        ],
+        "relationships": [
+            {
+                "type": "inheritance",
+                "other": "c1"
+            }
+        ]
+    }
+}
