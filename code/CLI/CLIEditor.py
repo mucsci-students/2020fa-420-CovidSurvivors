@@ -84,7 +84,7 @@ class REPL(cmd.Cmd):
 
     def complete_list_class(self, text, line, begidx, endidx):
         classes = fetch_classes(self.model)
-        if len(text) > 0:
+        if text:
             return [
                 model_class for model_class in classes
                 if model_class.startswith(text)
