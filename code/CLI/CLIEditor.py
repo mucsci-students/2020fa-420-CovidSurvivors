@@ -102,31 +102,32 @@ class REPL(cmd.Cmd):
         classes = fetch_classes(self.model)
         # split the command into a list of words
         args = line.split()
-        # if command has 1 word
-        if len(args) == 1:
+
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
             return classes
-        # if command has 2 words
-        elif len(args) == 2:
-            # if second word is not a part of the class list, complete it into one if possible
-            if args[1] not in classes:
+
+        # if command has only 2 words
+        elif argIndex == 1:
                 return [
                         model_class for model_class in classes
                         if model_class.startswith(text)
                     ]
-            # if second word is a part of the class list, show a list of visibilities
-            else:
-                visibilities = fetch_from_class(self.model, args[1], "visibility")
-                return visibilities
-        # if command has 3 words, complete visibility if possible
-        elif len(args) == 3:
+
+        # if command has only 3 words
+        elif argIndex == 2:
             visibilities = fetch_from_class(self.model, args[1], "visibility")
             return [
                     visibility for visibility in visibilities
                     if visibility.startswith(text)
                 ]
-        # if there are already 4 words, don't complete
-        elif len(args) == 4:
-            return []
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []
     
     def do_rename_field(self, args):
         executeCMD(self.model, self.command_history, "rename_field", args.split())
@@ -135,31 +136,32 @@ class REPL(cmd.Cmd):
         classes = fetch_classes(self.model)
         # split the command into a list of words
         args = line.split()
-        # if command has 1 word
-        if len(args) == 1:
+
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
             return classes
-        # if command has 2 words
-        elif len(args) == 2:
-            # if second word is not a part of the class list, complete it into one if possible
-            if args[1] not in classes:
+
+        # if command has only 2 words
+        elif argIndex == 1:
                 return [
                         model_class for model_class in classes
                         if model_class.startswith(text)
                     ]
-            # if second word is a part of the class list, show a list of fields
-            else:
-                fields = fetch_from_class(self.model, args[1], "fields")
-                return fields
-        # if command has 3 words, complete field if possible
-        elif len(args) == 3:
+
+        # if command has only 3 words
+        elif argIndex == 2:
             fields = fetch_from_class(self.model, args[1], "fields")
             return [
                     field for field in fields
                     if field.startswith(text)
                 ]
-        # if there are already 4 words, don't complete
-        elif len(args) == 4:
-            return []
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []
 
     def do_delete_field(self, args):
         executeCMD(self.model, self.command_history, "delete_field", args.split())
@@ -168,31 +170,32 @@ class REPL(cmd.Cmd):
         classes = fetch_classes(self.model)
         # split the command into a list of words
         args = line.split()
-        # if command has 1 word
-        if len(args) == 1:
+
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
             return classes
-        # if command has 2 words
-        elif len(args) == 2:
-            # if second word is not a part of the class list, complete it into one if possible
-            if args[1] not in classes:
+
+        # if command has only 2 words
+        elif argIndex == 1:
                 return [
                         model_class for model_class in classes
                         if model_class.startswith(text)
                     ]
-            # if second word is a part of the class list, show a list of fields
-            else:
-                fields = fetch_from_class(self.model, args[1], "fields")
-                return fields
-        # if command has 3 words, complete field if possible
-        elif len(args) == 3:
+
+        # if command has only 3 words
+        elif argIndex == 2:
             fields = fetch_from_class(self.model, args[1], "fields")
             return [
                     field for field in fields
                     if field.startswith(text)
                 ]
-        # if there are already 4 words, don't complete
-        elif len(args) == 4:
-            return []
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []
 
     def do_move_up_field(self, args):
         executeCMD(self.model, self.command_history, "move_up_field", args.split())
@@ -201,64 +204,66 @@ class REPL(cmd.Cmd):
         classes = fetch_classes(self.model)
         # split the command into a list of words
         args = line.split()
-        # if command has 1 word
-        if len(args) == 1:
+
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
             return classes
-        # if command has 2 words
-        elif len(args) == 2:
-            # if second word is not a part of the class list, complete it into one if possible
-            if args[1] not in classes:
+
+        # if command has only 2 words
+        elif argIndex == 1:
                 return [
                         model_class for model_class in classes
                         if model_class.startswith(text)
                     ]
-            # if second word is a part of the class list, show a list of fields
-            else:
-                fields = fetch_from_class(self.model, args[1], "fields")
-                return fields
-        # if command has 3 words, complete field if possible
-        elif len(args) == 3:
+
+        # if command has only 3 words
+        elif argIndex == 2:
             fields = fetch_from_class(self.model, args[1], "fields")
             return [
                     field for field in fields
                     if field.startswith(text)
                 ]
-        # if there are already 4 words, don't complete
-        elif len(args) == 4:
-            return []
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []
 
     def do_move_down_field(self, args):
         executeCMD(self.model, self.command_history, "move_down_field", args.split())
 
-    def complete_mode_down_field(self, text, line, begidx, endidx):
+    def complete_move_down_field(self, text, line, begidx, endidx):
         classes = fetch_classes(self.model)
         # split the command into a list of words
         args = line.split()
-        # if command has 1 word
-        if len(args) == 1:
+
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
             return classes
-        # if command has 2 words
-        elif len(args) == 2:
-            # if second word is not a part of the class list, complete it into one if possible
-            if args[1] not in classes:
+
+        # if command has only 2 words
+        elif argIndex == 1:
                 return [
                         model_class for model_class in classes
                         if model_class.startswith(text)
                     ]
-            # if second word is a part of the class list, show a list of fields
-            else:
-                fields = fetch_from_class(self.model, args[1], "fields")
-                return fields
-        # if command has 3 words, complete field if possible
-        elif len(args) == 3:
+
+        # if command has only 3 words
+        elif argIndex == 2:
             fields = fetch_from_class(self.model, args[1], "fields")
             return [
                     field for field in fields
                     if field.startswith(text)
                 ]
-        # if there are already 4 words, don't complete
-        elif len(args) == 4:
-            return []
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []
 
     def do_list_fields(self, args):
         executeCMD(self.model, self.command_history, "list_fields", args.split())
