@@ -1,9 +1,8 @@
 [run]
-include =
-    code/UMLEditor.py
-    code/CLI/*
-    code/command/*
-    code/models/*
+source =
+    code/
+    code/CLI/
+    code/command/
+    code/models/
 omit =
     code/unit-tests/*
-

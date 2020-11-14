@@ -13,6 +13,7 @@ import pytest
 import sys
 sys.path.append('../')
 sys.path.append('code/')
+from UMLEditor import main
 from models.UMLModel import UMLModel
 from models.UMLClass import UMLClass
 import io
