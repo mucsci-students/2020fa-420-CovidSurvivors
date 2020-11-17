@@ -4,7 +4,7 @@
 #   This acts as our main Controller of the GUI
 # Course:   CSCI 420 - Software Engineering
 # Authors:  Adisa, Amy, Carli, David, Joan
-# Date:     October 3 2020
+# Date:     November 17 2020
 ##########################################################################
 # Imports
 
@@ -40,6 +40,8 @@ command_history = CommandHistory(HISTORY_LIMIT)
 ##########################################################################
 
 def getModelNames():
+    """Returns a list of the model names 
+    """
     # Grab model info
     models = list(os.listdir(DATA_FOLDER))
 
@@ -51,13 +53,19 @@ def getModelNames():
 
     return models
 
+##########################################################################
+
 # The main page 
 # where you select which model you want to edit 
 @app.route("/")
 @app.route("/models")
 def models():
+    # sort for clean order
+    # OS files for some reason are in an unknown order
     models = sorted(getModelNames())
     return render_template("models.html", models=models)
+
+##########################################################################
 
 @app.route("/createModel", methods=["GET", "POST"])
 def createModel():
@@ -67,24 +75,85 @@ def createModel():
         flash("Nothing sent in POST", "error")
         return redirect(url_for('models'))
 
+    model_name:str = request.form.get("model_name")
+
     # Ensure new model name does not already exist
-    if request.form.get("model_name") in getModelNames():
+    if model_name in getModelNames():
         flash(f"Model '{request.form.get('model_name')}' already exists", "error")
+        return redirect(url_for('models'))
+
+    # reject empty model names
+    if model_name.strip() == "":
+        flash(f"Model name cannot be empty", "error")
         return redirect(url_for('models'))
 
     # create new empty model file
     model = UMLModel()
-    model.save_model(request.form.get("model_name") + ".json", directory=DATA_FOLDER)
+    model.save_model(model_name + ".json", directory=DATA_FOLDER)
     
-    flash(f"Model '{request.form.get('model_name')}' created successfully", "success")
+    flash(f"Model '{model_name}' created successfully", "success")
     return redirect(url_for("models"))
+
+##########################################################################
 
 @app.route("/renameModel", methods=["GET", "POST"])
 def renameModel():
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('models'))
+
+    old_model_name:str = request.form.get("old_model_name")
+    new_model_name:str = request.form.get("new_model_name")
+
+    # ensure model name exists
+    if old_model_name not in getModelNames():
+        flash(f"Model '{old_model_name}' does not exist", "error")
+        return redirect(url_for('models'))
+
+    # ensure new model name does not exist 
+    if new_model_name in getModelNames():
+        flash(f"Model '{new_model_name}' already exists", "error")
+        return redirect(url_for('models'))
+    
+    # reject empty model names
+    if new_model_name.strip() == "":
+        flash(f"Model name cannot be empty", "error")
+        return redirect(url_for('models'))
+
+
+    old_model_file_name = "".join([DATA_FOLDER, old_model_name, ".json"])
+    new_model_file_name = "".join([DATA_FOLDER, new_model_name, ".json"])
+
+    os.rename(old_model_file_name, new_model_file_name)
+
+    flash(f"Model '{old_model_name}' successfully renamed to '{new_model_name}'", "success")
     return redirect(url_for("models"))
+
+##########################################################################
 
 @app.route("/deleteModel", methods=["GET", "POST"])
 def deleteModel():
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('models'))
+
+    model_name = request.form.get("model_name")
+
+    # ensure model name exists
+    if model_name not in getModelNames():
+        flash(f"Model '{model_name}' does not exist", "error")
+        return redirect(url_for('models'))
+
+    model_filename = "".join([DATA_FOLDER, model_name, ".json"])
+
+    # remove the model
+    os.remove(model_filename)
+
+    flash(f"Model '{model_name}' successfully deleted", "success")
     return redirect(url_for("models"))
 
 ##########################################################################
