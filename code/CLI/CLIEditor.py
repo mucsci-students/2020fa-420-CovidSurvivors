@@ -313,6 +313,7 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "create_method", args.split())
 
     def complete_create_method(self, text, line, begidx, endidx):
+        return []
 
     ##########################################################################
 
@@ -320,6 +321,7 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "rename_method", args.split())
 
     def complete_rename_method(self, text, line, begidx, endidx):
+        return []
 
     ##########################################################################
 
@@ -327,6 +329,7 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "delete_method", args.split())
 
     def complete_delete_method(self, text, line, begidx, endidx):
+        return []
 
     ##########################################################################    
 
@@ -334,6 +337,7 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "move_up_method", args.split())
 
     def complete_move_up_method(self, text, line, begidx, endidx):
+        return []
 
     ##########################################################################    
 
@@ -341,6 +345,7 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "move_down_method", args.split())
 
     def complete_move_down_method(self, text, line, begidx, endidx):
+        return []
 
     ##########################################################################    
 
@@ -348,6 +353,7 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "list_methods", args.split())
 
     def complete_list_methods(self, text, line, begidx, endidx):
+        return []
 
     ##########################################################################
     
