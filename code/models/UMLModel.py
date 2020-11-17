@@ -439,7 +439,7 @@ class UMLModel:
         raw_model = {}
 
         # read json from file
-        file = open(MODEL_DIRECTORY+filename, "r")
+        file = open(directory+filename, "r")
         try:
             raw_model = json.loads(file.read())
         except json.decoder.JSONDecodeError:

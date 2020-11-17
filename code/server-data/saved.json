@@ -20,12 +20,14 @@
             {
                 "visibility": "public",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "Object"
+                "type": "Object",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -38,9 +40,9 @@
                 "other": "class4"
             }
         ],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "418px",
+        "y": "500px",
+        "zindex": "17"
     },
     "class2": {
         "name": "class2",
@@ -63,12 +65,14 @@
             {
                 "visibility": "public",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "boolean"
+                "type": "boolean",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -77,19 +81,9 @@
                 "other": "class1"
             }
         ],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
-    },
-    "class3": {
-        "name": "class3",
-        "attributes": [],
-        "fields": [],
-        "methods": [],
-        "relationships": [],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "878px",
+        "y": "95px",
+        "zindex": "17"
     },
     "class4": {
         "name": "class4",
@@ -100,10 +94,29 @@
             {
                 "type": "composition",
                 "other": "class1"
+            },
+            {
+                "type": "reverse aggregation",
+                "other": "class3"
             }
         ],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "329px",
+        "y": "79px",
+        "zindex": "14"
+    },
+    "class3": {
+        "name": "class3",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": [
+            {
+                "type": "aggregation",
+                "other": "class4"
+            }
+        ],
+        "x": "796px",
+        "y": "530px",
+        "zindex": "17"
     }
 }

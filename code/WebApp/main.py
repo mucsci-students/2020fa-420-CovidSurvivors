@@ -10,6 +10,7 @@
 
 import os
 import sys
+import json
 from flask import Flask, render_template, send_file, request
 from flask import url_for, redirect, flash
 from werkzeug.utils import secure_filename
@@ -118,6 +119,9 @@ def dashboard(model_name):
         data["classes"] += [model.classes[class_name].get_raw_data()]
         # Give class its index 
         data["classes"][i]["index"] = i+1
+        print(data["classes"][i]["x"], data["classes"][i]["y"])
+        # pass raw json with it
+        data["classes"][i]["json"] = json.dumps(model.classes[class_name].get_raw_data())
         i += 1
 
     return render_template("dashboard.html", data=data)

@@ -112,7 +112,7 @@ body {
 
 .wrapper {
     display: flex;
-    position: absolue;
+    position: absolute;
 }
 
 .wrapper .sidebar {
@@ -216,7 +216,7 @@ body {
     display: inherit;
     position: inherit;
     margin-left: 200px;
-    min-height: 979px;
+    height: 979px;
 }
 
 /*** MOVABLE CLASS CARDS ************************************************/

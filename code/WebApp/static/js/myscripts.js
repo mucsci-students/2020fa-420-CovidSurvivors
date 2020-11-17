@@ -18,6 +18,23 @@ function setDeleteData(classname) {
 
 // =======================================================================
 
+function drawRelationshipArrows() {
+    // clear out previous draw region
+    $('#drawRegion').html("")
+    var draw = SVG("#drawRegion")
+    for (var classname in classes) {
+        // for each relationship
+        for (var i in classes[classname].relationships) {
+            var other_class = classes[classes[classname].relationships[i]["other"]]
+            // build SVG arrow 
+            var line = draw.line(classes[classname].x, classes[classname].y, other_class.x, other_class.y)
+            line.stroke({ color: '#f06', width: 1, linecap: 'round' })
+        }
+    }
+}
+
+// =======================================================================
+
 // Loads the create class modal form 
 // at the moment, the only loaded data is 
 // for the dropdown that shows valid classes
@@ -80,8 +97,17 @@ function draggable(card) {
             // the z-index specifing the stack order of the class cards on the dashboard
             var zindex = $(card).css("z-index");
 
+            // save data to JS version
+            classes[classname]["x"] = x
+            classes[classname]["y"] = y
+            classes[classname]["zindex"] = zindex
+
+            // redraw arrows
+            drawRelationshipArrows()
+
             // sends class name and the appropriate position data of a class card to the server 
             $.post(`${MODEL_NAME}/saveCardPosition`, {class_name:classname, x:x, y:y, zindex:zindex}) 
+        
         }
     });
 }

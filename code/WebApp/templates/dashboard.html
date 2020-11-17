@@ -6,6 +6,7 @@
         <!-- Save model name -->
         <script>
             let MODEL_NAME = "{{data.model_name}}";
+            var classes = {};
         </script>
 
         <!-- Flash error/success messages START -->
@@ -62,8 +63,16 @@
             <!-- Generate card -->
             {% include "card.html" %}
         {% endfor %}    
+            <svg id="drawRegion" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="100%" height="100%">
+            </svg>
         </div>
         <!-- display END -->
+
+        <!-- Draw relationship arrows START -->
+        <script>
+            drawRelationshipArrows();
+        </script>
+        <!-- Draw relationship arrows END -->
 
         <!-- edit class modal START -->
         {% include "editClassModal.html" %}
