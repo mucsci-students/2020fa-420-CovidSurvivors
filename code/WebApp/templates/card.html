@@ -15,10 +15,8 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 {% for method in class.methods %}
-                    <li>{{method.visibility}} {{ method.name }}(): {{method.type}}</li>
-                    {% for parameter in method.parameters %}
-                        <li>{{parameter.type}} {{parameter.name}}</li>
-                    {% endfor %}
+                    <li>{{method.visibility}} {{ method.name }}({% for parameter in method.parameters %} {{parameter.type}} {{parameter.name}} {% endfor %}): 
+                         {{method.type}}</li>
                 {% endfor %}
             </ul>
         </div>
