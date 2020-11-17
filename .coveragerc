@@ -1,0 +1,8 @@
+[run]
+source =
+    code/
+    code/CLI/
+    code/command/
+    code/models/
+omit =
+    code/unit-tests/*
