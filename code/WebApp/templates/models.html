@@ -47,6 +47,14 @@
 {% include "createModelModal.html" %}
 <!--create model modal END -->
 
+<!--rename model modal START -->
+{% include "renameModelModal.html" %}
+<!--rename model modal END -->
+
+<!--delete model modal START -->
+{% include "deleteModelModal.html" %}
+<!--delete model modal END -->
+
 <!-- model cards START -->
 <div class="modelContainer">
     <div class="modelContainerHeader">
@@ -73,13 +81,13 @@
                 </a>
             </td>
             <td class="modelButtonCol">
-                <button class="modelButton">Rename</button>
+                <button class="modelButton" data-toggle="modal" data-target="#renameModelModal" onclick="loadRenameModelModal('{{model}}')">Rename</button>
             </td>
             <td class="modelButtonCol">
                 <a href="{{url_for('download', model_name=model)}}" download><button class="modelButton">Download</button></a>
             </td>
             <td class="modelButtonCol">
-                <button class="modelButton">Delete</button>
+                <button class="modelButton" data-toggle="modal" data-target="#deleteModelModal" onclick="loadDeleteModelModal('{{model}}')">Delete</button>
             </td>
         </tr>
         {% endfor %}

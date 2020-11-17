@@ -20,12 +20,14 @@
             {
                 "visibility": "public",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "Object"
+                "type": "Object",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -38,9 +40,9 @@
                 "other": "class4"
             }
         ],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "1134px",
+        "y": "372px",
+        "zindex": "4"
     },
     "class2": {
         "name": "class2",
@@ -63,12 +65,14 @@
             {
                 "visibility": "public",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "boolean"
+                "type": "boolean",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -77,9 +81,9 @@
                 "other": "class1"
             }
         ],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "379px",
+        "y": "295px",
+        "zindex": "4"
     },
     "class3": {
         "name": "class3",
@@ -87,9 +91,9 @@
         "fields": [],
         "methods": [],
         "relationships": [],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "271px",
+        "y": "91px",
+        "zindex": "4"
     },
     "class4": {
         "name": "class4",
@@ -102,8 +106,8 @@
                 "other": "class1"
             }
         ],
-        "x": 0,
-        "y": 0,
-        "zindex": 0
+        "x": "621px",
+        "y": "138px",
+        "zindex": "4"
     }
 }

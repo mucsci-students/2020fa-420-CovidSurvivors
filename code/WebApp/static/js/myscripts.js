@@ -52,6 +52,18 @@ function loadEditClassModal(classname) {
 
 // =======================================================================
 
+function loadRenameModelModal(model_name) {
+    $('#renameModelModalOldNameInput').val(model_name)
+}
+
+// =======================================================================
+
+function loadDeleteModelModal(model_name) {
+    $('#deleteModelModalNameInput').val(model_name)
+}
+
+// =======================================================================
+
 // Runs automatically when web application is executed
 $(function() {
     classCardBtns();
