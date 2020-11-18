@@ -313,28 +313,132 @@ class REPL(cmd.Cmd):
         executeCMD(self.model, self.command_history, "create_method", args.split())
 
     def complete_create_method(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        
+        # splits command into list of words
+        args = line.split()
+        
+        # -1 from line size if a word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+        
+        if argIndex == 0:
+            return classes
+        elif argIndex == 1:
+            return [
+                model_class for model_class in classes
+                if model_class.startswith(text)
+            ]
+        elif argIndex == 2:
+            visibilities = fetch_from_class(self.model, args[1], "visibility")
+            return [
+                    visibility for visibility in visibilities
+                    if visibility.startswith(text)
+                ]
+        # return empty list if there are no tab completions left to do
         return []
-
-    ##########################################################################
-
+      
     def do_rename_method(self, args):
         executeCMD(self.model, self.command_history, "rename_method", args.split())
 
     def complete_rename_method(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        
+        # splits command into lists of words
+        args = line.split()
+        
+        #subtracts 1 from the line size if the next word is partially written 
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # command has 1 word
+        if argIndex == 0:
+            return classes
+
+        # command has 2 words
+        elif argIndex == 1:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+
+        # command has 3
+        elif argIndex == 2:
+            methods = fetch_from_class(self.model, args[1], "methods")
+            return [
+                    method for method in methods
+                    if method.startswith(text)
+                ]
+
+        # return an empty list of options (used to prevent cmd crashes)
         return []
 
-    ##########################################################################
 
     def do_delete_method(self, args):
         executeCMD(self.model, self.command_history, "delete_method", args.split())
 
     def complete_delete_method(self, text, line, begidx, endidx):
-        return []
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
 
-    ##########################################################################    
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
+            return classes
+
+        # if command has only 2 words
+        elif argIndex == 1:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+
+        # if command has only 3 words
+        elif argIndex == 2:
+            methods = fetch_from_class(self.model, args[1], "methods")
+            return [
+                    method for method in methods
+                    if method.startswith(text)
+                ]
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []    
 
     def do_move_up_method(self, args):
         executeCMD(self.model, self.command_history, "move_up_method", args.split())
+    
+    def complete_move_up_method(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
+
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
+
+        # if command has only 1 word
+        if argIndex == 0:
+            return classes
+
+        # if command has only 2 words
+        elif argIndex == 1:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+
+        # if command has only 3 words
+        elif argIndex == 2:
+            methods = fetch_from_class(self.model, args[1], "methods")
+            return [
+                    method for method in methods
+                    if method.startswith(text)
+                ]
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []
 
     def complete_move_up_method(self, text, line, begidx, endidx):
         return []
@@ -343,14 +447,50 @@ class REPL(cmd.Cmd):
 
     def do_move_down_method(self, args):
         executeCMD(self.model, self.command_history, "move_down_method", args.split())
-
+   
     def complete_move_down_method(self, text, line, begidx, endidx):
-        return []
+        classes = fetch_classes(self.model)
+        # split the command into a list of words
+        args = line.split()
 
-    ##########################################################################    
+        # subtracts 1 from the line size if the next word is partially written
+        argIndex = (len(args)) - (0 if text == "" else 1)
 
+        # if command has only 1 word
+        if argIndex == 0:
+            return classes
+
+        # if command has only 2 words
+        elif argIndex == 1:
+                return [
+                        model_class for model_class in classes
+                        if model_class.startswith(text)
+                    ]
+
+        # if command has only 3 words
+        elif argIndex == 2:
+            methods = fetch_from_class(self.model, args[1], "methods")
+            return [
+                    method for method in methods
+                    if method.startswith(text)
+                ]
+
+        # if there are no tab completions left to do
+        # return an empty list of options (used to prevent cmd crashes)
+        return []    
+        
     def do_list_methods(self, args):
         executeCMD(self.model, self.command_history, "list_methods", args.split())
+    
+    def complete_list_methods(self, text, line, begidx, endidx):
+        classes = fetch_classes(self.model)
+        if text:
+            return [
+                model_class for model_class in classes
+                if model_class.startswith(text)
+            ]
+        else:
+            return classes     
 
     def complete_list_methods(self, text, line, begidx, endidx):
         return []
