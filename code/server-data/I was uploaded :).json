@@ -20,12 +20,14 @@
             {
                 "visibility": "public",
                 "name": "m1",
-                "type": "t3"
+                "type": "t3",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "m2",
-                "type": "t4"
+                "type": "t4",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -33,7 +35,10 @@
                 "type": "inheritance",
                 "other": "c2"
             }
-        ]
+        ],
+        "x": "247px",
+        "y": "76px",
+        "zindex": "2"
     },
     "c2": {
         "name": "c2",
@@ -45,12 +50,14 @@
             {
                 "visibility": "public",
                 "name": "m1",
-                "type": "t3"
+                "type": "t3",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "m2",
-                "type": "t4"
+                "type": "t4",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -58,6 +65,9 @@
                 "type": "inheritance",
                 "other": "c1"
             }
-        ]
+        ],
+        "x": "585px",
+        "y": "85px",
+        "zindex": "2"
     }
 }
