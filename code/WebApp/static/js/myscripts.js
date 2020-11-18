@@ -68,6 +68,7 @@ function loadDeleteModelModal(model_name) {
 $(function() {
     classCardBtns();
     createEditClassModalBtns();
+    drawRelationshipArrows();
 });
 
 // =======================================================================
@@ -92,6 +93,8 @@ function draggable(card) {
             // the z-index specifing the stack order of the class cards on the dashboard
             var zindex = $(card).css("z-index");
 
+            drawRelationshipArrows()
+
             // sends class name and the appropriate position data of a class card to the server 
             $.post(`${MODEL_NAME}/saveCardPosition`, {class_name:classname, x:x, y:y, zindex:zindex}) 
         }
@@ -100,9 +103,12 @@ function draggable(card) {
 
 // =======================================================================
 
-SVG.on(document, 'DOMContentLoaded', function() {
+function drawRelationshipArrows() {
+
+    // clear previous draw region
+    $("#drawRegion").html("");
     // SVG canvas where the arrows are drawn
-    var draw = SVG().addTo('#display').size(3000, 5000);
+    var draw = SVG("#drawRegion");
 
     // arrow head for inheritance and realization arrows
     var realInherArrowHead = draw.marker(20, 20, function(add) {
@@ -127,54 +133,52 @@ SVG.on(document, 'DOMContentLoaded', function() {
         });
     });
 
-    // creates the appropriate relationship arrow between two cards
-    $(function drawRelationshipArrows() {
-        // for each class 
-        for (var classname in classes) {
-            // for each relationship
-            var idClass1 = "#" + ($('.card[name="' + classname + '"]').attr('id'));
-            for (var i in classes[classname].relationships) {
-                var relationshipType = classes[classname].relationships[i]["type"];
-                var class2 = classes[classname].relationships[i]["other"];
-                var idClass2 = "#" + ($('.card[name="' + class2 + '"]').attr('id'));
-                
-                // calculates the path of the arrow
-                var data = drawPath(idClass1, idClass2);
-                
-                // build SVG aggregation arrow 
-                if (relationshipType == "aggregation") {
-                    // plot the path of the relationship arrow based on the draw Path data
-                    var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
-                    // aggregation relationship arrow
-                    path.marker('end', aggArrowHead);
-                } 
-                // build SVG composition arrow 
-                if (relationshipType == "composition") {
-                    // plot the path of the relationship arrow based on the draw Path data
-                    var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
-                    // composition relationship arrow
-                    path.marker('end', compArrowHead);
-                }
-                // build SVG inheritance arrow 
-                if (relationshipType == "inheritance") {
-                    // plot the path of the relationship arrow based on the draw Path data
-                    var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
-                    // inheritance relationship arrow
-                    path.marker('end', realInherArrowHead);   
-                } 
-                // build SVG realization arrow 
-                if (relationshipType == "realization") {
-                    // plot the path of the relationship arrow based on the draw Path data
-                    var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
-                    // gives the arrow a dashed look
-                    path.attr('stroke-dasharray', 8);
-                    // realization relationship arrow
-                    path.marker('end', realInherArrowHead);
-                }
+    // for each class 
+    for (var classname in classes) {
+        // for each relationship
+        var idClass1 = "#" + ($('.card[name="' + classname + '"]').attr('id'));
+        for (var i in classes[classname].relationships) {
+            var relationshipType = classes[classname].relationships[i]["type"];
+            var class2 = classes[classname].relationships[i]["other"];
+            var idClass2 = "#" + ($('.card[name="' + class2 + '"]').attr('id'));
+            
+            // calculates the path of the arrow
+            var data = drawPath(idClass1, idClass2);
+            
+            // build SVG aggregation arrow 
+            if (relationshipType == "aggregation") {
+                // plot the path of the relationship arrow based on the draw Path data
+                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                // aggregation relationship arrow
+                path.marker('end', aggArrowHead);
+            } 
+            // build SVG composition arrow 
+            if (relationshipType == "composition") {
+                // plot the path of the relationship arrow based on the draw Path data
+                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                // composition relationship arrow
+                path.marker('end', compArrowHead);
+            }
+            // build SVG inheritance arrow 
+            if (relationshipType == "inheritance") {
+                // plot the path of the relationship arrow based on the draw Path data
+                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                // inheritance relationship arrow
+                path.marker('end', realInherArrowHead);   
+            } 
+            // build SVG realization arrow 
+            if (relationshipType == "realization") {
+                // plot the path of the relationship arrow based on the draw Path data
+                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                // gives the arrow a dashed look
+                path.attr('stroke-dasharray', 8);
+                // realization relationship arrow
+                path.marker('end', realInherArrowHead);
             }
         }
-    });
-});
+    }
+    
+}
 
 
 // Calculates the length of the path for the arrow based on the card positions
