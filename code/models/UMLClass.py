@@ -37,7 +37,7 @@ class UMLClass:
         # A list of all relationships for this class
         self.relationships = []
         # The x coordinate representing the horizontal positioning of this class on the dashboard of the GUI
-        self.x = 0
+        self.x = 200
         # The y coordinate representing the vertical positioning of this class on the dashboard of the GUI
         self.y = 0
         # The z-index which specifies the stack order of the class cards on the dashboard of the GUI

@@ -1,4 +1,8 @@
 {% block card %}
+    <script>
+        // save raw class data 
+        classes["{{class.name}}"] = JSON.parse('{{class.json|safe}}');
+    </script>
     <!-- class START -->
     <div class="card shadow" id="cardId{{class.index}}" name="{{class.name}}" style="left: {{class.x}}; top: {{class.y}}; z-index: {{class.zindex}};">
         <div class="card-header">
@@ -39,7 +43,9 @@
             <button type="button" class="btn btn-primary btn-sm getID" onclick="setDeleteData('{{ class.name }}')" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt"></i></button>
         </div>
         <!-- Make this card draggable -->
-        <script>draggable("#cardId{{class.index}}");</script>
+        <script>
+            draggable("#cardId{{class.index}}");
+        </script>
     </div>
     <!-- class END -->
 {% endblock card %}

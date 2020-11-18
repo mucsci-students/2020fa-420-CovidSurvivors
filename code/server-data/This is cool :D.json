@@ -1,0 +1,112 @@
+{
+    "c2": {
+        "name": "c2",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": [
+            {
+                "type": "reverse inheritance",
+                "other": "c3"
+            },
+            {
+                "type": "reverse aggregation",
+                "other": "c1"
+            }
+        ],
+        "x": "684px",
+        "y": "431px",
+        "zindex": "7"
+    },
+    "c3": {
+        "name": "c3",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": [
+            {
+                "type": "inheritance",
+                "other": "c2"
+            },
+            {
+                "type": "reverse composition",
+                "other": "c1"
+            },
+            {
+                "type": "reverse composition",
+                "other": "c4"
+            }
+        ],
+        "x": "905px",
+        "y": "29px",
+        "zindex": "7"
+    },
+    "c1": {
+        "name": "c1",
+        "attributes": [],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "field1",
+                "type": "int"
+            },
+            {
+                "visibility": "private",
+                "name": "field2",
+                "type": "string"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "method1",
+                "type": "int",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "param1"
+                    }
+                ]
+            },
+            {
+                "visibility": "public",
+                "name": "method2",
+                "type": "string",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "param1"
+                    }
+                ]
+            }
+        ],
+        "relationships": [
+            {
+                "type": "aggregation",
+                "other": "c2"
+            },
+            {
+                "type": "realization",
+                "other": "c3"
+            }
+        ],
+        "x": "255px",
+        "y": "0px",
+        "zindex": "3"
+    },
+    "c4": {
+        "name": "c4",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": [
+            {
+                "type": "composition",
+                "other": "c3"
+            }
+        ],
+        "x": "1300px",
+        "y": "242px",
+        "zindex": "7"
+    }
+}
