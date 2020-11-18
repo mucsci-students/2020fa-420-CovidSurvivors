@@ -216,7 +216,7 @@ body {
     display: inherit;
     position: inherit;
     margin-left: 200px;
-    min-height: 979px;
+    height: 100%;
 }
 
 /*** MOVABLE CLASS CARDS ************************************************/
