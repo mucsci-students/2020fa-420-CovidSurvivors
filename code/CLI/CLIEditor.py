@@ -676,13 +676,13 @@ class REPL(cmd.Cmd):
 
         # if command has only 1 word
         if argIndex == 0:
-            return ["inheritance", "relaization", "composition", "aggregation"]
+            return ["inheritance", "realization", "composition", "aggregation"]
 
         # if command has only 2 word
         if argIndex == 1:
             return [
                     relationship for relationship in 
-                    ["inheritance", "relaization", "composition", "aggregation"]
+                    ["inheritance", "realization", "composition", "aggregation"]
                     if relationship.startswith(text)
                 ]
 
