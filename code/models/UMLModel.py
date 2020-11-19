@@ -836,7 +836,7 @@ class UMLModel:
         # loop the classes by the name
         outputs = [f"Parameters for {method_name}"]
         for parameter in self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].parameters:
-            outputs.append(f"{parameter.type} {parameter.name}")
+            outputs.append(f"({parameter.type}):{parameter.name}")
 
         return (True, "\n".join(outputs))
 
@@ -893,7 +893,7 @@ class UMLModel:
             return (False, " {} does not exists in {}".format(parameter_name, method_name)) 
 
         # delete the parameter
-        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].delete_parameter(method_name, parameter_name)
+        self.classes[class_name].methods[self.classes[class_name].method_index(method_name)].delete_parameter(parameter_name)
         # gives user verification that the parameter was deleted
         return (True, "parameter '{}' has been removed from '{}'".format(parameter_name, method_name))
         
