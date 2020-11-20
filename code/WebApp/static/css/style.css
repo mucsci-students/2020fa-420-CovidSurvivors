@@ -275,3 +275,28 @@ body {
     background-color: #32e0c4;
 }
 
+/*** SELECT MODEL PAGE ***************************************************/
+
+.modelContainerHeader, .modelTable .modelEntry {
+    background-color: #212121;
+    color: #32e0c4;
+}
+
+.modelEntry td {
+    background-color: #212121;
+    color: #eeeeee;
+}
+
+.modelButton {
+    background-color: #333333;
+    color: #eeeeee;
+}
+
+.modelButton .fas {
+    margin-right: 5px;
+}
+
+.modelButton:hover {
+    background-color: #32e0c4;
+    color: #212121;
+}
