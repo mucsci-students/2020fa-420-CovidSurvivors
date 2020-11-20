@@ -30,8 +30,7 @@ function loadCreateClassModal() {
             $('#createClassForm').html(data);
             // Re-attach modal buttons
             createEditClassModalBtns();
-        });
-    
+        });  
 }
 
 // =======================================================================
@@ -47,7 +46,6 @@ function loadEditClassModal(classname) {
             // Re-attach modal buttons
             createEditClassModalBtns();
         });
-
 }
 
 // =======================================================================
@@ -93,16 +91,18 @@ function draggable(card) {
             // the z-index specifing the stack order of the class cards on the dashboard
             var zindex = $(card).css("z-index");
 
-            drawRelationshipArrows()
-
             // sends class name and the appropriate position data of a class card to the server 
             $.post(`${MODEL_NAME}/saveCardPosition`, {class_name:classname, x:x, y:y, zindex:zindex}) 
+        },
+        drag: function() {
+            drawRelationshipArrows();
         }
     });
 }
 
 // =======================================================================
 
+// draws the relationship arrows between cards
 function drawRelationshipArrows() {
 
     // clear previous draw region
@@ -111,14 +111,14 @@ function drawRelationshipArrows() {
     var draw = SVG("#drawRegion");
 
     // arrow head for inheritance and realization arrows
-    var realInherArrowHead = draw.marker(20, 20, function(add) {
+    var realInherArrowHead = draw.marker(40, 20, function(add) {
         add.polyline([
             [0, 0],
             [10, 4],
             [0, 10],
             [0, 0]
         ]);
-        this.fill('none').stroke({ width: 2, color: '#eeeeee' }).ref(0, 4).size(12, 12);
+        this.fill('none').stroke({ width: 2, color: '#eeeeee' }).ref(0, 4).size(25, 25);
     });
     // arrow head for composition arrow
     var compArrowHead = draw.marker(30, 30, function(add) {
@@ -177,14 +177,14 @@ function drawRelationshipArrows() {
             }
         }
     }
-    
 }
 
+// =======================================================================
 
 // Calculates the length of the path for the arrow based on the card positions
 function drawPath(card1, card2) {
     // controls the curvature of the arrow's path
-    var weight = 0.55;
+    var weight = 0.68;
     // position of first class card
     var card1Pos = $(card1).offset();
     // outer height of the first class card
@@ -215,8 +215,8 @@ function drawPath(card1, card2) {
     // the arrow is drawn going to the left side of the second class card
     if (card1Pos.left < card2Pos.left) {
         // top left corner of the second class card
-        var x4 = (card2Pos.left) - 225;
-        var y4 = (card2Pos.top) + 10;
+        var x4 = (card2Pos.left) - 200;
+        var y4 = (card2Pos.top) - 20;
         // calculates the curvature of middle of the path
         var dx = Math.abs(x4 - x1) * weight;
         // makes the arrow point to the right
@@ -226,20 +226,16 @@ function drawPath(card1, card2) {
     // the arrow is drawn going to the right side of the second class card
     else {
         // top right corner of the second class card
-        var x4 = (card2Pos.left);
-        var y4 = (card2Pos.top) + 10;
+        var x4 = (card2Pos.left) - 40;
+        var y4 = (card2Pos.top) - 20;
         // calculates the curvature of middle of the path
         var dx = Math.abs(x4 - x1) * weight;
         // makes the arrow point to the left
         var x3 = x4 + dx;
     } 
-
-    // calculates the curvature of the beginning of the path 
-    // as it is drawn leading away from the first class card
-    var x2 = x1 + dx;
-
+    
     // the path of the arrow
-    var data = `M${x1} ${y1} C ${x2} ${y1} ${x3} ${y4} ${x4} ${y4}`;
+    var data = `M${x1} ${y1} C ${x1} ${y1} ${x3} ${y4} ${x4} ${y4}`;
 
     return data;
 }
