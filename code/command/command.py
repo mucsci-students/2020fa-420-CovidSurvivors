@@ -156,7 +156,11 @@ class CreateClassGUICommand(Command, Undoable):
         # Ensure class does not already exist
         if self.payload["class_name"] in self.model.classes:
             return False, f"{self.payload['class_name']} already exists"
-
+        
+        # Don't allow empty spaces for class_name
+        if self.payload["class_name"] == "":
+            return False, f"{self.payload['class_name']} Class Name can't be blank."    
+        
         # create the class
         self.model.create_class(self.payload["class_name"])
 
