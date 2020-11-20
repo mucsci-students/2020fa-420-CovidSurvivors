@@ -77,17 +77,17 @@
             </td>
             <td class="modelButtonCol">
                 <a href="{{url_for('dashboard', model_name=model)}}">
-                    <button type="submit" class="modelButton">Edit</button>
+                    <button type="submit" class="modelButton btn btn-sm btn-default"><i class="fas fa-edit"></i>Edit</button>
                 </a>
             </td>
             <td class="modelButtonCol">
-                <button class="modelButton" data-toggle="modal" data-target="#renameModelModal" onclick="loadRenameModelModal('{{model}}')">Rename</button>
+                <button class="modelButton btn btn-sm btn-default" data-toggle="modal" data-target="#renameModelModal" onclick="loadRenameModelModal('{{model}}')"><i class="fas fa-file-alt"></i>Rename</button>
             </td>
             <td class="modelButtonCol">
-                <a href="{{url_for('download', model_name=model)}}" download><button class="modelButton">Download</button></a>
+                <a href="{{url_for('download', model_name=model)}}" download><button class="modelButton btn btn-sm btn-default"><i class="fas fa-download"></i>Download</button></a>
             </td>
             <td class="modelButtonCol">
-                <button class="modelButton" data-toggle="modal" data-target="#deleteModelModal" onclick="loadDeleteModelModal('{{model}}')">Delete</button>
+                <button class="modelButton btn btn-sm btn-default" data-toggle="modal" data-target="#deleteModelModal" onclick="loadDeleteModelModal('{{model}}')"><i class="fas fa-trash-alt"></i>Delete</button>
             </td>
         </tr>
         {% endfor %}
