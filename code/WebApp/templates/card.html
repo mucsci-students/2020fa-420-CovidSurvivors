@@ -29,15 +29,6 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                {% for relationship in class.relationships %}
-                    <li><i class="fas fa-long-arrow-alt-right"></i> {{relationship.type}} {{relationship.other}}</li>
-                {% endfor %}
-            </ul>
-            <div class="result" style="color: red;"></div>
-        </div>
-
         <div class="card-footer nav justify-content-end nav-pills ">
             <button type="button" onclick="loadEditClassModal('{{class.name}}')" class="btn btn-primary btn-sm getID editCard" data-toggle="modal" data-target="#editClassModal"><i class="fas fa-edit"></i></button>
             <button type="button" class="btn btn-primary btn-sm getID" onclick="setDeleteData('{{ class.name }}')" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt"></i></button>
