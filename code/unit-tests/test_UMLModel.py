@@ -148,6 +148,66 @@ class UMLModelTest(unittest.TestCase):
         self.assertFalse(testClass.has_field("a1"))
 
     ######################################################################
+    def test_move_up_field(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_field("class1", "public", "void", "a1")
+        model.create_field("class1", "public", "void", "a2")
+        model.create_field("class1", "public", "void", "a3")
+        testClass = model.classes["class1"]
+
+        # Ensure the field's were created
+        self.assertTrue(testClass.has_field("a1"))  
+        self.assertTrue(testClass.has_field("a2"))
+        self.assertTrue(testClass.has_field("a3"))
+
+        # Ensure the fields'position 
+        self.assertEqual(testClass.field_index("a1"), 0)
+        self.assertEqual(testClass.field_index("a2"), 1)
+        self.assertEqual(testClass.field_index("a3"), 2)
+
+        # Move up the field one position from the list
+        model.move_up_field("class1", "a2") 
+        
+        # Ensure the field has a right position
+        self.assertEqual(testClass.field_index("a2"), 0)
+        self.assertEqual(testClass.field_index("a1"), 1)
+        self.assertEqual(testClass.field_index("a3"), 2)
+        
+    ######################################################################
+    # Moves a field up one position in a list of fields for a given class
+    def test_move_down_field(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_field("class1", "public", "void", "a1")
+        model.create_field("class1", "public", "void", "a2")
+        model.create_field("class1", "public", "void", "a3")
+        model.create_field("class1", "public", "void", "a4")
+        # ensure the class is created
+        testClass = model.classes["class1"]
+        
+        # Ensure the fields were created
+        self.assertTrue(testClass.has_field("a1"))  
+        self.assertTrue(testClass.has_field("a2"))
+        self.assertTrue(testClass.has_field("a3"))
+        self.assertTrue(testClass.has_field("a4"))
+        
+        # Ensure the fields'position  
+        self.assertEqual(testClass.field_index("a1"), 0)
+        self.assertEqual(testClass.field_index("a2"), 1)
+        self.assertEqual(testClass.field_index("a3"), 2)
+        self.assertEqual(testClass.field_index("a4"), 3)
+        
+        # Move down the field one position from the list
+        model.move_down_field("class1", "a1") 
+        
+        # Ensure the field has a right position
+        self.assertEqual(testClass.field_index("a2"), 0)
+        self.assertEqual(testClass.field_index("a1"), 1)
+        self.assertEqual(testClass.field_index("a3"), 2)
+        self.assertEqual(testClass.field_index("a4"), 3)
+        
+    ######################################################################
 
     # validates intended behavior of create_method method
     def test_create_method(self):
