@@ -89,6 +89,91 @@ class UMLModelTest(unittest.TestCase):
         # ensure it failed
         self.assertFalse(status)
         self.assertEqual(msg, "class1 does not exist.")
+        
+    ######################################################################
+
+    # validates intended behavior of list_class method
+    def test_list_class(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_class("class2")
+        model.create_class("class3")
+
+        # variables used for testing equality
+        message = model.list_class("class5")[1]
+        # test output equality while using the wrong class name
+        self.assertEqual(message, "'class5' is not a valid class")
+        
+        # add fields to class1
+        model.create_field("class1", "public", "void", "a1")
+        model.create_field("class1", "private", "int", "size")
+        # add methods to class1 along with some parameters
+        model.create_method("class1", "protected", "void", "setSpeed")
+        model.create_method("class1", "public", "void", "walk")
+        model.create_parameter("class1", "setSpeed", "int", "speed")
+        model.create_parameter("class1", "walk", "int", "speed")
+        model.create_parameter("class1", "walk", "double", "direction")
+        # add relationships to class1
+        model.create_relationship("inheritance", "class1", "class2")
+        model.create_relationship("aggregation", "class3", "class1")
+
+        # variables used for testing equality
+        message = model.list_class("class1")[1]
+        outString = "".join(("Class: class1\n", 
+                    "=== Fields ======================\n", 
+                    "public a1: void\n", 
+                    "private size: int\n", 
+                    "=== Methods =====================\n", 
+                    "protected setSpeed(int speed): void\n", 
+                    "public walk(int speed, double direction): void\n", 
+                    "=== Relationships ===============\n", 
+                    "class1 ---------> class2\n", 
+                    "class1 <<>>------ class3\n", 
+                    "================================="))
+        # test output equality            
+        self.assertEqual(message,outString)
+        
+    ######################################################################
+
+    # validates intended behavior of list_classes method
+    def test_list_classes(self):
+        model = UMLModel()
+
+        # variables used for testing equality
+        message = model.list_classes()[1]
+        # test output equality without creating classes
+        self.assertEqual(message, "No classes in the model")
+
+        # create some classes
+        model.create_class("class1")
+        model.create_class("class2")
+        model.create_class("class3")
+
+        # variables used for testing equality
+        message = model.list_classes()[1]
+        outString = "".join(("Listing all classes in the model\n",
+                            "class1\n", 
+                            "class2\n", 
+                            "class3"))
+        # test output equality            
+        self.assertEqual(message,outString)
+
+    ######################################################################
+    
+    #validates intended behavior of set_class_position method
+    def test_set_class_position(self):
+        model = UMLModel()
+        model.create_class("class1")
+        
+        # variables used for testing equality
+        message = model.set_class_position("class3", 10, 20, 30)[1]
+        # test output equality when class3 is a non-existent class
+        self.assertEqual(message, "class3 does not exist")
+
+        # set position of c1
+        message = model.set_class_position("class1", 10, 20, 0)[1]
+        # test output equality
+        self.assertEqual(message, "The position of 'class1' has been set to ('10', '20')")
 
     ######################################################################
 
@@ -211,6 +296,37 @@ class UMLModelTest(unittest.TestCase):
         
     ######################################################################
 
+    # validates intended behavior of list_fields method
+    def test_list_fields(self):
+        model = UMLModel()
+        model.create_class("class1")
+
+        # variables used for testing equality
+        message = model.list_fields("class3")[1]
+        # test output equality with a non-existent class
+        self.assertEqual(message, "class3 is not a class")
+
+        # variables used for testing equality
+        message = model.list_fields("class1")[1]
+        # test output equality without inserting fields
+        self.assertEqual(message, "Class 'class1' has no fields")
+
+        # add some fields to class1
+        model.create_field("class1", "public", "int", "year")
+        model.create_field("class1", "private", "int", "salary")
+        model.create_field("class1", "protected", "string", "SSN")
+
+        # variables used for testing equality
+        message = model.list_fields("class1")[1]
+        outString = "".join(("Fields of class1\n",
+                            "PUBLIC int year\n", 
+                            "PRIVATE int salary\n", 
+                            "PROTECTED string SSN"))
+        # test output equality            
+        self.assertEqual(message,outString)
+        
+    ######################################################################
+
     # validates intended behavior of create_method method
     def test_create_method(self):
         model = UMLModel()
@@ -252,6 +368,37 @@ class UMLModelTest(unittest.TestCase):
         model.delete_method("class1", "add")
         self.assertFalse(testClass.has_method("add"))
 
+   ######################################################################
+
+    # validates intended behavior of list_methods method
+    def test_list_methods(self):
+        model = UMLModel()
+        model.create_class("class1")
+
+        # variables used for testing equality
+        message = model.list_methods("class3")[1]
+        # test output equality with a non-existent class
+        self.assertEqual(message, "class3 does not exist")
+        
+        # variables used for testing equality
+        message = model.list_methods("class1")[1]
+        # test output equality without inserting methods 
+        self.assertEqual(message, "class1 has no methods")
+
+        # add some methods to class1
+        model.create_method("class1", "public", "int", "getYear")
+        model.create_method("class1", "private", "int", "getSalary")
+        model.create_method("class1", "protected", "string", "getSSN")
+
+        # variables used for testing equality
+        message = model.list_methods("class1")[1]
+        outString = "".join(("Methods for class1\n",
+                            "PUBLIC getYear() : int\n", 
+                            "PRIVATE getSalary() : int\n", 
+                            "PROTECTED getSSN() : string"))
+        # test output equality            
+        self.assertEqual(message,outString) 
+        
     ##########################################################################
 
     # validates intended behavior of create_parameter method
@@ -299,6 +446,37 @@ class UMLModelTest(unittest.TestCase):
         model.delete_parameter("class1", "method1", "parameter_name")
         self.assertFalse(testClass.methods[testClass.method_index("method1")].has_parameter("parameter_name"))
 
+    ######################################################################
+
+    # validates intended behavior of list_methods method
+    def test_list_parameters(self):
+        model = UMLModel()
+        model.create_class("class1")
+        
+        # variables used for testing equality
+        message = model.list_parameters("class2", "test")[1]
+        # test output equality with using a non-existent class 
+        self.assertEqual(message, "class2 does not exist")
+
+        # variables used for testing equality
+        message = model.list_parameters("class1", "test")[1]
+        # test output equality without inserting methods 
+        self.assertEqual(message, "class1 does not have method, test")
+
+        # add some methods to class1
+        model.create_method("class1", "public", "int", "getYear")
+        # add some params to getYear
+        model.create_parameter("class1", "getYear", "string", "calendarName")
+        model.create_parameter("class1", "getYear", "int", "year")
+
+        # variables used for testing equality
+        message = model.list_parameters("class1", "getYear")[1]
+        outString = "".join(("Parameters for getYear\n",
+                            "(string):calendarName\n",  
+                            "(int):year"))
+        # test output equality            
+        self.assertEqual(message,outString)
+        
     ######################################################################
 
     # validates intended behavior of create_relationship method
@@ -695,7 +873,50 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(model.classes["c1"].relationship_index("c2"), 2)
 
     ######################################################################
-   
+
+    # validates intended behavior of list_relationships method
+    def test_list_relationships(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_class("class2")
+
+        # variables used for testing equality
+        message = model.list_relationships("class5")[1]
+        # test output equality with using a non-existent class name
+        self.assertEqual(message, "class5 does not exist")
+        
+        # test with a parameter
+        # variables used for testing equality
+        message = model.list_relationships('class1')[1]
+        # test output equality without creating a relationship
+        self.assertEqual(message, "Class 'class1' has no relationships")
+
+        # test without a parameter
+        # variables used for testing equality
+        message = model.list_relationships()[1]
+        # test output equality without creating a relationship
+        self.assertEqual(message, "No relationships exist for the current model")
+
+        # create a relationship between the classes
+        model.create_relationship("inheritance", "class1", "class2")
+
+        # test with a parameter
+        message = model.list_relationships("class1")[1]
+        # test output equality
+        outString = "".join(("Relationships for class1\n",
+                             "class1 ---------> class2"))
+        self.assertEqual(message, outString)
+
+        # test without a parameter
+        # variables used for testing equality
+        message = model.list_relationships()[1]
+        outString = "".join(("Listing all relationships\n",
+                             "class1 ---------> class2\n",
+                             "class2 <--------- class1"))
+        # test output equality            
+        self.assertEqual(message,outString)
+
+    ######################################################################
 # runs all of our tests
 # allows us to run this file using the typical 'python3 test_UMLModel.py' command
 # without it, we would have to use the 'python3 -m unittest test_UMLModel.py' command
