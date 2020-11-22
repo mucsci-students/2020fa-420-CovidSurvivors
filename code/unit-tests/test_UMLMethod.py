@@ -19,7 +19,7 @@ from models.Visibility import Visibility
 ##########################################################################
 
 # Unit test for the UMLMethod
-class TestUMLClass(unittest.TestCase):
+class TestUMLMethod(unittest.TestCase):
     
     # validates intended behavior of rename method (from variable.py)
     def test_rename(self):
