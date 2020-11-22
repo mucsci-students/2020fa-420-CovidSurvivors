@@ -11,6 +11,8 @@
 import unittest
 import pytest
 import sys
+import json
+import os
 sys.path.append('../')
 sys.path.append('code/')
 from UMLEditor import main
@@ -271,6 +273,277 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(len(model.classes["c2"].relationships), 0)
 
     ######################################################################
+
+    # validate get_data
+    def test_get_data(self):
+        model = UMLModel()
+
+        # Test 1: empty model
+        data = model.get_data()
+        self.assertEqual(data, {})
+
+        # Test 2: model with data
+        model.create_class('class1')
+        model.create_class('class2')
+        model.create_field('class1', 'private', 'string', 'name')
+        expectedData = {
+            "class1" : {
+                "name" : "class1",
+                "fields" : [{
+                    "visibility" : 'private',
+                    'type' : 'string',
+                    'name' : 'name'
+                }],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            },
+            "class2" : {
+                "name" : "class2",
+                "fields" : [],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            }
+        }
+        data = model.get_data()
+        self.assertEqual(data, expectedData)
+
+    ######################################################################
+
+    # validate set_data
+    def test_set_data(self):
+        model = UMLModel()
+        
+        # Test 1: set model data
+        newData = {
+            "class1" : {
+                "name" : "class1",
+                "fields" : [{
+                    "visibility" : 'private',
+                    'type' : 'string',
+                    'name' : 'name'
+                }],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            },
+            "class2" : {
+                "name" : "class2",
+                "fields" : [],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            }
+        }
+        status, msg = model.set_data(newData)
+        self.assertTrue(status)
+        # ensure each piece was copied in correctly
+        # ensure classes were created
+        self.assertTrue("class1" in model.classes)
+        self.assertTrue("class2" in model.classes)
+        status, msg = model.list_fields("class1")
+        self.assertEqual(msg, "Fields of class1\nPRIVATE string name")
+
+        # Test 2: invalid data 
+        badData = {
+            "class1" : "somethings not right here..."
+        }
+        status, msg = model.set_data(badData)
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "Data cannot be parsed")
+        # ensure previous model is still there
+        self.assertTrue("class1" in model.classes)
+        self.assertTrue("class2" in model.classes)
+        status, msg = model.list_fields("class1")
+        self.assertEqual(msg, "Fields of class1\nPRIVATE string name")
+
+        # Test 3: invalid data - type error
+        badData = {
+            "class1" : {
+                "name" : "class1",
+                "fields": [7]
+            }
+        }
+        status, msg = model.set_data(badData)
+        print(model.list_class("class1"))
+        # ensure it failed
+        self.assertFalse(status)
+        self.assertEqual(msg, "Data cannot be parsed")
+        # ensure previous model is still there
+        self.assertTrue("class1" in model.classes)
+        self.assertTrue("class2" in model.classes)
+        status, msg = model.list_fields("class1")
+        self.assertEqual(msg, "Fields of class1\nPRIVATE string name")
+        
+    ######################################################################
+
+    # validate save_model
+    def test_save_model(self):
+        model = UMLModel()
+        model.create_class('class1')
+        model.create_class('class2')
+        model.create_class('class3')
+        model.create_field('class1', "protected", "int", "number")
+        model.create_method('class2', "public", "string", "getMsg")
+        model.create_parameter('class2', 'getMsg', 'string', 'msg')
+
+        # Test 1: Normal save
+        model.save_model("test-save.json")
+        # ensure data is in the json file
+        data = None
+        with open("code/data/test-save.json", 'r') as file:
+            data = json.loads(file.read())
+        expectedData = {
+            "class1" : {
+                "name" : "class1",
+                "fields" : [{
+                    "visibility" : "protected",
+                    "type" : "int",
+                    "name" : "number"
+                }],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            },
+            "class2" : {
+                "name" : "class2",
+                "fields" : [],
+                "methods" : [{
+                    "visibility" : "public",
+                    "type" : "string",
+                    "name" : "getMsg",
+                    "parameters" : [{
+                        'type' : 'string',
+                        'name' : 'msg'
+                    }]
+                }],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            },
+            "class3" : {
+                "name" : "class3",
+                "fields" : [],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            }
+        }
+        self.assertEqual(data, expectedData)
+
+        # Test 2: save to different directory
+        directory = os.getcwd() + '/'
+        model.save_model("test-save2.json", directory=directory)
+        data = None
+        passes = True
+        try:
+            with open("test-save2.json", 'r') as file:
+                data = json.loads(file.read())
+        except FileNotFoundError:
+            passes = False
+        self.assertTrue(passes)
+        self.assertEqual(data, expectedData)
+
+    ######################################################################
+
+    # validate load_model
+    def test_load_model(self):
+        
+        expectedData = {
+            "class1" : {
+                "name" : "class1",
+                "fields" : [{
+                    "visibility" : "protected",
+                    "type" : "int",
+                    "name" : "number"
+                }],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            },
+            "class2" : {
+                "name" : "class2",
+                "fields" : [],
+                "methods" : [{
+                    "visibility" : "public",
+                    "type" : "string",
+                    "name" : "getMsg",
+                    "parameters" : [{
+                        'type' : 'string',
+                        'name' : 'msg'
+                    }]
+                }],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            },
+            "class3" : {
+                "name" : "class3",
+                "fields" : [],
+                "methods" : [],
+                "relationships" : [],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+            }
+        }
+        json_data = json.dumps(expectedData, indent=4)
+        with open("code/data/test-load.json", "w") as file:
+            file.write(json_data)
+
+        # Test 1: load empty model
+        model = UMLModel()
+        model.load_model("test-load.json")
+        # ensure data was loaded properly
+        self.assertEqual(expectedData, model.get_data())
+
+        # Test 2: load invalid data
+        json_data = json.dumps({"class1": "toast"}, indent=4)
+        with open("code/data/test-load.json", "w") as file:
+            file.write(json_data)
+
+        model = UMLModel()
+        status, msg = model.load_model("test-load.json")
+        # ensure data wasn't loaded
+        self.assertEqual({}, model.get_data())
+        self.assertFalse(status)
+
+        # Test 3: load non-json-parsable file
+        non_json_data = "not json data"
+        with open("code/data/test-load.json", "w") as file:
+            file.write(non_json_data)
+
+        model = UMLModel()
+        status, msg = model.load_model("test-load.json")
+        # ensure data wasn't loaded
+        self.assertEqual({}, model.get_data())
+        self.assertFalse(status)
+
+        # Test 4: load file that doesn't exist
+        model = UMLModel()
+        status, msg = model.load_model("iDontExist.json")
+        # ensure data wasn't loaded
+        self.assertEqual({}, model.get_data())
+        self.assertFalse(status)
+
 
 # runs all of our tests
 # allows us to run this file using the typical 'python3 test_UMLModel.py' command
