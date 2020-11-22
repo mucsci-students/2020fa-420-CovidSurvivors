@@ -15,7 +15,6 @@ sys.path.append('../')
 sys.path.append('code/')
 from models.UMLMethod import UMLMethod
 from models.Visibility import Visibility
-from jsonschema import validate
 
 ##########################################################################
 
@@ -116,21 +115,6 @@ class TestUMLClass(unittest.TestCase):
         testMethod.create_parameter("double", "distance")
         # add parameter "acceleration" to the method
         testMethod.create_parameter("double", "acceleration")
-        # expected JSON schema for the method data
-        schema = {
-            "type": "object",
-            "properties": {
-                "visibility": { "type": "string"},
-                "name": { "type": "string"},
-                "type": { "type": "string"},
-                "parameters":{
-                    "type": "array",
-                    "properties": {
-                        "type" : { "type": "string"},
-                        "name" : { "type": "string"}
-                    }
-                }}
-            }
         # expected method data
         data = {
                 "visibility": "private",
@@ -151,14 +135,12 @@ class TestUMLClass(unittest.TestCase):
                     }
                 ]
             }
-        # ensure the schema of the JSON convertible form fits the method schema
-        validate(testMethod.get_raw_data(), schema)
         # ensure the JSON convertible form of the data outputs the correct data
         self.assertEqual(testMethod.get_raw_data(), data)
    
 ##########################################################################
 
-    # validates intended behavior of get_raw_data method
+    # validates intended behavior of from_raw_data method
     def test_from_raw_data(self):
         # create method object
         testMethod = UMLMethod(Visibility.from_string("private"), "walk", "void")
