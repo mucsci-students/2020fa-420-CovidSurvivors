@@ -15,6 +15,7 @@ sys.path.append('../')
 sys.path.append('code/')
 from models.UMLClass import UMLClass
 from models.UMLRelationship import UMLRelationship
+from models.RelationshipType import RelationshipType
 
 ##########################################################################
 
@@ -310,6 +311,67 @@ class TestUMLClass(unittest.TestCase):
         # ensure the relationships are in their proper positions
         self.assertEqual(classOne.relationship_index("classTwo"), 0)
         self.assertEqual(classOne.relationship_index("classThree"), 1)
+
+##########################################################################
+
+    # validates get_raw_data
+    def test_get_raw_data(self):
+        expectedData = {
+                "name" : "class2",
+                "fields" : [],
+                "methods" : [{
+                    "visibility" : "public",
+                    "type" : "string",
+                    "name" : "getMsg",
+                    "parameters" : [{
+                        'type' : 'string',
+                        'name' : 'msg'
+                    }]
+                }],
+                "relationships" : [{
+                    "type" : "inheritance",
+                    "other" : "class3"
+                }],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+        }
+        testClass = UMLClass("class2")
+        testClass.add_method("public", "getMsg", "string")
+        testClass.create_parameter("getMsg", "string", "msg")
+        testClass.add_relationship(RelationshipType.from_string('inheritance'), "class3")
+        self.assertEqual(expectedData, testClass.get_raw_data())
+
+##########################################################################
+
+    # validates from_raw_data
+    def test_from_raw_data(self):
+        data = {
+                "name" : "class2",
+                "fields" : [],
+                "methods" : [{
+                    "visibility" : "public",
+                    "type" : "string",
+                    "name" : "getMsg",
+                    "parameters" : [{
+                        'type' : 'string',
+                        'name' : 'msg'
+                    }]
+                }],
+                "relationships" : [{
+                    "type" : "inheritance",
+                    "other" : "class3"
+                }],
+                "x" : 200,
+                "y" : 0,
+                "zindex" : 0
+        }
+        testClass = UMLClass.from_raw_data(data)
+        # ensure data was set correctly
+        self.assertTrue(testClass.name == "class2")
+        self.assertTrue(testClass.has_method("getMsg"))
+        self.assertTrue(testClass.methods[0].parameters[0].name == "msg")
+        self.assertTrue(testClass.has_relationship("class3"))
 
 ##########################################################################
 
