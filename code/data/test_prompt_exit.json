@@ -1,0 +1,22 @@
+{
+    "class1": {
+        "name": "class1",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": [],
+        "x": 200,
+        "y": 0,
+        "zindex": 0
+    },
+    "class2": {
+        "name": "class2",
+        "attributes": [],
+        "fields": [],
+        "methods": [],
+        "relationships": [],
+        "x": 200,
+        "y": 0,
+        "zindex": 0
+    }
+}
