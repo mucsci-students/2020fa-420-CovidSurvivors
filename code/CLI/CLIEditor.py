@@ -44,11 +44,11 @@ class REPL(cmd.Cmd):
     prompt = f"{PROMPT_COLOR}UMLEditor> {NORMAL_COLOR}"
     file = None
 
-    def __init__(self):
+    def __init__(self, model=UMLModel(), command_history=CommandHistory(HISTORY_LIMIT)):
         cmd.Cmd.__init__(self)
-        self.model = UMLModel()
+        self.model = model
         # Keeps track of the commands that were performed
-        self.command_history = CommandHistory(HISTORY_LIMIT)
+        self.command_history = command_history
     
     def do_create_class(self, args):
         executeCMD(self.model, self.command_history, "create_class", args.split())
@@ -61,13 +61,13 @@ class REPL(cmd.Cmd):
     def complete_rename_class(self, text, line, begidx, endidx):
         # fetch the classes from the model
         classes = fetch_classes(self.model)
-        if text:
+        argIndex = (len(line.split())) - (0 if text == "" else 1)
+        if argIndex == 1:
             return [
                 model_class for model_class in classes
                 if model_class.startswith(text)
             ]
-        else:
-            return classes
+        return []
 
     ##########################################################################    
 
@@ -77,13 +77,13 @@ class REPL(cmd.Cmd):
     def complete_delete_class(self, text, line, begidx, endidx):
         # fetch the classes from the model
         classes = fetch_classes(self.model)
-        if text:
+        argIndex = (len(line.split())) - (0 if text == "" else 1)
+        if argIndex == 1:
             return [
                 model_class for model_class in classes
                 if model_class.startswith(text)
             ]
-        else:
-            return classes
+        return []
 
     ##########################################################################
 
@@ -93,13 +93,13 @@ class REPL(cmd.Cmd):
     def complete_list_class(self, text, line, begidx, endidx):
         # fetch the classes from the model
         classes = fetch_classes(self.model)
-        if text:
+        argIndex = (len(line.split())) - (0 if text == "" else 1)
+        if argIndex == 1:
             return [
                 model_class for model_class in classes
                 if model_class.startswith(text)
             ]
-        else:
-            return classes
+        return []
     
     ##########################################################################
 
@@ -1030,8 +1030,8 @@ def fetch_from_method(model:UMLModel, class_name:str, method_name:str):
     """Fetches the parameters from the specified class method in the model
     Params:
     - model (UMLModel) - the model being used
-    - class_name (str) - name of the class
-    - methodName (str) - name of the method
+    - class_name (str) - name of the class (must exist)
+    - methodName (str) - name of the method (must exist)
     """
     # initialize an empty list
     container = list()
@@ -1092,7 +1092,7 @@ def print_help_message(model:UMLModel, command = "") -> None:
 
 ##########################################################################
 
-def prompt_exit(model:UMLModel) -> Tuple[bool, str]:
+def prompt_exit(model:UMLModel, directory=MODEL_DIRECTORY) -> Tuple[bool, str]:
     """Initiates the exit prompt
 
     Prompts user if they want to save before quitting
@@ -1123,7 +1123,7 @@ def prompt_exit(model:UMLModel) -> Tuple[bool, str]:
     if response == "yes":
         print("Please enter the filename.")
         filename = input()
-        model.save_model(filename)
+        model.save_model(filename, directory)
 
     elif response == "cancel":
         return (True, "Exit aborted")
