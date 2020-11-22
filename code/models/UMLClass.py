@@ -27,9 +27,6 @@ class UMLClass:
         """
         # Represents this classes name
         self.name = name
-        # A list of all attributes that belong to this class
-        # **This should be removed later**
-        self.attributes = []
         # A list of all fields
         self.fields = []
         # A list of all methods
@@ -42,49 +39,6 @@ class UMLClass:
         self.y = 0
         # The z-index which specifies the stack order of the class cards on the dashboard of the GUI
         self.zindex = 0
-
-##########################################################################
-
-    def add_attribute(self, attribute:str):
-        """Adds an attribute to this class
-
-        Params:
-        - attribute (string) - the name for an attribute to add
-
-        Preconditions:
-        - attribute should not already exist
-
-        Postconditions:
-        - attribute will be added to the list of attributes
-        """
-        self.attributes += [attribute]
-
-##########################################################################  
-    
-    def remove_attribute(self, attribute:str):
-        """Deletes an attribute from this class
-
-        Params:
-        - attribute (string) - the name for an attribute to delete
-
-        Preconditions:
-        - attribute should exist
-
-        Postconditions:
-        - attribute will be deleted from the list of attributes
-        """
-        self.attributes.remove(attribute) 
-
-##########################################################################  
-    
-    def has_attribute(self, attribute:str):
-        """Returns true if attribute exists, false otherwise
-
-        Params:
-        - attribute (string) - the name for an attribute
-
-        """
-        return attribute in self.attributes
 
 ##########################################################################
 
@@ -379,9 +333,6 @@ class UMLClass:
 
         # add classname
         data["name"] = self.name
-        
-        # add attributes
-        data["attributes"] = [attribute for attribute in self.attributes]
 
         # add fields
         data["fields"] = [fields.get_raw_data() for fields in self.fields]
@@ -417,9 +368,6 @@ class UMLClass:
         if not "name" in data:
             return None
         c = UMLClass(data["name"])
-        # Attributes
-        if "attributes" in data and isinstance(data["attributes"], list):
-            c.attributes = data["attributes"]
         # Fields
         if "fields" in data and isinstance(data["fields"], list):
             c.fields = [UMLField.from_raw_data(field) for field in data["fields"]]
