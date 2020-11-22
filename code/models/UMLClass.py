@@ -368,9 +368,6 @@ class UMLClass:
         if not "name" in data:
             return None
         c = UMLClass(data["name"])
-        # Attributes
-        if "attributes" in data and isinstance(data["attributes"], list):
-            c.attributes = data["attributes"]
         # Fields
         if "fields" in data and isinstance(data["fields"], list):
             c.fields = [UMLField.from_raw_data(field) for field in data["fields"]]
