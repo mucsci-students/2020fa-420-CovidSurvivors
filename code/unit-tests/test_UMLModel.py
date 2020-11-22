@@ -159,6 +159,23 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(message,outString)
 
     ######################################################################
+    
+    #validates intended behavior of set_class_position method
+    def test_set_class_position(self):
+        model = UMLModel()
+        model.create_class("class1")
+        
+        # variables used for testing equality
+        message = model.set_class_position("class3", 10, 20, 30)[1]
+        # test output equality when class3 is a non-existent class
+        self.assertEqual(message, "class3 does not exist")
+
+        # set position of c1
+        message = model.set_class_position("class1", 10, 20, 0)[1]
+        # test output equality
+        self.assertEqual(message, "The position of 'class1' has been set to ('10', '20')")
+
+    ######################################################################
 
     # validates intended behavior of create_field method
     def test_create_field(self):
