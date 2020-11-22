@@ -9,7 +9,7 @@
 # Imports
 
 from models.Variable import Variable
-from .Visibility import Visibility
+from models.Visibility import Visibility
 from models.UMLParameter import UMLParameter
 
 ##########################################################################
