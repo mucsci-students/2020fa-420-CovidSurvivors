@@ -271,7 +271,99 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(len(model.classes["c2"].relationships), 0)
 
     ######################################################################
+    
+    # validates intended behavior of move_up_relationship method
+    def test_move_up_relationship(self):
+        model = UMLModel()
+        model.create_class("c1")
+        model.create_class("c2")
+        model.create_class("c3")
+        model.create_class("c4")
 
+        # Ensure relationship is created
+        model.create_relationship("composition", "c1", "c2")
+        self.assertTrue(model.classes["c1"].has_relationship("c2"))
+        self.assertTrue(model.classes["c2"].has_relationship("c1"))
+
+        # Ensure relationship is created
+        model.create_relationship("aggregation", "c1", "c3")
+        self.assertTrue(model.classes["c1"].has_relationship("c3"))
+        self.assertTrue(model.classes["c3"].has_relationship("c1"))
+
+        # Ensure relationship is created
+        model.create_relationship("inheritance", "c1", "c4")
+        self.assertTrue(model.classes["c1"].has_relationship("c4"))
+        self.assertTrue(model.classes["c4"].has_relationship("c1"))
+
+        # Ensure order of relationships for c1
+        self.assertEqual(model.classes["c1"].relationship_index("c2"), 0)
+        self.assertEqual(model.classes["c1"].relationship_index("c3"), 1)
+        self.assertEqual(model.classes["c1"].relationship_index("c4"), 2)
+        
+        # Move c1's relationship with c4 up in c1
+        model.move_up_relationship("c1", "c4")
+        
+        # Ensure the relationship was moved up 
+        self.assertEqual(model.classes["c1"].relationship_index("c2"), 0)
+        self.assertEqual(model.classes["c1"].relationship_index("c4"), 1)
+        self.assertEqual(model.classes["c1"].relationship_index("c3"), 2)
+
+        # Move c1's relationship with c4 up in c1
+        model.move_up_relationship("c1", "c4")      
+
+        # Ensure the relationship was moved up 
+        self.assertEqual(model.classes["c1"].relationship_index("c4"), 0)  
+        self.assertEqual(model.classes["c1"].relationship_index("c2"), 1)
+        self.assertEqual(model.classes["c1"].relationship_index("c3"), 2)
+
+    ######################################################################
+
+    # validates intended behavior of move_down_relationship method
+    def test_move_down_relationship(self):
+        model = UMLModel()
+        model.create_class("c1")
+        model.create_class("c2")
+        model.create_class("c3")
+        model.create_class("c4")
+
+        # Ensure relationship is created
+        model.create_relationship("composition", "c1", "c2")
+        self.assertTrue(model.classes["c1"].has_relationship("c2"))
+        self.assertTrue(model.classes["c2"].has_relationship("c1"))
+
+        # Ensure relationship is created
+        model.create_relationship("aggregation", "c1", "c3")
+        self.assertTrue(model.classes["c1"].has_relationship("c3"))
+        self.assertTrue(model.classes["c3"].has_relationship("c1"))
+
+        # Ensure relationship is created
+        model.create_relationship("inheritance", "c1", "c4")
+        self.assertTrue(model.classes["c1"].has_relationship("c4"))
+        self.assertTrue(model.classes["c4"].has_relationship("c1"))
+
+        # Ensure order of relationships for c1
+        self.assertEqual(model.classes["c1"].relationship_index("c2"), 0)
+        self.assertEqual(model.classes["c1"].relationship_index("c3"), 1)
+        self.assertEqual(model.classes["c1"].relationship_index("c4"), 2)
+        
+        # Move c1's relationship with c2 down in c1
+        model.move_down_relationship("c1", "c2")
+        
+        # Ensure the relationship was moved down 
+        self.assertEqual(model.classes["c1"].relationship_index("c3"), 0)
+        self.assertEqual(model.classes["c1"].relationship_index("c2"), 1)
+        self.assertEqual(model.classes["c1"].relationship_index("c4"), 2)
+
+        # Move c1's relationship with c2 down in c1
+        model.move_down_relationship("c1", "c2")      
+
+        # Ensure the relationship was moved down 
+        self.assertEqual(model.classes["c1"].relationship_index("c3"), 0)
+        self.assertEqual(model.classes["c1"].relationship_index("c4"), 1)
+        self.assertEqual(model.classes["c1"].relationship_index("c2"), 2)
+
+    ######################################################################
+    
 # runs all of our tests
 # allows us to run this file using the typical 'python3 test_UMLModel.py' command
 # without it, we would have to use the 'python3 -m unittest test_UMLModel.py' command
