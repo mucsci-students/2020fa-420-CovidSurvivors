@@ -12,6 +12,7 @@
 import json
 import sys
 import os.path
+import pathlib 
 from os import path
 from typing import Tuple
 
@@ -25,8 +26,8 @@ from .RelationshipType import RelationshipType
 ##########################################################################
 # Constants
 
-# The directory where models are saved
-MODEL_DIRECTORY = os.path.join(os.getcwd(), "data/")
+# The default directory where models are saved
+MODEL_DIRECTORY = pathlib.Path(__file__).parent.parent.absolute().__fspath__() + "/data/"
 
 ##########################################################################
 
@@ -413,6 +414,8 @@ class UMLModel:
         # Tell user that save was successful
         return (True, f"Saved model to file {filename}")
 
+    ######################################################################
+
     def get_data(self):
         raw_model = {}
         for name in self.classes:
@@ -466,12 +469,10 @@ class UMLModel:
             try:
                 newclass = UMLClass.from_raw_data(raw_model[class_name])
             except TypeError:
-                return (False, "File cannot be parsed")
-            except KeyError:
-                return (False, "File cannot be parsed")
+                return (False, "Data cannot be parsed")
             # ensure class was created successfully 
             if newclass == None:
-                return (False, "File cannot be parsed")
+                return (False, "Data cannot be parsed")
             # add class
             classes[newclass.name] = newclass
 
