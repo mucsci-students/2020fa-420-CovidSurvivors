@@ -14,6 +14,8 @@ import sys
 sys.path.append('../')
 sys.path.append('code/')
 from models.UMLMethod import UMLMethod
+from models.Visibility import Visibility
+from jsonschema import validate
 
 ##########################################################################
 
@@ -91,15 +93,86 @@ class TestUMLClass(unittest.TestCase):
     def test_parameter_index(self):
         # create method object
         testMethod = UMLMethod("private", "walk", "void")
-        # add parameter "speed" to the method
+        # add parameter "acceleration" to the method
         testMethod.create_parameter("double", "acceleration")
+        # add parameter "speed" to the method
         testMethod.create_parameter("double", "speed")
+        # add parameter "distance" to the method
         testMethod.create_parameter("double", "distance")
         # ensure the parameters are in the correct indices
         self.assertEqual(testMethod.parameter_index("acceleration"), 0)
         self.assertEqual(testMethod.parameter_index("speed"), 1)
         self.assertEqual(testMethod.parameter_index("distance"), 2)
 
+##########################################################################
+
+    # validates intended behavior of get_raw_data method
+    def test_get_raw_data(self):
+        # create method object
+        testMethod = UMLMethod(Visibility.from_string("private"), "walk", "void")
+        # add parameter "speed" to the method
+        testMethod.create_parameter("int", "speed")
+        # add parameter "distance" to the method
+        testMethod.create_parameter("double", "distance")
+        # add parameter "acceleration" to the method
+        testMethod.create_parameter("double", "acceleration")
+        # expected JSON schema for the method data
+        schema = {
+            "type": "object",
+            "properties": {
+                "visibility": { "type": "string"},
+                "name": { "type": "string"},
+                "type": { "type": "string"},
+                "parameters":{
+                    "type": "array",
+                    "properties": {
+                        "type" : { "type": "string"},
+                        "name" : { "type": "string"}
+                    }
+                }}
+            }
+        # expected method data
+        data = {
+                "visibility": "private",
+                "name": "walk",
+                "type": "void",
+                "parameters": [
+                    {
+                        "type": "int",
+                        "name": "speed"
+                    },
+                    {
+                        "type": "double",
+                        "name": "distance"
+                    },
+                    {
+                        "type": "double",
+                        "name": "acceleration"
+                    }
+                ]
+            }
+        # ensure the schema of the JSON convertible form fits the method schema
+        validate(testMethod.get_raw_data(), schema)
+        # ensure the JSON convertible form of the data outputs the correct data
+        self.assertEqual(testMethod.get_raw_data(), data)
+   
+##########################################################################
+
+    # validates intended behavior of get_raw_data method
+    def test_from_raw_data(self):
+        # create method object
+        testMethod = UMLMethod(Visibility.from_string("private"), "walk", "void")
+        # add parameter "speed" to the method
+        testMethod.create_parameter("double", "speed")
+        # add parameter "distance" to the method
+        testMethod.create_parameter("double", "distance")
+        # add parameter "acceleration" to the method
+        testMethod.create_parameter("double", "acceleration")
+        # generate method data
+        data = testMethod.get_raw_data()
+        # ensure that a UMLMethod object is constructed from the method data
+        self.assertTrue(isinstance(testMethod.from_raw_data(data), object))
+        
 ##########################################################################
 
 # runs all of our tests 
