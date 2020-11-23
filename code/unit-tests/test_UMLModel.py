@@ -496,6 +496,28 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(model.classes["c1"].relationship_index("c2"), 1)
         self.assertEqual(model.classes["c1"].relationship_index("c3"), 2)
 
+        # Ensure correct response is outputted when we try to move a relationship
+        # up when the relationship is at the top of the list
+        status, msg = model.move_up_relationship("c1", "c4")
+        self.assertFalse(status)
+        self.assertEqual(msg, "The relationship with c4 can not move up any further in c1")
+
+        # Ensure correct response is outputted when class 1 doesn't exist
+        status, msg = model.move_up_relationship("c5", "c4")
+        self.assertFalse(status)
+        self.assertEqual(msg, "c5 does not exist")
+        
+        # Ensure correct response is outputted when class 2 doesn't exist
+        status, msg = model.move_up_relationship("c1", "c7")
+        self.assertFalse(status)
+        self.assertEqual(msg, "c7 does not exist")
+
+        # Ensure correct response is outputted when two classes don't have an
+        # existing relationship
+        status, msg = model.move_up_relationship("c2", "c3")
+        self.assertFalse(status)
+        self.assertEqual(msg, "Relationship between c2 and c3 does not exist.")
+        
     ######################################################################
 
     # validate get_data
@@ -811,6 +833,28 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(model.classes["c1"].relationship_index("c3"), 0)
         self.assertEqual(model.classes["c1"].relationship_index("c4"), 1)
         self.assertEqual(model.classes["c1"].relationship_index("c2"), 2)
+
+        # Ensure correct response is outputted when we try to move a relationship
+        # down when the relationship is at the bottom of the list
+        status, msg = model.move_down_relationship("c1", "c2") 
+        self.assertFalse(status)
+        self.assertEqual(msg, "The relationship with c2 can not move down any further in c1")
+
+        # Ensure correct response is outputted when class 1 doesn't exist
+        status, msg = model.move_down_relationship("c5", "c2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "c5 does not exist")
+        
+        # Ensure correct response is outputted when class 2 doesn't exist
+        status, msg = model.move_down_relationship("c1", "c7")
+        self.assertFalse(status)
+        self.assertEqual(msg, "c7 does not exist")
+
+        # Ensure correct response is outputted when two classes don't have an
+        # existing relationship
+        status, msg = model.move_down_relationship("c2", "c3")
+        self.assertFalse(status)
+        self.assertEqual(msg, "Relationship between c2 and c3 does not exist.")
 
     ######################################################################
 
