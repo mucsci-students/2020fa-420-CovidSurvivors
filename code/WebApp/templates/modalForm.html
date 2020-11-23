@@ -44,9 +44,15 @@
                 {% if method.visibility == "public" %}
                     <option selected>Public</option>
                     <option>Private</option>
-                {% else %}
+                    <option>Protected</option>
+                {% elif method.visibility == "private" %}
                     <option>Public</option>
                     <option selected>Private</option>
+                    <option>Protected</option>
+                {% else %}
+                    <option>Public</option>
+                    <option>Private</option>
+                    <option selected>Protected</option>
                 {% endif %}
             </select>
             <input type="text" name="method_type" value="{{method.type}}" class="form-control" aria-label="Type of method" aria-describedby="basic-addon2">

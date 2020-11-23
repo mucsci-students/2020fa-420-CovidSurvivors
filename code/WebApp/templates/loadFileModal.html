@@ -4,9 +4,13 @@
         <div class="modal-content">
             <form action="{{url_for('upload')}}" method="POST" enctype='multipart/form-data' >
                 <div class="modal-header">
-                    <h4 class="modal-title w-100" id="myModalLabel">Load File</h4>
+                    <h4 class="modal-title w-100" id="myModalLabel">Upload File</h4>
                 </div>
                 <div class="modal-body">
+                        <div class="form-group">
+                            <h4>Model Name</h4>
+                            <input type="text" name="model_name" placeholder="Enter Model Name">
+                        </div>
                         <div class="form-group">
                             <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
                         </div>

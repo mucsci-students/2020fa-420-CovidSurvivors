@@ -1,0 +1,73 @@
+{
+    "c1": {
+        "name": "c1",
+        "attributes": [
+            "a1"
+        ],
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "f1",
+                "type": "t1"
+            },
+            {
+                "visibility": "private",
+                "name": "f2",
+                "type": "t2"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "m1",
+                "type": "t3",
+                "parameters": []
+            },
+            {
+                "visibility": "public",
+                "name": "m2",
+                "type": "t4",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "inheritance",
+                "other": "c2"
+            }
+        ],
+        "x": "247px",
+        "y": "76px",
+        "zindex": "2"
+    },
+    "c2": {
+        "name": "c2",
+        "attributes": [
+            "a2"
+        ],
+        "fields": [],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "m1",
+                "type": "t3",
+                "parameters": []
+            },
+            {
+                "visibility": "public",
+                "name": "m2",
+                "type": "t4",
+                "parameters": []
+            }
+        ],
+        "relationships": [
+            {
+                "type": "inheritance",
+                "other": "c1"
+            }
+        ],
+        "x": "585px",
+        "y": "85px",
+        "zindex": "2"
+    }
+}

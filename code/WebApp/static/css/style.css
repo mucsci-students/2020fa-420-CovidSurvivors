@@ -6,6 +6,10 @@
 */
 /************************************************************************/
 
+html {
+    height:100%;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
 * {
     margin: 0;
@@ -18,7 +22,52 @@
 
 body {
     background-color: #393e46;
+    height:100%;
 }
+
+/*** MODEL PAGE *********************************************************/
+
+.modelContainer {
+    /* background-color: cyan; */
+    margin-left: 200px;
+    padding: 10px;
+}
+
+.modelContainerHeader {
+    background-color: #eee;
+    margin-bottom: 10px;
+    padding: 7px;
+    text-align: center;
+    height:50px;
+}
+
+.modelTable {
+    width: 100%;
+}
+
+.modelEntry {
+    background-color: #eeeeee;
+    border-bottom: 1px solid #555;
+    width: 100%;
+}
+
+.modelEntry td, .modelEntry th {
+    padding: 7px;
+}
+
+.modelButtonCol {
+    width: 10%;
+}
+
+.modelButton {
+    padding: 5px;
+    float:right;
+}
+
+.modelButtonHead {
+    text-align: right;
+}
+
 
 /*** FLASH MESSAGES *****************************************************/
 
@@ -167,7 +216,7 @@ body {
     display: inherit;
     position: inherit;
     margin-left: 200px;
-    min-height: 979px;
+    height: 100%;
 }
 
 /*** MOVABLE CLASS CARDS ************************************************/
@@ -226,3 +275,28 @@ body {
     background-color: #32e0c4;
 }
 
+/*** SELECT MODEL PAGE ***************************************************/
+
+.modelContainerHeader, .modelTable .modelEntry {
+    background-color: #212121;
+    color: #32e0c4;
+}
+
+.modelEntry td {
+    background-color: #212121;
+    color: #eeeeee;
+}
+
+.modelButton {
+    background-color: #333333;
+    color: #eeeeee;
+}
+
+.modelButton .fas {
+    margin-right: 5px;
+}
+
+.modelButton:hover {
+    background-color: #32e0c4;
+    color: #212121;
+}

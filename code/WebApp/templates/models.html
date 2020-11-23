@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+<!-- body START -->
+{% block body %}
+
+<!-- sidebar wrapper START -->
+<div class="wrapper">
+    <!-- sidebar START -->
+    <div class="sidebar">
+        <h3>UMLEditor</h3>
+        <ul>
+            <li><button type="button" class="btn" data-toggle="modal" data-target="#createModelModal"><i class="fas fa-pencil-ruler"></i>Create Model</button></li>
+            <li><button type="button" class="btn" data-toggle="modal" data-target="#loadFileModal"><i class="fas fa-file-upload"></i>Upload Model</button></li>
+        </ul>            
+    </div>
+    <!-- sidebar END -->
+</div>
+<!-- sidebar wrapper END -->
+
+<!-- Flash error/success messages START -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-modal-container">
+{% for category, message in messages %}
+    {% if category == "error" %}
+        <div id="flash{{ loop.index0 }}" class="flash-modal flash-error">
+            <button class="flash-exit-button" onclick="closeFlashMessage('#flash{{ loop.index0 }}')">X</button>
+            <p>{{ message }}</p>
+        </div>
+    {% elif category == "success" %}
+        <div id="flash{{ loop.index0 }}" class="flash-modal flash-success">
+            <button class="flash-exit-button" onclick="closeFlashMessage('#flash{{ loop.index0 }}')">X</button>
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<!-- Flash msgs END -->
+
+<!-- load file modal START -->
+{% include "loadFileModal.html" %}
+<!--load file modal END -->
+
+<!--create model modal START -->
+{% include "createModelModal.html" %}
+<!--create model modal END -->
+
+<!--rename model modal START -->
+{% include "renameModelModal.html" %}
+<!--rename model modal END -->
+
+<!--delete model modal START -->
+{% include "deleteModelModal.html" %}
+<!--delete model modal END -->
+
+<!-- model cards START -->
+<div class="modelContainer">
+    <div class="modelContainerHeader">
+        <h2>Select A Model</h2>
+    </div>
+    <table class="modelTable">
+        <thead class="modelEntry">
+            <tr>
+                <th>Model Name</th>
+                <th class="modelButtonHead">Edit Model</th>
+                <th class="modelButtonHead">Rename Model</th>
+                <th class="modelButtonHead">Download Model</th>
+                <th class="modelButtonHead">Delete Model</th>
+            </tr>
+        </thead>
+        {% for model in models %}
+        <tr class="modelEntry">
+            <td>
+                {{ model }}
+            </td>
+            <td class="modelButtonCol">
+                <a href="{{url_for('dashboard', model_name=model)}}">
+                    <button type="submit" class="modelButton btn btn-sm btn-default"><i class="fas fa-edit"></i>Edit</button>
+                </a>
+            </td>
+            <td class="modelButtonCol">
+                <button class="modelButton btn btn-sm btn-default" data-toggle="modal" data-target="#renameModelModal" onclick="loadRenameModelModal('{{model}}')"><i class="fas fa-file-alt"></i>Rename</button>
+            </td>
+            <td class="modelButtonCol">
+                <a href="{{url_for('download', model_name=model)}}" download><button class="modelButton btn btn-sm btn-default"><i class="fas fa-download"></i>Download</button></a>
+            </td>
+            <td class="modelButtonCol">
+                <button class="modelButton btn btn-sm btn-default" data-toggle="modal" data-target="#deleteModelModal" onclick="loadDeleteModelModal('{{model}}')"><i class="fas fa-trash-alt"></i>Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!-- model cards END -->
+
+{% endblock body %}
+<!-- body END -->

@@ -7,19 +7,20 @@
         <!-- to ensure proper rendering and touch zooming on mobile devices -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="static/css/bootstrap.min.css">
-        <link rel="stylesheet" href="static/css/style.css">
-        <link rel="stylesheet" href="static/jqueryui/jquery-ui.css">
-        <link rel="stylesheet" href="static/jqueryui/jquery-ui.structure.css">
-        <link rel="stylesheet" href="static/jqueryui/jquery-ui.theme.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='jqueryui/jquery-ui.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='jqueryui/jquery-ui.structure.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='jqueryui/jquery-ui.theme.css')}}">
         <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="static/js/jquery.min.js"></script>
-        <script src="static/jqueryui/jquery-ui.js"></script>
-        <script src="static/js/popper.min.js"></script>
-        <script src="static/js/bootstrap.min.js"></script>
-        <script src="static/js/myscripts.js"></script>
+        <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+        <script src="{{url_for('static', filename='jqueryui/jquery-ui.js')}}"></script>
+        <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+        <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+        <script src="{{url_for('static', filename='js/myscripts.js')}}"></script>
     </head>
 
     <body>

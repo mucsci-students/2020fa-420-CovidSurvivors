@@ -20,12 +20,14 @@
             {
                 "visibility": "public",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "Object"
+                "type": "Object",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -37,7 +39,10 @@
                 "type": "composition",
                 "other": "class4"
             }
-        ]
+        ],
+        "x": "1134px",
+        "y": "372px",
+        "zindex": "4"
     },
     "class2": {
         "name": "class2",
@@ -60,12 +65,14 @@
             {
                 "visibility": "public",
                 "name": "method1",
-                "type": "string"
+                "type": "string",
+                "parameters": []
             },
             {
                 "visibility": "public",
                 "name": "method2",
-                "type": "boolean"
+                "type": "boolean",
+                "parameters": []
             }
         ],
         "relationships": [
@@ -73,14 +80,20 @@
                 "type": "inheritance",
                 "other": "class1"
             }
-        ]
+        ],
+        "x": "379px",
+        "y": "295px",
+        "zindex": "4"
     },
     "class3": {
         "name": "class3",
         "attributes": [],
         "fields": [],
         "methods": [],
-        "relationships": []
+        "relationships": [],
+        "x": "271px",
+        "y": "91px",
+        "zindex": "4"
     },
     "class4": {
         "name": "class4",
@@ -92,6 +105,9 @@
                 "type": "composition",
                 "other": "class1"
             }
-        ]
+        ],
+        "x": "621px",
+        "y": "138px",
+        "zindex": "4"
     }
 }

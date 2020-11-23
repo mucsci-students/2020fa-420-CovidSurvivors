@@ -3,6 +3,12 @@
 <!-- body START -->
 {% block body %}
 
+        <!-- Save model name -->
+        <script>
+            let MODEL_NAME = "{{data.model_name}}";
+            var classes = {};
+        </script>
+
         <!-- Flash error/success messages START -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -31,11 +37,11 @@
             <div class="sidebar">
                 <h3>UMLEditor</h3>
                 <ul>
-                    <li><button type="button" class="btn" data-toggle="modal" data-target="#loadFileModal"><i class="fas fa-file-upload"></i>Load File</button></li>
-                    <li><a href="{{url_for('download')}}" download><button type="button" class="btn"><i class="fas fa-save"></i>Save Project</button></a></li>
+                    <li><a href="{{url_for('models')}}"><button type="button" class="btn"><i class="fas fa-exchange-alt"></i>Change Model</button></a></li>
+                    <li><a href="{{url_for('download', model_name=data.model_name)}}" download><button type="button" class="btn"><i class="fas fa-download"></i>Download</button></a></li>
                     <li><button type="button" class="btn" data-toggle="modal" data-target="#createClassModal"><i class="fas fa-pencil-ruler"></i>Create Class</button></li>
-                    <li><a href="{{url_for('undo')}}"><button type="button" class="btn"><i class="fas fa-undo"></i>Undo</button></a></li>
-                    <li><a href="{{url_for('redo')}}"><button type="button" class="btn"><i class="fas fa-redo"></i>Redo</button></a></li>
+                    <li><a href="{{url_for('undo', model_name=data.model_name)}}"><button type="button" class="btn"><i class="fas fa-undo"></i>Undo</button></a></li>
+                    <li><a href="{{url_for('redo', model_name=data.model_name)}}"><button type="button" class="btn"><i class="fas fa-redo"></i>Redo</button></a></li>
                 </ul>            
             </div>
             <!-- sidebar END -->
@@ -57,6 +63,8 @@
             <!-- Generate card -->
             {% include "card.html" %}
         {% endfor %}    
+            <svg id="drawRegion" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="100%" height="100%">
+            </svg>
         </div>
         <!-- display END -->
 
