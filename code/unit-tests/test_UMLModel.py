@@ -148,6 +148,8 @@ class UMLModelTest(unittest.TestCase):
         self.assertFalse(testClass.has_field("a1"))
 
     ######################################################################
+    
+    # Moves a field up one position on a list of fields for a given class
     def test_move_up_field(self):
         model = UMLModel()
         model.create_class("class1")
@@ -162,20 +164,21 @@ class UMLModelTest(unittest.TestCase):
         self.assertTrue(testClass.has_field("a3"))
 
         # Ensure the fields'position 
-        self.assertEqual(testClass.field_index("a1"), 0)
-        self.assertEqual(testClass.field_index("a2"), 1)
-        self.assertEqual(testClass.field_index("a3"), 2)
-
+        self.assertEqual(testClass.fields[0].name, "a1")
+        self.assertEqual(testClass.fields[1].name, "a2")
+        self.assertEqual(testClass.fields[2].name, "a3")
+       
         # Move up the field one position from the list
         model.move_up_field("class1", "a2") 
-        
+
         # Ensure the field has a right position
         self.assertEqual(testClass.field_index("a2"), 0)
         self.assertEqual(testClass.field_index("a1"), 1)
         self.assertEqual(testClass.field_index("a3"), 2)
         
     ######################################################################
-    # Moves a field up one position in a list of fields for a given class
+    
+    # Moves a field one position down on the list of fields for a given class
     def test_move_down_field(self):
         model = UMLModel()
         model.create_class("class1")
@@ -193,10 +196,10 @@ class UMLModelTest(unittest.TestCase):
         self.assertTrue(testClass.has_field("a4"))
         
         # Ensure the fields'position  
-        self.assertEqual(testClass.field_index("a1"), 0)
-        self.assertEqual(testClass.field_index("a2"), 1)
-        self.assertEqual(testClass.field_index("a3"), 2)
-        self.assertEqual(testClass.field_index("a4"), 3)
+        self.assertEqual(testClass.fields[0].name, "a1")
+        self.assertEqual(testClass.fields[1].name, "a2")
+        self.assertEqual(testClass.fields[2].name, "a3")
+        self.assertEqual(testClass.fields[3].name, "a4")
         
         # Move down the field one position from the list
         model.move_down_field("class1", "a1") 
@@ -251,6 +254,52 @@ class UMLModelTest(unittest.TestCase):
         self.assertFalse(testClass.has_method("add"))
 
     ##########################################################################
+    # Validates intended behavior of move_up_method
+    def test_move_up_method(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_method("class1", "public", "string", "method2")
+        model.create_method("class1", "public", "string", "method3")
+        testClass = model.classes["class1"]
+
+        # Ensure the methods were created in order position 
+        self.assertEqual(testClass.methods[0].name, "method1")
+        self.assertEqual(testClass.methods[1].name, "method2")
+        self.assertEqual(testClass.methods[2].name, "method3")
+
+        # Move up the method one position from the list
+        model.move_up_method("class1", "method2") 
+        
+        # Ensure the method has a right position after moved
+        self.assertEqual(testClass.methods[0].name, "method2")
+        self.assertEqual(testClass.methods[1].name, "method1")
+        self.assertEqual(testClass.methods[2].name, "method3")
+        
+    ######################################################################
+    # Validates intended behavior of move_down_method
+    def test_move_down_method(self):
+        model = UMLModel()
+        model.create_class("class1")
+        model.create_method("class1", "public", "string", "method1")
+        model.create_method("class1", "public", "string", "method2")
+        model.create_method("class1", "public", "string", "method3")
+        testClass = model.classes["class1"]
+
+        # Ensure the methods'position 
+        self.assertEqual(testClass.methods[0].name, "method1")
+        self.assertEqual(testClass.methods[1].name, "method2")
+        self.assertEqual(testClass.methods[2].name, "method3")
+
+        # Move down the method one position from the list
+        model.move_down_method("class1", "method2") 
+        
+        # Ensure the method has a right position after moved
+        self.assertEqual(testClass.methods[0].name, "method1")
+        self.assertEqual(testClass.methods[1].name, "method3")
+        self.assertEqual(testClass.methods[2].name, "method2")
+        
+    ######################################################################
 
     # validates intended behavior of create_parameter method
     def test_create_parameter(self):
