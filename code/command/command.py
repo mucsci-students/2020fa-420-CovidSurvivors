@@ -219,6 +219,11 @@ class EditClassGUICommand(Command, Undoable):
         if self.payload["original_name"] not in self.model.classes:
             return False, f"{self.payload['original_name']} is not a valid class"
 
+        # save the original class x,y,z 
+        x = self.model.classes[self.payload["original_name"]].x
+        y = self.model.classes[self.payload["original_name"]].y
+        zindex = self.model.classes[self.payload["original_name"]].zindex
+
         # remove the original class to replace it
         self.model.delete_class(self.payload["original_name"])
 
@@ -245,6 +250,9 @@ class EditClassGUICommand(Command, Undoable):
         # add relationships
         for i in range(len(self.payload["relationship_types"])):
             self.model.create_relationship(self.payload["relationship_types"][i].lower(), self.payload["class_name"], self.payload["relationship_others"][i])
+
+        # reassign x,y,z
+        self.model.set_class_position(self.payload["class_name"], x, y, zindex)
 
         self.model.list_class(self.payload["class_name"])
 
