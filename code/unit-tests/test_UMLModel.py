@@ -175,6 +175,10 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(testClass.field_index("a2"), 0)
         self.assertEqual(testClass.field_index("a1"), 1)
         self.assertEqual(testClass.field_index("a3"), 2)
+
+        # Ensure the method don't move up any further
+        status, msg = model.move_up_field("class1", "a2")
+        self.assertFalse(status)
         
     ######################################################################
     
@@ -209,6 +213,10 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(testClass.field_index("a1"), 1)
         self.assertEqual(testClass.field_index("a3"), 2)
         self.assertEqual(testClass.field_index("a4"), 3)
+
+        # Ensure the method don't move down further
+        status, msg = model.move_down_field("class1", "a4")
+        self.assertFalse(status)
         
     ######################################################################
 
@@ -269,13 +277,16 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(testClass.methods[2].name, "method3")
 
         # Move up the method one position from the list
-        model.move_up_method("class1", "method2") 
-        
+        model.move_up_method("class1", "method2")
         # Ensure the method has a right position after moved
-        self.assertEqual(testClass.methods[0].name, "method2")
-        self.assertEqual(testClass.methods[1].name, "method1")
-        self.assertEqual(testClass.methods[2].name, "method3")
-        
+        self.assertEqual(testClass.method_index("method2"), 0)
+        self.assertEqual(testClass.method_index("method1"), 1)
+        self.assertEqual(testClass.method_index("method3"), 2)
+
+        # Ensure the method don't moove up further
+        status, msg = model.move_up_method("class1", "method2")
+        self.assertFalse(status)
+
     ######################################################################
     # Validates intended behavior of move_down_method
     def test_move_down_method(self):
@@ -295,10 +306,14 @@ class UMLModelTest(unittest.TestCase):
         model.move_down_method("class1", "method2") 
         
         # Ensure the method has a right position after moved
-        self.assertEqual(testClass.methods[0].name, "method1")
-        self.assertEqual(testClass.methods[1].name, "method3")
-        self.assertEqual(testClass.methods[2].name, "method2")
+        self.assertEqual(testClass.method_index("method1"), 0)
+        self.assertEqual(testClass.method_index("method3"), 1)
+        self.assertEqual(testClass.method_index("method2"), 2)
         
+        # Ensure the method don't move down further
+        status, msg = model.move_down_method("class1", "method2")
+        self.assertFalse(status)
+
     ######################################################################
 
     # validates intended behavior of create_parameter method
