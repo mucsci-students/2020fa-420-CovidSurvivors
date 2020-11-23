@@ -78,12 +78,24 @@ class UMLModelTest(unittest.TestCase):
     def test_delete_class(self):
         model = UMLModel()
         model.create_class("class1")
+        model.create_class("class2")
+
+        # create relationship between classes
+        model.create_relationship("composition", "class1", "class2")
+        # Ensure relationship is created
+        self.assertTrue(model.classes["class1"].has_relationship("class2"))
+        self.assertTrue(model.classes["class2"].has_relationship("class1"))
 
         # Ensure deleted
         model.delete_class("class1")
         # assert dictionary key was removed
         self.assertTrue("class1" not in model.classes)
 
+        # Ensure relationship was removed after deletion of class1
+        status, msg = model.list_relationships("class2")
+        self.assertTrue(status)
+        self.assertEqual(msg, "Class 'class2' has no relationships")
+        
         # Ensure no errors when class DNE
         status, msg = model.delete_class("class1")
         # ensure it failed
@@ -187,6 +199,11 @@ class UMLModelTest(unittest.TestCase):
         model.create_field("class1", "public", "void", "a1")
         self.assertTrue(testClass.has_field("a1"))
 
+        # Ensure we get correct output when class does not exist
+        status, msg = model.create_field("class5", "private", "void", "a1")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class5 does not exist")
+      
         # Ensure duplicate field is not created
         status, msg = model.create_field("class1", "public", "void", "a1")
         # ensure it failed
@@ -209,6 +226,9 @@ class UMLModelTest(unittest.TestCase):
         self.assertEqual(model.find_field("class1", "a1"), 0)
         self.assertEqual(model.find_field("class1", "num"), 1)
 
+        # ensure we get correct output when field is not found
+        self.assertEqual(model.find_field("class1", "nonexistent"), -1)
+
     ######################################################################
 
     # validates intended behavior of rename_field method
@@ -221,6 +241,21 @@ class UMLModelTest(unittest.TestCase):
         model.rename_field("class1", "a1", "a2")
         self.assertEqual(model.classes["class1"].fields[0].name, "a2")
 
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.rename_field("class7", "a1", "a2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class7 does not exist.")
+
+        # Ensure we get correct output when the field we wish to rename doesn't exist
+        status, msg = model.rename_field("class1", "a7", "a3")
+        self.assertFalse(status)
+        self.assertEqual(msg, "field a7 does not exist in class1")
+
+        # Ensure we get correct output when the new field already exist
+        status, msg = model.rename_field("class1", "a2", "a2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "field a2 already exists in class1")
+
     ######################################################################
 
     # validates intended behavior of delete_field method
@@ -229,6 +264,16 @@ class UMLModelTest(unittest.TestCase):
         model.create_class("class1")
         model.create_field("class1", "public", "void", "a1")
         testClass = model.classes["class1"]
+
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.delete_field("class5", "a1")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class5 does not exist")
+
+        # Ensure we get correct output when field we wish to remove doesn't exist
+        status, msg = model.delete_field("class1", "a3")
+        self.assertFalse(status)
+        self.assertEqual(msg, "a3 is not a field of class1")
 
         # Ensure field is deleted
         model.delete_field("class1", "a1")
@@ -277,6 +322,11 @@ class UMLModelTest(unittest.TestCase):
         model.create_method("class1", "public", "void", "add")
         self.assertTrue(testClass.has_method("add"))
 
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.create_method("class3", "public", "void", "subtract")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class3 does not exist")
+
         # Ensure duplicate method is not created
         status, msg = model.create_method("class1", "public", "void", "add")
         # ensure it failed
@@ -291,6 +341,21 @@ class UMLModelTest(unittest.TestCase):
         model.create_class("class1")
         model.create_method("class1", "public", "void", "add")
 
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.rename_method("class3", "add", "subtract")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class3 does not exist")
+
+        # Ensure we get correct output when method doesn't exist
+        status, msg = model.rename_method("class1", "multiply", "subtract")
+        self.assertFalse(status)
+        self.assertEqual(msg, "method multiply does not exist in class1")
+
+        # Ensure we get correct output when new method name already exists
+        status, msg = model.rename_method("class1", "add", "add")
+        self.assertFalse(status)
+        self.assertEqual(msg, "method 'add' already exists in 'class1'")
+
         # Ensure method is renamed
         model.rename_method("class1", "add", "subtract")
         self.assertEqual(model.classes["class1"].methods[0].name, "subtract")
@@ -303,6 +368,16 @@ class UMLModelTest(unittest.TestCase):
         model.create_class("class1")
         model.create_method("class1", "public", "void", "add")
         testClass = model.classes["class1"]
+
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.delete_method("class4", "add")
+        self.assertFalse(status)
+        self.assertEqual(msg, "'class4' does not exist")
+
+        # Ensure we get correct output when the method we wish to delete doesn't exist
+        status, msg = model.delete_method("class1", "subtract")
+        self.assertFalse(status)
+        self.assertEqual(msg, "'subtract' does not exist in 'class1'")
 
         # Ensure method is deleted
         model.delete_method("class1", "add")
@@ -350,6 +425,15 @@ class UMLModelTest(unittest.TestCase):
 
         self.assertTrue(model.classes["class1"].methods[model.classes["class1"].method_index("method1")].has_parameter("param_name"))
 
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.create_parameter("class9", "method1", "param_type", "param_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class9 does not exist")
+
+        # Ensure we get correct output when method doesn't exist
+        status, msg = model.create_parameter("class1", "method3", "param_type", "param_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, "method method3 does not exist in class1")
 
         # Ensure duplicate parameter is not created
         status, msg = model.create_parameter("class1", "method1", "param_type", "param_name")
@@ -365,6 +449,26 @@ class UMLModelTest(unittest.TestCase):
         model.create_class("class1")
         model.create_method("class1", "public", "string", "method1")
         model.create_parameter("class1", "method1", "param_type", "param_name")
+
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.rename_parameter("class9", "method1", "param_name", "new_param_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class9 does not exist")
+
+        # Ensure we get correct output when method doesn't exist
+        status, msg = model.rename_parameter("class1", "method3", "param_name", "new_param_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class1 does not have method, method3")
+
+        # Ensure we get correct output when the parameter we wish to rename doesn't exist
+        status, msg = model.rename_parameter("class1", "method1", "param_name7", "new_param_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, " param_name7 does not exists in method1")
+
+        # Ensure we get correct output when the parameter we wish to rename already exists
+        status, msg = model.rename_parameter("class1", "method1", "param_name", "param_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, " param_name already exists in method1")
         
         #ensure parameter is renamed
         model.rename_parameter("class1", "method1", "param_name", "new_param_name")
@@ -379,12 +483,31 @@ class UMLModelTest(unittest.TestCase):
         model = UMLModel()
         model.create_class("class1")
         model.create_method("class1", "public", "string", "method1")
-        model.create_parameter("class1", "method1", "param_type", "param_name")
+        model.create_parameter("class1", "method1", "param_type", "parameter_name")
         testClass = model.classes["class1"]
+
+        # Ensure we get correct output when class doesn't exist
+        status, msg = model.delete_parameter("class9", "method1", "parameter_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class9 does not exist")
+
+        # Ensure we get correct output when method doesn't exist
+        status, msg = model.delete_parameter("class1", "method6", "parameter_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class1 does not have method, method6")
         
-        #ensure parameter is deleted
-        model.delete_parameter("class1", "method1", "parameter_name")
+        # Ensure parameter is deleted
+        status, msg = model.delete_parameter("class1", "method1", "parameter_name")
         self.assertFalse(testClass.methods[testClass.method_index("method1")].has_parameter("parameter_name"))
+
+        # Ensure we get correct output after parameter is deleted
+        self.assertTrue(status)
+        self.assertEqual(msg, "parameter 'parameter_name' has been removed from 'method1'")
+
+        # Ensure we get correct output if the parameter we wish to delete doesn't exist
+        status, msg = model.delete_parameter("class1", "method1", "parameter_name")
+        self.assertFalse(status)
+        self.assertEqual(msg, " parameter_name does not exists in method1")
 
     ######################################################################
 
@@ -430,6 +553,16 @@ class UMLModelTest(unittest.TestCase):
         self.assertTrue(model.classes["c1"].has_relationship("c2"))
         self.assertTrue(model.classes["c2"].has_relationship("c1"))
 
+        # Ensure we get correct output when class 1 doesn't exist
+        status, msg = model.create_relationship("realization", "c5", "c2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "'c5' does not exist")
+
+        # Ensure we get correct output when class 2 doesn't exist
+        status, msg = model.create_relationship("realization", "c1", "c5")
+        self.assertFalse(status)
+        self.assertEqual(msg, "'c5' does not exist")
+
         # Ensure already existing rel
         status, msg = model.create_relationship("composition","c2","c1")
         # ensure it failed
@@ -443,12 +576,34 @@ class UMLModelTest(unittest.TestCase):
         model = UMLModel()
         model.create_class("c1")
         model.create_class("c2")
-        model.create_relationship("r1", "c1", "c2")
+        model.create_relationship("realization", "c1", "c2")
 
-        # Ensure relationship is created
-        model.delete_relationship("c1","c2")
+        # Ensure we get correct output when class 1 doesn't exist
+        status, msg = model.delete_relationship("c7","c2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "c7 does not exist")
+
+        # Ensure we get correct output when class 2 doesn't exist
+        status, msg = model.delete_relationship("c1","c5")
+        self.assertFalse(status)
+        self.assertEqual(msg, "c5 does not exist")
+
+        # Ensure relationship is deleted
+        status, msg = model.delete_relationship("c1","c2")
         self.assertEqual(len(model.classes["c1"].relationships), 0)
         self.assertEqual(len(model.classes["c2"].relationships), 0)
+        
+        # Ensure we get correct output after relationship has been deleted
+        self.assertTrue(status)
+        self.assertEqual(msg, "Relationship between c1 and c2 has been deleted")
+
+        # Ensure we get correct output if we try to delete relationship that doesn't exist
+        status, msg = model.delete_relationship("c1","c2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "Relationship between c1 and c2 does not exist.")
+
+
+
 
     ######################################################################
     
