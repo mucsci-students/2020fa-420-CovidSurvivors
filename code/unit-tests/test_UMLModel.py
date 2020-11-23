@@ -311,6 +311,17 @@ class UMLModelTest(unittest.TestCase):
         # Ensure the method don't move up any further
         status, msg = model.move_up_field("class1", "a2")
         self.assertFalse(status)
+        self.assertEqual(msg, "a2 can not move up any further in class1")
+
+        # Ensure correct response is outputted when class doesn't exist
+        status, msg = model.move_up_field("class8", "a2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class8 does not exist")
+        
+        # Ensure correct response is outputted when field doesn't exist
+        status, msg = model.move_up_field("class1", "a7")
+        self.assertFalse(status)
+        self.assertEqual(msg, "a7 does not exist in class1")
         
     ######################################################################
     
@@ -349,6 +360,17 @@ class UMLModelTest(unittest.TestCase):
         # Ensure the method don't move down further
         status, msg = model.move_down_field("class1", "a4")
         self.assertFalse(status)
+        self.assertEqual(msg, "a4 can not move down any further in class1")
+
+        # Ensure correct response is outputted when class doesn't exist
+        status, msg = model.move_down_field("class8", "a4")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class8 does not exist")
+        
+        # Ensure correct response is outputted when field doesn't exist
+        status, msg = model.move_down_field("class1", "a7")
+        self.assertFalse(status)
+        self.assertEqual(msg, "a7 does not exist in class1")
         
     ######################################################################
 
@@ -511,6 +533,16 @@ class UMLModelTest(unittest.TestCase):
         status, msg = model.move_up_method("class1", "method2")
         self.assertFalse(status)
 
+        # Ensure correct response is outputted when class 1 doesn't exist
+        status, msg = model.move_up_method("class7", "method2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class7 does not exist")
+        
+        # Ensure correct response is outputted when method doesn't exist
+        status, msg = model.move_up_method("class1", "method9")
+        self.assertFalse(status)
+        self.assertEqual(msg, "method9 does not exist in class1")
+
     ######################################################################
     # Validates intended behavior of move_down_method
     def test_move_down_method(self):
@@ -537,6 +569,16 @@ class UMLModelTest(unittest.TestCase):
         # Ensure the method don't move down further
         status, msg = model.move_down_method("class1", "method2")
         self.assertFalse(status)
+
+        # Ensure correct response is outputted when class doesn't exist
+        status, msg = model.move_down_method("class7", "method2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "class7 does not exist")
+        
+        # Ensure correct response is outputted when method doesn't exist
+        status, msg = model.move_down_method("class1", "method9")
+        self.assertFalse(status)
+        self.assertEqual(msg, "method9 does not exist in class1")
 
     ######################################################################
 
@@ -676,6 +718,10 @@ class UMLModelTest(unittest.TestCase):
         model.create_relationship("composition", "c1", "c2")
         self.assertTrue(model.classes["c1"].has_relationship("c2"))
         self.assertTrue(model.classes["c2"].has_relationship("c1"))
+
+        status, msg = model.create_relationship("invalidRealType", "c5", "c2")
+        self.assertFalse(status)
+        self.assertEqual(msg, "'invalidRealType' is not a valid relationship type.")
 
         # Ensure we get correct output when class 1 doesn't exist
         status, msg = model.create_relationship("realization", "c5", "c2")
