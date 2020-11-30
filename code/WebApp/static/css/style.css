@@ -25,6 +25,12 @@ body {
     height:100%;
 }
 
+/* Relationship arrow */
+path:hover {
+    cursor: pointer;
+    stroke: #32e0c4;
+}
+
 /*** MODEL PAGE *********************************************************/
 
 .modelContainer {

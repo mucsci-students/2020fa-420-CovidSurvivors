@@ -1,0 +1,56 @@
+<!-- create class modal START -->
+<div class="modal fade" id="createRelationshipModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Create a new Relationship</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createRelationshipModalForm" action="{{url_for('createRelationship', model_name=data.model_name)}}" method="POST">
+                    <!-- relationship type START -->
+                    <div class="form-group">
+                        <label for="classname">Relationship Type</label>
+                        <div class="input-group mb-3">
+                            <select name="relationship_type" class="form-control">
+                                <option value="aggregation">Aggregation</option>
+                                <option value="composition">Composition</option>
+                                <option value="inheritance">Inheritance</option>
+                                <option value="realization">Realization</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- relationship type END -->
+                    <!-- class name1 START -->
+                    <div class="form-group">
+                        <label for="classname">First Class</label>
+                        <div class="input-group mb-3">
+                            <select name="class_name1" id="createRelationshipModelClassSelect" class="form-control">
+                                {% for class in data.classes %}
+                                <option>{{class.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- class name1 END -->
+                    <!-- class name2 START -->
+                    <div class="form-group">
+                        <label for="classname">Second Class</label>
+                        <div class="input-group mb-3">
+                            <select name="class_name2" class="form-control">
+                                {% for class in data.classes %}
+                                <option>{{class.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- class name2 END -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="createRelationshipModalForm" class="btn btn-primary btn-sm">Create Relationship</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--create class modal END -->

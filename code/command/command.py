@@ -176,10 +176,6 @@ class CreateClassGUICommand(Command, Undoable):
         for i in range(len (self.payload["parameter_names"])): 
             self.model.create_parameter(self.payload["class_name"], self.payload["method_names"][int(self.payload["parameter_method_index"][i])], self.payload["parameter_types"][i], self.payload["parameter_names"][i])   
 
-        # add relationships
-        for i in range(len(self.payload["relationship_types"])):
-            self.model.create_relationship(self.payload["relationship_types"][i].lower(), self.payload["class_name"], self.payload["relationship_others"][i])
-
         self.model.list_class(self.payload["class_name"])
 
         # save model
@@ -247,10 +243,6 @@ class EditClassGUICommand(Command, Undoable):
         for i in range(len(self.payload["parameter_names"])): 
             self.model.create_parameter(self.payload["class_name"], self.payload["method_names"][int(self.payload["parameter_method_index"][i])], self.payload["parameter_types"][i], self.payload["parameter_names"][i])   
 
-        # add relationships
-        for i in range(len(self.payload["relationship_types"])):
-            self.model.create_relationship(self.payload["relationship_types"][i].lower(), self.payload["class_name"], self.payload["relationship_others"][i])
-
         # reassign x,y,z
         self.model.set_class_position(self.payload["class_name"], x, y, zindex)
 
@@ -302,7 +294,131 @@ class DeleteClassGUICommand(Command, Undoable):
 
 ##########################################################################
 
-# This is for the GUI
+# creates a relationship between classes 
+class CreateRelationshipGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
+
+    def execute(self) -> bool:
+        # Load model to
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        
+        status, message = self.model.create_relationship(self.payload["relationship_type"], self.payload["class_name1"], self.payload["class_name2"])
+
+        # ensure it was successful
+        if not status:
+            # dont save - just return
+            return False, message
+
+        # save model
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
+
+        return True, f"Relationship between '{self.payload['class_name1']}' '{self.payload['class_name2']}' created successfully"
+
+
+##########################################################################
+
+# creates a relationship between classes 
+class EditRelationshipGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
+
+    def execute(self) -> bool:
+        # Load model to
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        
+        # delete original relationship
+        status, message = self.model.delete_relationship(self.payload["old_class_name1"], self.payload["old_class_name2"])
+
+        status, message = self.model.create_relationship(self.payload["relationship_type"], self.payload["class_name1"], self.payload["class_name2"])
+
+        # ensure it was successful
+        if not status:
+            # dont save - just return
+            return False, message
+
+        # save model
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
+
+        return True, f"Relationship between '{self.payload['class_name1']}' '{self.payload['class_name2']}' created successfully"
+
+##########################################################################
+
+# creates a relationship between classes 
+class DeleteRelationshipGUICommand(Command, Undoable):
+
+    def __init__(self, model, payload):
+        self.model = model
+        self.payload = payload
+        self.backup = None
+    
+    def saveBackup(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        # save state
+        self.backup = self.model.get_data()
+
+    def undo(self) -> None:
+        # Load model
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        # restore state
+        self.model.set_data(self.backup)
+        # save model
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
+
+    def execute(self) -> bool:
+        # Load model to
+        self.model.load_model(self.payload["filename"], directory=self.payload["directory"])
+        
+        # delete relationship
+        status, message = self.model.delete_relationship(self.payload["class_name1"], self.payload["class_name2"])
+
+        # ensure it was successful
+        if not status:
+            # dont save - just return
+            return False, message
+
+        # save model
+        self.model.save_model(self.payload["filename"], directory=self.payload["directory"])
+
+        return True, f"Relationship between '{self.payload['class_name1']}' '{self.payload['class_name2']}' deleted successfully"
+
+##########################################################################
+
 class SetClassPositonGUICommand(Command, Undoable):
 
     def __init__(self, model, payload):

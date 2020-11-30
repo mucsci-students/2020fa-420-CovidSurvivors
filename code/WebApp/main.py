@@ -17,8 +17,7 @@ from werkzeug.utils import secure_filename
 
 # Include parent directory
 sys.path.append(os.getcwd())
-from command.command import CommandHistory, CreateClassGUICommand
-from command.command import EditClassGUICommand, DeleteClassGUICommand, SetClassPositonGUICommand
+from command.command import *
 from models.UMLModel import UMLModel
 
 ##########################################################################
@@ -224,9 +223,7 @@ def createClass(model_name):
         "method_names" : list(request.form.getlist('method_name')),
         "parameter_method_index" : list(request.form.getlist('parameter_method')),
         "parameter_types" : list(request.form.getlist('parameter_type')),
-        "parameter_names" : list(request.form.getlist('parameter_name')),
-        "relationship_types" : list(request.form.getlist('relationship_type')),
-        "relationship_others" : list(request.form.getlist('relationship_other'))
+        "parameter_names" : list(request.form.getlist('parameter_name'))
     }
 
     # create command 
@@ -293,9 +290,7 @@ def editClass(model_name):
         "method_names" : list(request.form.getlist('method_name')),
         "parameter_method_index" : list(request.form.getlist('parameter_method')),
         "parameter_types" : list(request.form.getlist('parameter_type')),
-        "parameter_names" : list(request.form.getlist('parameter_name')),
-        "relationship_types" : list(request.form.getlist('relationship_type')),
-        "relationship_others" : list(request.form.getlist('relationship_other'))
+        "parameter_names" : list(request.form.getlist('parameter_name'))
     }
 
     # create command 
@@ -371,10 +366,220 @@ def editForm(model_name):
 
 ##########################################################################
 
+# creates a relationship with a given relationship type, and two class names
+@app.route("/model/<model_name>/createRelationship", methods=['POST'])
+def createRelationship(model_name):
+    # ensure model name exists
+    if model_name not in getModelNames():
+        flash(f"Model '{model_name}' does not exist", "error")
+        return redirect(url_for('models'))
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+        
+    
+    # build data for command
+    data = {
+        "filename" : model_name + ".json",
+        "directory" : DATA_FOLDER,
+        "relationship_type" : request.form.get('relationship_type'),
+        "class_name1" : request.form.get('class_name1'),
+        "class_name2" : request.form.get('class_name2')
+    }
+
+    # create command 
+    command = CreateRelationshipGUICommand(UMLModel(), data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
+
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+
+    status, msg = response
+
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard', model_name=model_name))
+
+##########################################################################
+
+# creates a relationship with a given relationship type, and two class names
+@app.route("/model/<model_name>/editRelationship", methods=['POST'])
+def editRelationship(model_name):
+    # ensure model name exists
+    if model_name not in getModelNames():
+        flash(f"Model '{model_name}' does not exist", "error")
+        return redirect(url_for('models'))
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+        
+    # build data for command
+    data = {
+        "filename" : model_name + ".json",
+        "directory" : DATA_FOLDER,
+        "old_relationship_type" : request.form.get('old_relationship_type'),
+        "old_class_name1" : request.form.get('old_class_name1'),
+        "old_class_name2" : request.form.get('old_class_name2'),
+        "relationship_type" : request.form.get('relationship_type'),
+        "class_name1" : request.form.get('class_name1'),
+        "class_name2" : request.form.get('class_name2')
+    }
+
+    # create command 
+    command = EditRelationshipGUICommand(UMLModel(), data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
+
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+
+    status, msg = response
+
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard', model_name=model_name))
+
+##########################################################################
+
+# creates a relationship with a given relationship type, and two class names
+@app.route("/model/<model_name>/deleteRelationship", methods=['POST'])
+def deleteRelationship(model_name):
+    # ensure model name exists
+    if model_name not in getModelNames():
+        flash(f"Model '{model_name}' does not exist", "error")
+        return redirect(url_for('models'))
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+        
+    # build data for command
+    data = {
+        "filename" : model_name + ".json",
+        "directory" : DATA_FOLDER,
+        "class_name1" : request.form.get('class_name1'),
+        "class_name2" : request.form.get('class_name2')
+    }
+
+    # create command 
+    command = DeleteRelationshipGUICommand(UMLModel(), data)
+    # save backup
+    command.saveBackup()
+    # execute command
+    response = command.execute()
+
+    # ensure response - this occurs if someone forgot to return a status from a command
+    if not response:
+        print(f"ERROR: Command did not give a status")
+        # send error message as a flash message
+        flash("Command did not give a status; This is most likely due to a bug", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+
+    status, msg = response
+
+    # command was not successful 
+    if not status:
+        # command failed
+        print(f"ERROR: {msg}")
+        # send error message as a flash message
+        flash(msg, "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+
+    # add to history
+    command_history.push(command)
+
+    # send success message as a flash message
+    print(f"SUCCESS: {msg}")
+    flash(msg, "success")
+    return redirect(url_for('dashboard', model_name=model_name))
+
+##########################################################################
+
+# Serves the contents of the modal 
+@app.route("/model/<model_name>/editRelationshipForm", methods=['GET', 'POST'])
+def editRelationshipForm(model_name):
+    
+    # ensure model name exists
+    if model_name not in getModelNames():
+        flash(f"Model '{model_name}' does not exist", "error")
+        return redirect(url_for('models'))
+
+    # Ensure there was a POST request
+    if request.method != "POST":
+        # send error message as a flash message
+        flash("Nothing sent in POST", "error")
+        return redirect(url_for('dashboard', model_name=model_name))
+    
+    # load model
+    model = UMLModel()
+    model.load_model(model_name + ".json", directory=DATA_FOLDER)
+
+    # ensure class1 exists
+    if request.form.get('class_name1') not in model.classes:
+        return f"Class '{request.form.get('class_name1')}' does not exist"
+    # ensure class2 exists
+    if request.form.get('class_name2') not in model.classes:
+        return f"Class '{request.form.get('class_name2')}' does not exist"
+
+    # grab class data
+    data = {}
+    data["classes"] = model.get_data()
+
+    # add current relationships data
+    data["relationship_type"] = request.form.get('relationship_type')
+    data["class_name1"] = request.form.get('class_name1')
+    data["class_name2"] = request.form.get('class_name2')
+
+    # Build modal form inputs
+    return render_template("editRelationshipForm.html", data=data)
+
+##########################################################################
+
 # Saves the position of a class card based on its location on the dashboard
 @app.route("/model/<model_name>/saveCardPosition", methods=['POST'])
 def saveCardPosition(model_name):
-    
     # ensure model name exists
     if model_name not in getModelNames():
         flash(f"Model '{model_name}' does not exist", "error")

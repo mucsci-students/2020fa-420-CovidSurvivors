@@ -30,6 +30,7 @@
             </ul>
         </div>
         <div class="card-footer nav justify-content-end nav-pills ">
+            <button type="button" onclick="loadCreateRelationshipModal('{{class.name}}')" class="btn" data-toggle="modal" data-target="#createRelationshipModal"><i class="fas fa-long-arrow-alt-right"></i></button>
             <button type="button" onclick="loadEditClassModal('{{class.name}}')" class="btn btn-primary btn-sm getID editCard" data-toggle="modal" data-target="#editClassModal"><i class="fas fa-edit"></i></button>
             <button type="button" class="btn btn-primary btn-sm getID" onclick="setDeleteData('{{ class.name }}')" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt"></i></button>
         </div>
