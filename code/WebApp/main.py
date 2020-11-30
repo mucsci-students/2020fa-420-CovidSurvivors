@@ -823,7 +823,7 @@ def upload():
     # To ensure the file will work as the model
     model = UMLModel()
     try:
-        status, msg = model.load_model(TEMP_FILENAME)
+        status, msg = model.load_model(TEMP_FILENAME, directory=DATA_FOLDER)
     except:
         # send error message as a flash message
         flash("File cannot be interpretted as a UMLModel", "error")
@@ -832,7 +832,7 @@ def upload():
     # load model failed
     if not status:
         flash(msg, "error")
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('models'))
 
     # Save file as the new working model 
     with open(DATA_FOLDER + TEMP_FILENAME, "r") as src:
