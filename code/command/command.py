@@ -376,7 +376,6 @@ class EditRelationshipGUICommand(Command, Undoable):
 
         return True, f"Relationship between '{self.payload['class_name1']}' '{self.payload['class_name2']}' created successfully"
 
-
 ##########################################################################
 
 # creates a relationship between classes 
@@ -418,11 +417,8 @@ class DeleteRelationshipGUICommand(Command, Undoable):
 
         return True, f"Relationship between '{self.payload['class_name1']}' '{self.payload['class_name2']}' deleted successfully"
 
-
 ##########################################################################
 
-
-# This is for the GUI
 class SetClassPositonGUICommand(Command, Undoable):
 
     def __init__(self, model, payload):
