@@ -62,6 +62,29 @@ function loadDeleteModelModal(model_name) {
 
 // =======================================================================
 
+// autoselects a given class for the create relationship modal
+function loadCreateRelationshipModal(class_name) {
+    $(`#createRelationshipModelClassSelect`).val(class_name)
+}
+
+function loadEditRelationshipModal(relationship_type, class_name1, class_name2) {
+    // Grab form from server
+    $.post(`${MODEL_NAME}/editRelationshipForm`, {
+            relationship_type:relationship_type,
+            class_name1:class_name1,
+            class_name2:class_name2
+        })
+        // load form inputs into class form
+        .done(function (data) {
+            $('#editRelationshipModalForm').html(data);
+        });
+    // load delete form
+    $("#deleteRelationshipModalClass1").attr("value", class_name1)
+    $("#deleteRelationshipModalClass2").attr("value", class_name2)
+}
+
+// =======================================================================
+
 // Runs automatically when web application is executed
 $(function() {
     classCardBtns();
@@ -144,37 +167,43 @@ function drawRelationshipArrows() {
             
             // calculates the path of the arrow
             var data = drawPath(idClass1, idClass2);
-            
+            var path = draw.path().fill('none').stroke({ width: 3, color: '#eeeeee' })
+
             // build SVG aggregation arrow 
             if (relationshipType == "aggregation") {
                 // plot the path of the relationship arrow based on the draw Path data
-                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                path.plot(data);
                 // aggregation relationship arrow
                 path.marker('end', aggArrowHead);
             } 
             // build SVG composition arrow 
             if (relationshipType == "composition") {
                 // plot the path of the relationship arrow based on the draw Path data
-                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                path.plot(data);
                 // composition relationship arrow
                 path.marker('end', compArrowHead);
             }
             // build SVG inheritance arrow 
             if (relationshipType == "inheritance") {
                 // plot the path of the relationship arrow based on the draw Path data
-                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                path.plot(data);
                 // inheritance relationship arrow
                 path.marker('end', realInherArrowHead);   
             } 
             // build SVG realization arrow 
             if (relationshipType == "realization") {
                 // plot the path of the relationship arrow based on the draw Path data
-                var path = draw.path().fill('none').stroke({ width: 2, color: '#eeeeee' }).plot(data);
+                path.plot(data);
                 // gives the arrow a dashed look
                 path.attr('stroke-dasharray', 8);
                 // realization relationship arrow
                 path.marker('end', realInherArrowHead);
             }
+
+            // allow path to be clicked to load the edit relationship modal
+            path.attr('data-toggle',"modal")
+            path.attr('data-target',"#editRelationshipModal")
+            path.attr('onclick', `loadEditRelationshipModal('${relationshipType}', '${classname}', '${class2}')`)
         }
     }
 }
@@ -318,26 +347,6 @@ function createEditClassModalBtns() {
                 <input hidden type="text" name="parameter_method" value="${method_index}">
                 <input type="text" name="parameter_type" class="form-control" placeholder="Enter Parameter type" aria-label="Type of parameter" aria-describedby="basic-addon2">
                 <input type="text" name="parameter_name" class="form-control" placeholder="Enter Parameter name" aria-label="Name of parameter" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary delTextArea" type="button">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div>`);
-    });
-
-    // Adds a new drop menu and text area for the relationships
-    $('.form-group').on('click', '.addRelationship', function() {
-        var table = $(this).closest('.form-group');
-        table.append(
-            `<div class="input-group mb-3">
-                <select name="relationship_type" id="inputRelationship" class="form-control">
-                    <option>Aggregation</option>
-                    <option>Composition</option>
-                    <option>Inheritance</option>
-                    <option>Realization</option>
-                </select>
-                <input type="text" name="relationship_other" class="form-control" placeholder="Enter associated class name" aria-label="Associated class" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary delTextArea" type="button">
                         <i class="fas fa-minus"></i>

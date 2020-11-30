@@ -1,0 +1,25 @@
+<!-- create class modal START -->
+<div class="modal fade" id="editRelationshipModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Edit Existing Relationship</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editRelationshipModalForm" action="{{url_for('editRelationship', model_name=data.model_name)}}" method="POST">
+                   
+                </form>
+                <form id="deleteRelationshipModalForm" action="{{url_for('deleteRelationship', model_name=data.model_name)}}" method="POST">
+                   <input hidden type="text" id="deleteRelationshipModalClass1" name="class_name1" value="">
+                   <input hidden type="text" id="deleteRelationshipModalClass2" name="class_name2" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" style="float:left;color:#dd3333" form="deleteRelationshipModalForm" class="btn btn-primary btn-sm">Delete</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="editRelationshipModalForm" class="btn btn-primary btn-sm">Edit Relationship</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--create class modal END -->

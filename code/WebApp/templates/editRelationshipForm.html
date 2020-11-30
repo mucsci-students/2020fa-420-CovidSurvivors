@@ -1,0 +1,68 @@
+ <!-- relationship type START -->
+ <div class="form-group">
+    <label>Relationship Between <i>{{data.class_name1}}</i> and <i>{{data.class_name2}}</i></label>
+ </div>
+ <div class="form-group">
+    <label>New Relationship Type</label>
+    <div class="input-group mb-3">
+        <input hidden type="text" name="old_relationship_type" value="{{data.relationship_type}}">
+        <select name="relationship_type" class="form-control">
+            {% if data.relationship_type == "composition" %}
+            <option value="aggregation">Aggregation</option>
+            <option value="composition" selected>Composition</option>
+            <option value="inheritance">Inheritance</option>
+            <option value="realization">Realization</option>
+            {% elif data.relationship_type == "inheritance" %}
+            <option value="aggregation">Aggregation</option>
+            <option value="composition">Composition</option>
+            <option value="inheritance" selected>Inheritance</option>
+            <option value="realization">Realization</option>
+            {% elif data.relationship_type == "realization" %}
+            <option value="aggregation">Aggregation</option>
+            <option value="composition">Composition</option>
+            <option value="inheritance">Inheritance</option>
+            <option value="realization" selected>Realization</option>
+            {% else %}
+            <option value="aggregation" selected>Aggregation</option>
+            <option value="composition">Composition</option>
+            <option value="inheritance">Inheritance</option>
+            <option value="realization">Realization</option>
+            {% endif %}
+        </select>
+    </div>
+</div>
+<!-- relationship type END -->
+<!-- class name1 START -->
+<div class="form-group">
+    <label>New First Class</label>
+    <div class="input-group mb-3">
+        <input hidden type="text" name="old_class_name1" value="{{data.class_name1}}">
+        <select name="class_name1" class="form-control">
+            {% for class_name in data.classes %}
+            {% if class_name == data.class_name1%}
+            <option selected>{{class_name}}</option>
+            {% else %}
+            <option>{{class_name}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<!-- class name1 END -->
+<!-- class name2 START -->
+<div class="form-group">
+    <label>New Second Class</label>
+    <div class="input-group mb-3">
+        <input hidden type="text" name="old_class_name2" value="{{data.class_name2}}">
+        <select name="class_name2" class="form-control">
+            {% for class_name in data.classes %}
+            {% if class_name == data.class_name2%}
+            <option selected>{{class_name}}</option>
+            {% else %}
+            <option>{{class_name}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<!-- class name2 END -->

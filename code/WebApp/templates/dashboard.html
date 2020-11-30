@@ -40,6 +40,7 @@
                     <li><a href="{{url_for('models')}}"><button type="button" class="btn"><i class="fas fa-exchange-alt"></i>Change Model</button></a></li>
                     <li><a href="{{url_for('download', model_name=data.model_name)}}" download><button type="button" class="btn"><i class="fas fa-download"></i>Download</button></a></li>
                     <li><button type="button" class="btn" data-toggle="modal" data-target="#createClassModal"><i class="fas fa-pencil-ruler"></i>Create Class</button></li>
+                    <li><button type="button" class="btn" data-toggle="modal" data-target="#createRelationshipModal"><i class="fas fa-long-arrow-alt-right"></i>Add Relationship</button></li>
                     <li><a href="{{url_for('undo', model_name=data.model_name)}}"><button type="button" class="btn"><i class="fas fa-undo"></i>Undo</button></a></li>
                     <li><a href="{{url_for('redo', model_name=data.model_name)}}"><button type="button" class="btn"><i class="fas fa-redo"></i>Redo</button></a></li>
                 </ul>            
@@ -70,11 +71,19 @@
 
         <!-- edit class modal START -->
         {% include "editClassModal.html" %}
-        <!--edit class modal END -->
+        <!-- edit class modal END -->
 
         <!-- delete class modal START -->
         {% include "deleteClassModal.html" %}
-        <!--delete class modal END -->
+        <!-- delete class modal END -->
+
+        <!-- create relationship modal START -->
+        {% include "createRelationshipModal.html" %}
+        <!-- create relationship modal END -->
+
+        <!-- edit relationship modal START -->
+        {% include "editRelationshipModal.html" %}
+        <!-- edit relationship modal END -->
 
 {% endblock %}
 <!-- body END -->

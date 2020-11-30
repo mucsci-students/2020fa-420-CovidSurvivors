@@ -1,7 +1,6 @@
 {
     "UMLClass": {
         "name": "UMLClass",
-        "attributes": [],
         "fields": [
             {
                 "visibility": "private",
@@ -68,15 +67,26 @@
             {
                 "type": "reverse composition",
                 "other": "UMLModel"
+            },
+            {
+                "type": "composition",
+                "other": "UMLRelationship"
+            },
+            {
+                "type": "composition",
+                "other": "UMLMethod"
+            },
+            {
+                "type": "composition",
+                "other": "UMLField"
             }
         ],
-        "x": "878px",
-        "y": "195px",
+        "x": "874px",
+        "y": "148px",
         "zindex": "17"
     },
     "UMLModel": {
         "name": "UMLModel",
-        "attributes": [],
         "fields": [
             {
                 "visibility": "private",
@@ -138,13 +148,12 @@
                 "other": "CLIEditor"
             }
         ],
-        "x": "553px",
-        "y": "254px",
-        "zindex": "16"
+        "x": "512.089px",
+        "y": "71px",
+        "zindex": "17"
     },
     "Variable": {
         "name": "Variable",
-        "attributes": [],
         "fields": [
             {
                 "visibility": "private",
@@ -172,13 +181,12 @@
                 "other": "UMLMethod"
             }
         ],
-        "x": "1455.69px",
-        "y": "132px",
-        "zindex": "23"
+        "x": "1510.38px",
+        "y": "49px",
+        "zindex": "9"
     },
     "UMLField": {
         "name": "UMLField",
-        "attributes": [],
         "fields": [
             {
                 "visibility": "private",
@@ -191,34 +199,36 @@
             {
                 "type": "inheritance",
                 "other": "Variable"
+            },
+            {
+                "type": "reverse composition",
+                "other": "UMLClass"
             }
         ],
-        "x": "1160px",
-        "y": "97px",
-        "zindex": "23"
+        "x": "1245px",
+        "y": "138px",
+        "zindex": "9"
     },
     "UMLParameter": {
         "name": "UMLParameter",
-        "attributes": [],
         "fields": [],
         "methods": [],
         "relationships": [
             {
                 "type": "inheritance",
-                "other": "UMLMethod"
+                "other": "Variable"
             },
             {
-                "type": "inheritance",
-                "other": "Variable"
+                "type": "reverse composition",
+                "other": "UMLMethod"
             }
         ],
-        "x": "1561.98px",
-        "y": "573px",
-        "zindex": "23"
+        "x": "1595.97px",
+        "y": "385px",
+        "zindex": "16"
     },
     "UMLMethod": {
         "name": "UMLMethod",
-        "attributes": [],
         "fields": [
             {
                 "visibility": "private",
@@ -238,17 +248,20 @@
                 "other": "Variable"
             },
             {
-                "type": "inheritance",
+                "type": "composition",
                 "other": "UMLParameter"
+            },
+            {
+                "type": "reverse composition",
+                "other": "UMLClass"
             }
         ],
-        "x": "1159px",
-        "y": "522px",
-        "zindex": "23"
+        "x": "1255px",
+        "y": "378px",
+        "zindex": "16"
     },
     "CLIEditor": {
         "name": "CLIEditor",
-        "attributes": [],
         "fields": [
             {
                 "visibility": "private",
@@ -263,8 +276,33 @@
                 "other": "UMLModel"
             }
         ],
-        "x": "314px",
-        "y": "375px",
-        "zindex": "19"
+        "x": "266px",
+        "y": "153px",
+        "zindex": "17"
+    },
+    "UMLRelationship": {
+        "name": "UMLRelationship",
+        "fields": [
+            {
+                "visibility": "private",
+                "name": "type",
+                "type": "RelationshipType"
+            },
+            {
+                "visibility": "private",
+                "name": "other",
+                "type": "string"
+            }
+        ],
+        "methods": [],
+        "relationships": [
+            {
+                "type": "reverse composition",
+                "other": "UMLClass"
+            }
+        ],
+        "x": "1229px",
+        "y": "618px",
+        "zindex": "16"
     }
 }
