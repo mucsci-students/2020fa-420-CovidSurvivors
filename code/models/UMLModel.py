@@ -27,7 +27,7 @@ from .RelationshipType import RelationshipType
 # Constants
 
 # The default directory where models are saved
-MODEL_DIRECTORY = pathlib.Path(__file__).parent.parent.absolute().__fspath__() + "/data/"
+MODEL_DIRECTORY = pathlib.Path(__file__).parent.parent.absolute().__fspath__() + "/server-data/"
 
 ##########################################################################
 
