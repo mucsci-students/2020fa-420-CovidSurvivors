@@ -1088,7 +1088,7 @@ class UMLModelTest(unittest.TestCase):
 
         # Test 2: load invalid data
         json_data = json.dumps({"class1": "toast"}, indent=4)
-        with open("code/data/test-load.json", "w") as file:
+        with open("code/server-data/test-load.json", "w") as file:
             file.write(json_data)
 
         model = UMLModel()
@@ -1099,7 +1099,7 @@ class UMLModelTest(unittest.TestCase):
 
         # Test 3: load non-json-parsable file
         non_json_data = "not json data"
-        with open("code/data/test-load.json", "w") as file:
+        with open("code/server-data/test-load.json", "w") as file:
             file.write(non_json_data)
 
         model = UMLModel()
