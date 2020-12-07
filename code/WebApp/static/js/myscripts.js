@@ -271,6 +271,22 @@ function drawPath(card1, card2) {
 
 // =======================================================================
 
+// Redrawing relationship arrows when scroll event happens
+var ticking = false;
+$(function () {
+    $("#display").scroll(function(e) {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                drawRelationshipArrows();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+});
+
+// =======================================================================
+
 // Functionality for the class card buttons
 function classCardBtns() {
     var getId;
